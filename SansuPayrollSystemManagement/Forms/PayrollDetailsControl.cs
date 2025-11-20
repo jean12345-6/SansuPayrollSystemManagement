@@ -73,5 +73,10 @@ namespace SansuPayrollSystemManagement.Forms
                 MessageBox.Show("Error loading payroll details: " + ex.Message);
             }
         }
+
+        private void PayrollDetailsControl_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

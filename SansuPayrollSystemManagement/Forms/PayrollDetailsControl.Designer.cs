@@ -30,19 +30,19 @@
         {
             this.computationPanel = new Guna.UI2.WinForms.Guna2Panel();
             this.txtRegularHours = new System.Windows.Forms.TextBox();
-            this.txtPagIbig = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.txtPhilHealth = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.txtNetPay = new System.Windows.Forms.TextBox();
-            this.txtLateDeduction = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.txtPagIbig = new System.Windows.Forms.TextBox();
+            this.txtPhilHealth = new System.Windows.Forms.TextBox();
+            this.txtNetPay = new System.Windows.Forms.TextBox();
+            this.txtLateDeduction = new System.Windows.Forms.TextBox();
             this.txtDaysWorked = new Guna.UI2.WinForms.Guna2TextBox();
             this.txtOvertimeHours = new Guna.UI2.WinForms.Guna2TextBox();
             this.txtBasicSalary = new Guna.UI2.WinForms.Guna2TextBox();
@@ -81,14 +81,6 @@
             this.txtRegularHours.Size = new System.Drawing.Size(372, 45);
             this.txtRegularHours.TabIndex = 16;
             // 
-            // txtPagIbig
-            // 
-            this.txtPagIbig.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPagIbig.Location = new System.Drawing.Point(739, 438);
-            this.txtPagIbig.Name = "txtPagIbig";
-            this.txtPagIbig.Size = new System.Drawing.Size(372, 45);
-            this.txtPagIbig.TabIndex = 29;
-            // 
             // label11
             // 
             this.label11.AutoSize = true;
@@ -98,14 +90,6 @@
             this.label11.Size = new System.Drawing.Size(98, 25);
             this.label11.TabIndex = 28;
             this.label11.Text = "Pag-IBIG:";
-            // 
-            // txtPhilHealth
-            // 
-            this.txtPhilHealth.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPhilHealth.Location = new System.Drawing.Point(739, 387);
-            this.txtPhilHealth.Name = "txtPhilHealth";
-            this.txtPhilHealth.Size = new System.Drawing.Size(372, 45);
-            this.txtPhilHealth.TabIndex = 27;
             // 
             // label9
             // 
@@ -137,22 +121,6 @@
             this.label8.Size = new System.Drawing.Size(456, 29);
             this.label8.TabIndex = 17;
             this.label8.Text = "COMPUTATION DETAILS (READ ONLY)";
-            // 
-            // txtNetPay
-            // 
-            this.txtNetPay.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNetPay.Location = new System.Drawing.Point(739, 657);
-            this.txtNetPay.Name = "txtNetPay";
-            this.txtNetPay.Size = new System.Drawing.Size(372, 45);
-            this.txtNetPay.TabIndex = 23;
-            // 
-            // txtLateDeduction
-            // 
-            this.txtLateDeduction.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLateDeduction.Location = new System.Drawing.Point(739, 489);
-            this.txtLateDeduction.Name = "txtLateDeduction";
-            this.txtLateDeduction.Size = new System.Drawing.Size(372, 45);
-            this.txtLateDeduction.TabIndex = 21;
             // 
             // label7
             // 
@@ -203,6 +171,38 @@
             this.label4.Size = new System.Drawing.Size(137, 25);
             this.label4.TabIndex = 14;
             this.label4.Text = "Days Worked:";
+            // 
+            // txtPagIbig
+            // 
+            this.txtPagIbig.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPagIbig.Location = new System.Drawing.Point(739, 438);
+            this.txtPagIbig.Name = "txtPagIbig";
+            this.txtPagIbig.Size = new System.Drawing.Size(372, 45);
+            this.txtPagIbig.TabIndex = 29;
+            // 
+            // txtPhilHealth
+            // 
+            this.txtPhilHealth.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPhilHealth.Location = new System.Drawing.Point(739, 387);
+            this.txtPhilHealth.Name = "txtPhilHealth";
+            this.txtPhilHealth.Size = new System.Drawing.Size(372, 45);
+            this.txtPhilHealth.TabIndex = 27;
+            // 
+            // txtNetPay
+            // 
+            this.txtNetPay.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNetPay.Location = new System.Drawing.Point(739, 657);
+            this.txtNetPay.Name = "txtNetPay";
+            this.txtNetPay.Size = new System.Drawing.Size(372, 45);
+            this.txtNetPay.TabIndex = 23;
+            // 
+            // txtLateDeduction
+            // 
+            this.txtLateDeduction.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtLateDeduction.Location = new System.Drawing.Point(739, 489);
+            this.txtLateDeduction.Name = "txtLateDeduction";
+            this.txtLateDeduction.Size = new System.Drawing.Size(372, 45);
+            this.txtLateDeduction.TabIndex = 21;
             // 
             // txtDaysWorked
             // 
@@ -366,8 +366,7 @@
             this.Controls.Add(this.computationPanel);
             this.Name = "PayrollDetailsControl";
             this.Size = new System.Drawing.Size(1750, 1000);
-            //this.Load += new System.EventHandler(this.PayrollDetailsControl_Load);
-
+            this.Load += new System.EventHandler(this.PayrollDetailsControl_Load);
             this.computationPanel.ResumeLayout(false);
             this.computationPanel.PerformLayout();
             this.ResumeLayout(false);

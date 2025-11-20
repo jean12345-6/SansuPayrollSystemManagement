@@ -44,6 +44,12 @@
             this.btnSave = new Guna.UI2.WinForms.Guna2Button();
             this.btnGeneratePayslip = new Guna.UI2.WinForms.Guna2Button();
             this.computationPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.txtPagIbig = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.txtPhilHealth = new System.Windows.Forms.TextBox();
+            this.txtSSS = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.txtNetPay = new System.Windows.Forms.TextBox();
             this.txtDeductions = new System.Windows.Forms.TextBox();
@@ -57,12 +63,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.guna2DataGridViewPayroll = new Guna.UI2.WinForms.Guna2DataGridView();
             this.lblStatus = new System.Windows.Forms.Label();
-            this.txtPhilHealth = new System.Windows.Forms.TextBox();
-            this.txtSSS = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.txtPagIbig = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
             this.guna2Panel1.SuspendLayout();
             this.computationPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guna2DataGridViewPayroll)).BeginInit();
@@ -226,12 +226,63 @@
             this.computationPanel.Size = new System.Drawing.Size(703, 380);
             this.computationPanel.TabIndex = 11;
             // 
+            // txtPagIbig
+            // 
+            this.txtPagIbig.Location = new System.Drawing.Point(185, 202);
+            this.txtPagIbig.Name = "txtPagIbig";
+            this.txtPagIbig.Size = new System.Drawing.Size(210, 22);
+            this.txtPagIbig.TabIndex = 29;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(4, 198);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(98, 25);
+            this.label11.TabIndex = 28;
+            this.label11.Text = "Pag-IBIG:";
+            // 
+            // txtPhilHealth
+            // 
+            this.txtPhilHealth.Location = new System.Drawing.Point(185, 174);
+            this.txtPhilHealth.Name = "txtPhilHealth";
+            this.txtPhilHealth.Size = new System.Drawing.Size(210, 22);
+            this.txtPhilHealth.TabIndex = 27;
+            // 
+            // txtSSS
+            // 
+            this.txtSSS.Location = new System.Drawing.Point(183, 145);
+            this.txtSSS.Name = "txtSSS";
+            this.txtSSS.Size = new System.Drawing.Size(210, 22);
+            this.txtSSS.TabIndex = 26;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(4, 170);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(106, 25);
+            this.label9.TabIndex = 25;
+            this.label9.Text = "PhilHealth:";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(4, 145);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(60, 25);
+            this.label10.TabIndex = 24;
+            this.label10.Text = "SSS:";
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.BackColor = System.Drawing.Color.Transparent;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(21, 18);
+            this.label8.Location = new System.Drawing.Point(4, 25);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(456, 29);
             this.label8.TabIndex = 17;
@@ -345,7 +396,7 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.guna2DataGridViewPayroll.DefaultCellStyle = dataGridViewCellStyle3;
             this.guna2DataGridViewPayroll.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.guna2DataGridViewPayroll.Location = new System.Drawing.Point(17, 585);
+            this.guna2DataGridViewPayroll.Location = new System.Drawing.Point(10, 585);
             this.guna2DataGridViewPayroll.Name = "guna2DataGridViewPayroll";
             this.guna2DataGridViewPayroll.RowHeadersVisible = false;
             this.guna2DataGridViewPayroll.RowHeadersWidth = 51;
@@ -383,57 +434,6 @@
             this.lblStatus.Size = new System.Drawing.Size(74, 25);
             this.lblStatus.TabIndex = 13;
             this.lblStatus.Text = "Status:";
-            // 
-            // txtPhilHealth
-            // 
-            this.txtPhilHealth.Location = new System.Drawing.Point(185, 174);
-            this.txtPhilHealth.Name = "txtPhilHealth";
-            this.txtPhilHealth.Size = new System.Drawing.Size(210, 22);
-            this.txtPhilHealth.TabIndex = 27;
-            // 
-            // txtSSS
-            // 
-            this.txtSSS.Location = new System.Drawing.Point(183, 145);
-            this.txtSSS.Name = "txtSSS";
-            this.txtSSS.Size = new System.Drawing.Size(210, 22);
-            this.txtSSS.TabIndex = 26;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(4, 170);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(106, 25);
-            this.label9.TabIndex = 25;
-            this.label9.Text = "PhilHealth:";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(4, 145);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(60, 25);
-            this.label10.TabIndex = 24;
-            this.label10.Text = "SSS:";
-            // 
-            // txtPagIbig
-            // 
-            this.txtPagIbig.Location = new System.Drawing.Point(185, 202);
-            this.txtPagIbig.Name = "txtPagIbig";
-            this.txtPagIbig.Size = new System.Drawing.Size(210, 22);
-            this.txtPagIbig.TabIndex = 29;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(4, 198);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(98, 25);
-            this.label11.TabIndex = 28;
-            this.label11.Text = "Pag-IBIG:";
             // 
             // PayrollForm
             // 

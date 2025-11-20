@@ -227,6 +227,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Gold;
             this.Controls.Add(this.guna2DataGridViewAttendance);
             this.Controls.Add(this.btnImportAttendance);
             this.Controls.Add(this.txtSearch);
@@ -235,7 +236,6 @@
             this.Controls.Add(this.label1);
             this.Name = "AttendanceControl";
             this.Size = new System.Drawing.Size(1750, 1000);
-            //this.Load += new System.EventHandler(this.AttendanceControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAttendance)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.guna2DataGridViewAttendance)).EndInit();
             this.ResumeLayout(false);

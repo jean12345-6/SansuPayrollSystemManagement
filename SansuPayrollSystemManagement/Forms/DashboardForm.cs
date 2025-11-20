@@ -1,4 +1,5 @@
 ﻿using Guna.UI2.WinForms;
+using SansuPayrollSystemManagement.Forms;
 using SansuPayrollSystemManagement.Services;
 using System;
 using System.Data;
@@ -146,21 +147,9 @@ namespace SansuPayrollSystemManagement
 
         private void guna2ButtonPayroll_Click(object sender, EventArgs e)
         {
-            try
-            {
-                // Open Payroll form
-                PayrollForm payrollForm = new PayrollForm();
-
-                this.Hide(); // hide dashboard while payroll is open
-                payrollForm.ShowDialog(); // open as modal window
-                this.Show(); // show dashboard again when payroll form closes
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error opening Payroll Form: " + ex.Message,
-                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            LoadPage(new PayrollControl());
         }
+        
 
         private void guna2ButtonPerformance_Click(object sender, EventArgs e)
         {

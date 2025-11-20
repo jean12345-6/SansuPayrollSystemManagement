@@ -200,5 +200,10 @@ namespace SansuPayrollSystemManagement
             if (addForm.ShowDialog() == DialogResult.OK)
                 LoadEmployees();
         }
+
+        private void EmployeeControl_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

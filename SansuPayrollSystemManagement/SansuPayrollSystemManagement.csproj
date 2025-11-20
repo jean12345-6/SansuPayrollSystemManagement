@@ -143,6 +143,12 @@
     <Compile Include="Forms\PayrollControl.Designer.cs">
       <DependentUpon>PayrollControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\PayrollDetailsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\PayrollDetailsControl.Designer.cs">
+      <DependentUpon>PayrollDetailsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\PayrollForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -201,6 +207,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PayrollControl.resx">
       <DependentUpon>PayrollControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PayrollDetailsControl.resx">
+      <DependentUpon>PayrollDetailsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PayrollForm.resx">
       <DependentUpon>PayrollForm.cs</DependentUpon>

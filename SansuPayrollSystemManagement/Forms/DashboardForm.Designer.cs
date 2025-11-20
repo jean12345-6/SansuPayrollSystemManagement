@@ -53,11 +53,9 @@
             this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
             this.label3 = new System.Windows.Forms.Label();
             this.guna2ShadowPanelEmployees = new Guna.UI2.WinForms.Guna2ShadowPanel();
-            this.groupRecentActivity = new Guna.UI2.WinForms.Guna2GroupBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.panelContainer = new System.Windows.Forms.Panel();
             this.guna2Panel1.SuspendLayout();
             this.guna2Panel2.SuspendLayout();
-            this.groupRecentActivity.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -231,6 +229,7 @@
             // 
             // guna2Panel2
             // 
+            this.guna2Panel2.Controls.Add(this.panelContainer);
             this.guna2Panel2.Controls.Add(this.lblStatus);
             this.guna2Panel2.Controls.Add(this.lblPayCount);
             this.guna2Panel2.Controls.Add(this.lblPayTitle);
@@ -244,7 +243,6 @@
             this.guna2Panel2.Controls.Add(this.guna2Button1);
             this.guna2Panel2.Controls.Add(this.label3);
             this.guna2Panel2.Controls.Add(this.guna2ShadowPanelEmployees);
-            this.guna2Panel2.Controls.Add(this.groupRecentActivity);
             this.guna2Panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.guna2Panel2.FillColor = System.Drawing.Color.White;
             this.guna2Panel2.Location = new System.Drawing.Point(307, 0);
@@ -277,7 +275,7 @@
             // 
             this.lblPayTitle.AutoSize = true;
             this.lblPayTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPayTitle.Location = new System.Drawing.Point(1144, 241);
+            this.lblPayTitle.Location = new System.Drawing.Point(676, 241);
             this.lblPayTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPayTitle.Name = "lblPayTitle";
             this.lblPayTitle.Size = new System.Drawing.Size(257, 39);
@@ -298,7 +296,7 @@
             // 
             this.lblAttTitle.AutoSize = true;
             this.lblAttTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAttTitle.Location = new System.Drawing.Point(576, 241);
+            this.lblAttTitle.Location = new System.Drawing.Point(355, 241);
             this.lblAttTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAttTitle.Name = "lblAttTitle";
             this.lblAttTitle.Size = new System.Drawing.Size(293, 39);
@@ -341,24 +339,24 @@
             // 
             this.guna2ShadowPanelPayroll.BackColor = System.Drawing.Color.Transparent;
             this.guna2ShadowPanelPayroll.FillColor = System.Drawing.Color.WhiteSmoke;
-            this.guna2ShadowPanelPayroll.Location = new System.Drawing.Point(1152, 303);
+            this.guna2ShadowPanelPayroll.Location = new System.Drawing.Point(683, 303);
             this.guna2ShadowPanelPayroll.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.guna2ShadowPanelPayroll.Name = "guna2ShadowPanelPayroll";
             this.guna2ShadowPanelPayroll.ShadowColor = System.Drawing.Color.Gray;
             this.guna2ShadowPanelPayroll.ShadowDepth = 50;
-            this.guna2ShadowPanelPayroll.Size = new System.Drawing.Size(592, 414);
+            this.guna2ShadowPanelPayroll.Size = new System.Drawing.Size(350, 307);
             this.guna2ShadowPanelPayroll.TabIndex = 2;
             // 
             // guna2ShadowPanelAttendance
             // 
             this.guna2ShadowPanelAttendance.BackColor = System.Drawing.Color.Transparent;
             this.guna2ShadowPanelAttendance.FillColor = System.Drawing.Color.WhiteSmoke;
-            this.guna2ShadowPanelAttendance.Location = new System.Drawing.Point(580, 303);
+            this.guna2ShadowPanelAttendance.Location = new System.Drawing.Point(359, 303);
             this.guna2ShadowPanelAttendance.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.guna2ShadowPanelAttendance.Name = "guna2ShadowPanelAttendance";
             this.guna2ShadowPanelAttendance.ShadowColor = System.Drawing.Color.Gray;
             this.guna2ShadowPanelAttendance.ShadowDepth = 50;
-            this.guna2ShadowPanelAttendance.Size = new System.Drawing.Size(567, 414);
+            this.guna2ShadowPanelAttendance.Size = new System.Drawing.Size(318, 307);
             this.guna2ShadowPanelAttendance.TabIndex = 1;
             // 
             // guna2Button1
@@ -372,8 +370,8 @@
             this.guna2Button1.FillColor = System.Drawing.Color.Red;
             this.guna2Button1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.guna2Button1.ForeColor = System.Drawing.Color.White;
-            this.guna2Button1.Location = new System.Drawing.Point(1481, 69);
-            this.guna2Button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.guna2Button1.Location = new System.Drawing.Point(923, 21);
+            this.guna2Button1.Margin = new System.Windows.Forms.Padding(4);
             this.guna2Button1.Name = "guna2Button1";
             this.guna2Button1.Size = new System.Drawing.Size(110, 55);
             this.guna2Button1.TabIndex = 9;
@@ -400,38 +398,16 @@
             this.guna2ShadowPanelEmployees.Name = "guna2ShadowPanelEmployees";
             this.guna2ShadowPanelEmployees.ShadowColor = System.Drawing.Color.Gray;
             this.guna2ShadowPanelEmployees.ShadowDepth = 50;
-            this.guna2ShadowPanelEmployees.Size = new System.Drawing.Size(569, 414);
+            this.guna2ShadowPanelEmployees.Size = new System.Drawing.Size(348, 307);
             this.guna2ShadowPanelEmployees.TabIndex = 0;
             this.guna2ShadowPanelEmployees.Paint += new System.Windows.Forms.PaintEventHandler(this.guna2ShadowPanelEmployees_Paint);
             // 
-            // groupRecentActivity
+            // panelContainer
             // 
-            this.groupRecentActivity.BorderColor = System.Drawing.Color.Gainsboro;
-            this.groupRecentActivity.Controls.Add(this.listBox1);
-            this.groupRecentActivity.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.groupRecentActivity.ForeColor = System.Drawing.Color.DimGray;
-            this.groupRecentActivity.Location = new System.Drawing.Point(5, 721);
-            this.groupRecentActivity.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupRecentActivity.Name = "groupRecentActivity";
-            this.groupRecentActivity.Size = new System.Drawing.Size(2000, 599);
-            this.groupRecentActivity.TabIndex = 3;
-            this.groupRecentActivity.Text = "Recent Activity";
-            // 
-            // listBox1
-            // 
-            this.listBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 20;
-            this.listBox1.Items.AddRange(new object[] {
-            "Employee John checked in",
-            "Payroll processed today",
-            "New employee added: Maria Santos"});
-            this.listBox1.Location = new System.Drawing.Point(0, 40);
-            this.listBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(2000, 559);
-            this.listBox1.TabIndex = 0;
+            this.panelContainer.Location = new System.Drawing.Point(0, 0);
+            this.panelContainer.Name = "panelContainer";
+            this.panelContainer.Size = new System.Drawing.Size(1750, 1000);
+            this.panelContainer.TabIndex = 16;
             // 
             // DashboardForm
             // 
@@ -451,7 +427,6 @@
             this.guna2Panel1.PerformLayout();
             this.guna2Panel2.ResumeLayout(false);
             this.guna2Panel2.PerformLayout();
-            this.groupRecentActivity.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -473,8 +448,6 @@
         private Guna.UI2.WinForms.Guna2ShadowPanel guna2ShadowPanelEmployees;
         private Guna.UI2.WinForms.Guna2ShadowPanel guna2ShadowPanelPayroll;
         private Guna.UI2.WinForms.Guna2ShadowPanel guna2ShadowPanelAttendance;
-        private Guna.UI2.WinForms.Guna2GroupBox groupRecentActivity;
-        private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Label label2;
         private Guna.UI2.WinForms.Guna2Button guna2Button1;
         private System.Windows.Forms.Label label3;
@@ -486,5 +459,6 @@
         private System.Windows.Forms.Label lblEmpTitle;
         private System.Windows.Forms.Label lblAttCount;
         private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.Panel panelContainer;
     }
 }

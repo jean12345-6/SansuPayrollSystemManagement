@@ -17,7 +17,7 @@ namespace SansuPayrollSystemManagement
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new PayrollForm());
+            Application.Run(new DashboardForm());
         }
     }
 }

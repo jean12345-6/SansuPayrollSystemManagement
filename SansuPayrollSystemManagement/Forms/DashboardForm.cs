@@ -192,8 +192,7 @@ namespace SansuPayrollSystemManagement
 
         private void guna2ButtonManageEmployees_Click(object sender, EventArgs e)
         {
-            EmployeeForm empForm = new EmployeeForm();
-            empForm.Show();
+            LoadPage(new EmployeeControl());
         }
 
         private void guna2ShadowPanelEmployees_Paint(object sender, PaintEventArgs e)
@@ -226,10 +225,13 @@ namespace SansuPayrollSystemManagement
 
         private void guna2ButtonAttendance_Click(object sender, EventArgs e)
         {
-            AttendanceForm attendanceForm = new AttendanceForm();
-            this.Hide();
-            attendanceForm.ShowDialog();
-            this.Show();
+            LoadPage(new AttendanceControl());
+        }
+        private void LoadPage(UserControl page)
+        {
+            panelContainer.Controls.Clear();
+            page.Dock = DockStyle.Fill;
+            panelContainer.Controls.Add(page);
         }
     }
 }

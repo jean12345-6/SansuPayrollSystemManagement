@@ -1,8 +1,13 @@
-﻿using MySql.Data.MySqlClient;
+﻿using ExcelDataReader;
+using MySql.Data.MySqlClient;
 using SansuPayrollSystemManagement.Services;
 using System;
 using System.Data;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Windows.Forms;
+
 
 namespace SansuPayrollSystemManagement
 {
@@ -91,7 +96,7 @@ namespace SansuPayrollSystemManagement
             this.Close();
         }
 
-        private void btnScanFingerprint_Click(object sender, EventArgs e)
+        /*private void btnScanFingerprint_Click(object sender, EventArgs e)
         {
             try
             {
@@ -137,7 +142,7 @@ namespace SansuPayrollSystemManagement
             {
                 MessageBox.Show("Error scanning fingerprint: " + ex.Message);
             }
-        }
+        }*/
 
         private void guna2DataGridViewAttendance_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -204,5 +209,103 @@ namespace SansuPayrollSystemManagement
         {
 
         }
+
+        private void btnImportAttendance_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.Filter = "Excel Files|*.xls;*.xlsx";
+                if (ofd.ShowDialog() != DialogResult.OK)
+                    return;
+
+                string filePath = ofd.FileName;
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+                using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+                    // Load all sheets and pick the one with most rows
+                    DataSet result = reader.AsDataSet();
+                    DataTable table = result.Tables.Cast<DataTable>()
+                                       .OrderByDescending(t => t.Rows.Count)
+                                       .FirstOrDefault();
+
+                    if (table == null)
+                    {
+                        MessageBox.Show("No worksheet found in Excel file.", "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    int imported = 0;
+                    int skipped = 0;
+
+                    MessageBox.Show("Rows detected: " + table.Rows.Count);
+
+                    foreach (DataRow row in table.Rows)
+                    {
+                        // Skip non-data rows
+                        if (row[1] == null || string.IsNullOrWhiteSpace(row[1].ToString()))
+                            continue;
+
+                        string fullName = row[1].ToString().Trim();
+
+                        // Match employee by Full Name
+                        object empIdObj = db.ExecuteScalar(
+                            "SELECT EmployeeID FROM Employees WHERE LOWER(FullName)=LOWER(@name)",
+                            new MySqlParameter[] { new MySqlParameter("@name", fullName) });
+
+                        if (empIdObj == null)
+                        {
+                            skipped++;
+                            continue;
+                        }
+
+                        int employeeId = Convert.ToInt32(empIdObj);
+
+                        // Read actual worked hours (column index 4)
+                        double workHours = 0;
+                        double.TryParse(row[4]?.ToString(), out workHours);
+
+                        string status = "Present";
+                        if (workHours == 0) status = "Absent";
+                        else if (workHours < 8) status = "Late";
+
+                        DateTime date = DateTime.Today;
+
+                        string insertSql = @"INSERT INTO Attendance 
+                    (EmployeeID, Date, TimeIn, TimeOut, Status)
+                    VALUES (@id, @date, NOW(), NOW(), @status)";
+
+                        db.ExecuteNonQuery(insertSql, new MySqlParameter[]
+                        {
+                    new MySqlParameter("@id", employeeId),
+                    new MySqlParameter("@date", date),
+                    new MySqlParameter("@status", status)
+                        });
+
+                        imported++;
+                    }
+
+                    // 🔥 Restore success message
+                    MessageBox.Show(
+                        $"Successfully imported {imported} attendance record(s).\n" +
+                        $"Skipped {skipped} record(s) (no matching employee).",
+                        "Import Complete",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+
+                    LoadAttendanceData();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error importing attendance: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
-}
+}  
+            

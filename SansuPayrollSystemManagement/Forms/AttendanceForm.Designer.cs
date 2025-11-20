@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.lblAttendanceTitle = new System.Windows.Forms.Label();
@@ -39,10 +39,9 @@
             this.btnRefresh = new Guna.UI2.WinForms.Guna2Button();
             this.guna2DataGridViewAttendance = new Guna.UI2.WinForms.Guna2DataGridView();
             this.btnMarkAttendance = new Guna.UI2.WinForms.Guna2Button();
-            this.btnScanFingerprint = new Guna.UI2.WinForms.Guna2Button();
             this.btnBackDashboard = new Guna.UI2.WinForms.Guna2Button();
             this.txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
-            this.lblScanStatus = new System.Windows.Forms.Label();
+            this.btnImportAttendance = new Guna.UI2.WinForms.Guna2Button();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guna2DataGridViewAttendance)).BeginInit();
             this.SuspendLayout();
@@ -71,7 +70,7 @@
             // 
             this.lblAttendanceTitle.AutoSize = true;
             this.lblAttendanceTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAttendanceTitle.Location = new System.Drawing.Point(12, 91);
+            this.lblAttendanceTitle.Location = new System.Drawing.Point(7, 91);
             this.lblAttendanceTitle.Name = "lblAttendanceTitle";
             this.lblAttendanceTitle.Size = new System.Drawing.Size(279, 29);
             this.lblAttendanceTitle.TabIndex = 1;
@@ -114,27 +113,27 @@
             // 
             // guna2DataGridViewAttendance
             // 
-            dataGridViewCellStyle19.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(229)))), ((int)(((byte)(251)))));
-            this.guna2DataGridViewAttendance.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(229)))), ((int)(((byte)(251)))));
+            this.guna2DataGridViewAttendance.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.guna2DataGridViewAttendance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle20.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(169)))), ((int)(((byte)(243)))));
-            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle20.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.guna2DataGridViewAttendance.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(169)))), ((int)(((byte)(243)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.guna2DataGridViewAttendance.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.guna2DataGridViewAttendance.ColumnHeadersHeight = 18;
             this.guna2DataGridViewAttendance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle21.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(237)))), ((int)(((byte)(252)))));
-            dataGridViewCellStyle21.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle21.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle21.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(197)))), ((int)(((byte)(247)))));
-            dataGridViewCellStyle21.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.guna2DataGridViewAttendance.DefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(237)))), ((int)(((byte)(252)))));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(87)))), ((int)(((byte)(197)))), ((int)(((byte)(247)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.guna2DataGridViewAttendance.DefaultCellStyle = dataGridViewCellStyle3;
             this.guna2DataGridViewAttendance.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(230)))), ((int)(((byte)(251)))));
             this.guna2DataGridViewAttendance.Location = new System.Drawing.Point(12, 196);
             this.guna2DataGridViewAttendance.Name = "guna2DataGridViewAttendance";
@@ -142,7 +141,7 @@
             this.guna2DataGridViewAttendance.RowHeadersVisible = false;
             this.guna2DataGridViewAttendance.RowHeadersWidth = 51;
             this.guna2DataGridViewAttendance.RowTemplate.Height = 24;
-            this.guna2DataGridViewAttendance.Size = new System.Drawing.Size(734, 191);
+            this.guna2DataGridViewAttendance.Size = new System.Drawing.Size(734, 210);
             this.guna2DataGridViewAttendance.TabIndex = 11;
             this.guna2DataGridViewAttendance.Theme = Guna.UI2.WinForms.Enums.DataGridViewPresetThemes.LightBlue;
             this.guna2DataGridViewAttendance.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(229)))), ((int)(((byte)(251)))));
@@ -183,21 +182,6 @@
             this.btnMarkAttendance.Text = "Mark Attendance";
             this.btnMarkAttendance.Click += new System.EventHandler(this.btnMarkAttendance_Click);
             // 
-            // btnScanFingerprint
-            // 
-            this.btnScanFingerprint.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnScanFingerprint.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnScanFingerprint.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnScanFingerprint.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnScanFingerprint.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnScanFingerprint.ForeColor = System.Drawing.Color.White;
-            this.btnScanFingerprint.Location = new System.Drawing.Point(12, 424);
-            this.btnScanFingerprint.Name = "btnScanFingerprint";
-            this.btnScanFingerprint.Size = new System.Drawing.Size(180, 45);
-            this.btnScanFingerprint.TabIndex = 14;
-            this.btnScanFingerprint.Text = "Scan Fingerprint";
-            this.btnScanFingerprint.Click += new System.EventHandler(this.btnScanFingerprint_Click);
-            // 
             // btnBackDashboard
             // 
             this.btnBackDashboard.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
@@ -232,26 +216,30 @@
             this.txtSearch.Size = new System.Drawing.Size(229, 37);
             this.txtSearch.TabIndex = 16;
             // 
-            // lblScanStatus
+            // btnImportAttendance
             // 
-            this.lblScanStatus.AutoSize = true;
-            this.lblScanStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblScanStatus.Location = new System.Drawing.Point(365, 440);
-            this.lblScanStatus.Name = "lblScanStatus";
-            this.lblScanStatus.Size = new System.Drawing.Size(379, 29);
-            this.lblScanStatus.TabIndex = 17;
-            this.lblScanStatus.Text = "Status: Fingerprint not recognized.";
+            this.btnImportAttendance.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnImportAttendance.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnImportAttendance.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnImportAttendance.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnImportAttendance.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnImportAttendance.ForeColor = System.Drawing.Color.White;
+            this.btnImportAttendance.Location = new System.Drawing.Point(12, 424);
+            this.btnImportAttendance.Name = "btnImportAttendance";
+            this.btnImportAttendance.Size = new System.Drawing.Size(734, 45);
+            this.btnImportAttendance.TabIndex = 18;
+            this.btnImportAttendance.Text = "Import Attendance";
+            this.btnImportAttendance.Click += new System.EventHandler(this.btnImportAttendance_Click);
             // 
             // AttendanceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(756, 480);
-            this.Controls.Add(this.lblScanStatus);
+            this.ClientSize = new System.Drawing.Size(756, 485);
+            this.Controls.Add(this.btnImportAttendance);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.btnBackDashboard);
-            this.Controls.Add(this.btnScanFingerprint);
             this.Controls.Add(this.btnMarkAttendance);
             this.Controls.Add(this.guna2DataGridViewAttendance);
             this.Controls.Add(this.btnRefresh);
@@ -279,10 +267,9 @@
         private Guna.UI2.WinForms.Guna2Button btnRefresh;
         private Guna.UI2.WinForms.Guna2DataGridView guna2DataGridViewAttendance;
         private Guna.UI2.WinForms.Guna2Button btnMarkAttendance;
-        private Guna.UI2.WinForms.Guna2Button btnScanFingerprint;
         private Guna.UI2.WinForms.Guna2Button btnBackDashboard;
         private System.Windows.Forms.Label label4;
         private Guna.UI2.WinForms.Guna2TextBox txtSearch;
-        private System.Windows.Forms.Label lblScanStatus;
+        private Guna.UI2.WinForms.Guna2Button btnImportAttendance;
     }
 }

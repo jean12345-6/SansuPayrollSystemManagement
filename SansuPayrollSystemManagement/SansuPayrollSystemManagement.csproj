@@ -155,6 +155,12 @@
     <Compile Include="Forms\PayrollForm.Designer.cs">
       <DependentUpon>PayrollForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\PerformanceControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\PerformanceControl.Designer.cs">
+      <DependentUpon>PerformanceControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\PerformanceForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -213,6 +219,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PayrollForm.resx">
       <DependentUpon>PayrollForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PerformanceControl.resx">
+      <DependentUpon>PerformanceControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

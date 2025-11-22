@@ -267,9 +267,10 @@
             // 
             // panelContainer
             // 
+            this.panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelContainer.Location = new System.Drawing.Point(0, 0);
             this.panelContainer.Name = "panelContainer";
-            this.panelContainer.Size = new System.Drawing.Size(1750, 1000);
+            this.panelContainer.Size = new System.Drawing.Size(1617, 1040);
             this.panelContainer.TabIndex = 16;
             // 
             // lblStatus

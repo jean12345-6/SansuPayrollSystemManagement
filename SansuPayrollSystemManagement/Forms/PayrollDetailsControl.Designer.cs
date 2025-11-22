@@ -1,16 +1,13 @@
-﻿namespace SansuPayrollSystemManagement.Forms
+﻿using System;
+using System.Windows.Forms;
+using Guna.UI2.WinForms;
+
+namespace SansuPayrollSystemManagement.Forms
 {
     partial class PayrollDetailsControl
     {
-        /// <summary> 
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,384 +19,515 @@
 
         #region Component Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            this.computationPanel = new Guna.UI2.WinForms.Guna2Panel();
-            this.txtRegularHours = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtPagIbig = new System.Windows.Forms.TextBox();
-            this.txtPhilHealth = new System.Windows.Forms.TextBox();
-            this.txtNetPay = new System.Windows.Forms.TextBox();
-            this.txtLateDeduction = new System.Windows.Forms.TextBox();
-            this.txtDaysWorked = new Guna.UI2.WinForms.Guna2TextBox();
-            this.txtOvertimeHours = new Guna.UI2.WinForms.Guna2TextBox();
-            this.txtBasicSalary = new Guna.UI2.WinForms.Guna2TextBox();
-            this.txtGrossPay = new Guna.UI2.WinForms.Guna2TextBox();
-            this.txtSSS = new Guna.UI2.WinForms.Guna2TextBox();
-            this.txtAbsenceDeduction = new System.Windows.Forms.TextBox();
-            this.txtTotalDeductions = new System.Windows.Forms.TextBox();
+            this.headerPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.picEmployee = new Guna.UI2.WinForms.Guna2CirclePictureBox();
+            this.lblHeaderTitle = new System.Windows.Forms.Label();
+            this.lblCaptionName = new System.Windows.Forms.Label();
+            this.lblCaptionPosition = new System.Windows.Forms.Label();
+            this.lblCaptionPeriod = new System.Windows.Forms.Label();
             this.lblEmployeeName = new System.Windows.Forms.Label();
             this.lblPosition = new System.Windows.Forms.Label();
             this.lblPeriod = new System.Windows.Forms.Label();
-            this.computationPanel.SuspendLayout();
+            this.panelEarnings = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblGrossPayValue = new System.Windows.Forms.Label();
+            this.lblBasicSalaryValue = new System.Windows.Forms.Label();
+            this.lblOvertimeHoursValue = new System.Windows.Forms.Label();
+            this.lblDaysWorkedValue = new System.Windows.Forms.Label();
+            this.lblGrossPayCaption = new System.Windows.Forms.Label();
+            this.lblBasicSalaryCaption = new System.Windows.Forms.Label();
+            this.lblOvertimeHoursCaption = new System.Windows.Forms.Label();
+            this.lblDaysWorkedCaption = new System.Windows.Forms.Label();
+            this.lblEarningsTitle = new System.Windows.Forms.Label();
+            this.panelDeductions = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblTotalDeductionsValue = new System.Windows.Forms.Label();
+            this.lblAbsenceDeductionValue = new System.Windows.Forms.Label();
+            this.lblLateDeductionValue = new System.Windows.Forms.Label();
+            this.lblPagIbigValue = new System.Windows.Forms.Label();
+            this.lblPhilHealthValue = new System.Windows.Forms.Label();
+            this.lblSSSValue = new System.Windows.Forms.Label();
+            this.lblTotalDeductionsCaption = new System.Windows.Forms.Label();
+            this.lblAbsenceDeductionCaption = new System.Windows.Forms.Label();
+            this.lblLateDeductionCaption = new System.Windows.Forms.Label();
+            this.lblPagIbigCaption = new System.Windows.Forms.Label();
+            this.lblPhilHealthCaption = new System.Windows.Forms.Label();
+            this.lblSSSCaption = new System.Windows.Forms.Label();
+            this.lblDeductionsTitle = new System.Windows.Forms.Label();
+            this.panelNetPay = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblNetPayValue = new System.Windows.Forms.Label();
+            this.lblNetPayCaption = new System.Windows.Forms.Label();
+            this.lblNetPayTitle = new System.Windows.Forms.Label();
+            this.btnPrintPayslip = new Guna.UI2.WinForms.Guna2Button();
+            this.headerPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picEmployee)).BeginInit();
+            this.panelEarnings.SuspendLayout();
+            this.panelDeductions.SuspendLayout();
+            this.panelNetPay.SuspendLayout();
             this.SuspendLayout();
             // 
-            // computationPanel
+            // headerPanel
             // 
-            this.computationPanel.Controls.Add(this.txtRegularHours);
-            this.computationPanel.Controls.Add(this.label11);
-            this.computationPanel.Controls.Add(this.label9);
-            this.computationPanel.Controls.Add(this.label10);
-            this.computationPanel.Controls.Add(this.label8);
-            this.computationPanel.Controls.Add(this.label7);
-            this.computationPanel.Controls.Add(this.label6);
-            this.computationPanel.Controls.Add(this.label5);
-            this.computationPanel.Controls.Add(this.label3);
-            this.computationPanel.Controls.Add(this.label4);
-            this.computationPanel.Location = new System.Drawing.Point(24, 226);
-            this.computationPanel.Name = "computationPanel";
-            this.computationPanel.Size = new System.Drawing.Size(578, 484);
-            this.computationPanel.TabIndex = 41;
+            this.headerPanel.Controls.Add(this.picEmployee);
+            this.headerPanel.Controls.Add(this.lblHeaderTitle);
+            this.headerPanel.Controls.Add(this.lblCaptionName);
+            this.headerPanel.Controls.Add(this.lblCaptionPosition);
+            this.headerPanel.Controls.Add(this.lblCaptionPeriod);
+            this.headerPanel.Controls.Add(this.lblEmployeeName);
+            this.headerPanel.Controls.Add(this.lblPosition);
+            this.headerPanel.Controls.Add(this.lblPeriod);
+            this.headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.headerPanel.Location = new System.Drawing.Point(0, 0);
+            this.headerPanel.Name = "headerPanel";
+            this.headerPanel.Size = new System.Drawing.Size(1942, 140);
+            this.headerPanel.TabIndex = 0;
             // 
-            // txtRegularHours
+            // picEmployee
             // 
-            this.txtRegularHours.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRegularHours.Location = new System.Drawing.Point(168, 53);
-            this.txtRegularHours.Name = "txtRegularHours";
-            this.txtRegularHours.Size = new System.Drawing.Size(372, 45);
-            this.txtRegularHours.TabIndex = 16;
+            this.picEmployee.ImageRotate = 0F;
+            this.picEmployee.Location = new System.Drawing.Point(24, 24);
+            this.picEmployee.Name = "picEmployee";
+            this.picEmployee.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
+            this.picEmployee.Size = new System.Drawing.Size(90, 90);
+            this.picEmployee.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picEmployee.TabIndex = 7;
+            this.picEmployee.TabStop = false;
             // 
-            // label11
+            // lblHeaderTitle
             // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(4, 277);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(98, 25);
-            this.label11.TabIndex = 28;
-            this.label11.Text = "Pag-IBIG:";
+            this.lblHeaderTitle.AutoSize = true;
+            this.lblHeaderTitle.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Bold);
+            this.lblHeaderTitle.Location = new System.Drawing.Point(130, 18);
+            this.lblHeaderTitle.Name = "lblHeaderTitle";
+            this.lblHeaderTitle.Size = new System.Drawing.Size(349, 37);
+            this.lblHeaderTitle.TabIndex = 0;
+            this.lblHeaderTitle.Text = "Payroll Details / Payslip";
             // 
-            // label9
+            // lblCaptionName
             // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(3, 226);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(106, 25);
-            this.label9.TabIndex = 25;
-            this.label9.Text = "PhilHealth:";
+            this.lblCaptionName.AutoSize = true;
+            this.lblCaptionName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblCaptionName.Location = new System.Drawing.Point(130, 58);
+            this.lblCaptionName.Name = "lblCaptionName";
+            this.lblCaptionName.Size = new System.Drawing.Size(93, 23);
+            this.lblCaptionName.TabIndex = 1;
+            this.lblCaptionName.Text = "Employee:";
             // 
-            // label10
+            // lblCaptionPosition
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(4, 175);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(60, 25);
-            this.label10.TabIndex = 24;
-            this.label10.Text = "SSS:";
+            this.lblCaptionPosition.AutoSize = true;
+            this.lblCaptionPosition.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblCaptionPosition.Location = new System.Drawing.Point(130, 86);
+            this.lblCaptionPosition.Name = "lblCaptionPosition";
+            this.lblCaptionPosition.Size = new System.Drawing.Size(78, 23);
+            this.lblCaptionPosition.TabIndex = 3;
+            this.lblCaptionPosition.Text = "Position:";
             // 
-            // label8
+            // lblCaptionPeriod
             // 
-            this.label8.AutoSize = true;
-            this.label8.BackColor = System.Drawing.Color.Transparent;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(4, 17);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(456, 29);
-            this.label8.TabIndex = 17;
-            this.label8.Text = "COMPUTATION DETAILS (READ ONLY)";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(3, 431);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(87, 25);
-            this.label7.TabIndex = 20;
-            this.label7.Text = "Net Pay:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(4, 380);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(116, 25);
-            this.label6.TabIndex = 19;
-            this.label6.Text = "Deductions:";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(4, 328);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(101, 25);
-            this.label5.TabIndex = 18;
-            this.label5.Text = "Total Pay:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(4, 124);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(154, 25);
-            this.label3.TabIndex = 15;
-            this.label3.Text = "Overtime Hours:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(4, 73);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(137, 25);
-            this.label4.TabIndex = 14;
-            this.label4.Text = "Days Worked:";
-            // 
-            // txtPagIbig
-            // 
-            this.txtPagIbig.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPagIbig.Location = new System.Drawing.Point(739, 438);
-            this.txtPagIbig.Name = "txtPagIbig";
-            this.txtPagIbig.Size = new System.Drawing.Size(372, 45);
-            this.txtPagIbig.TabIndex = 29;
-            // 
-            // txtPhilHealth
-            // 
-            this.txtPhilHealth.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPhilHealth.Location = new System.Drawing.Point(739, 387);
-            this.txtPhilHealth.Name = "txtPhilHealth";
-            this.txtPhilHealth.Size = new System.Drawing.Size(372, 45);
-            this.txtPhilHealth.TabIndex = 27;
-            // 
-            // txtNetPay
-            // 
-            this.txtNetPay.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNetPay.Location = new System.Drawing.Point(739, 657);
-            this.txtNetPay.Name = "txtNetPay";
-            this.txtNetPay.Size = new System.Drawing.Size(372, 45);
-            this.txtNetPay.TabIndex = 23;
-            // 
-            // txtLateDeduction
-            // 
-            this.txtLateDeduction.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLateDeduction.Location = new System.Drawing.Point(739, 489);
-            this.txtLateDeduction.Name = "txtLateDeduction";
-            this.txtLateDeduction.Size = new System.Drawing.Size(372, 45);
-            this.txtLateDeduction.TabIndex = 21;
-            // 
-            // txtDaysWorked
-            // 
-            this.txtDaysWorked.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtDaysWorked.DefaultText = "";
-            this.txtDaysWorked.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.txtDaysWorked.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.txtDaysWorked.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtDaysWorked.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtDaysWorked.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtDaysWorked.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtDaysWorked.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtDaysWorked.Location = new System.Drawing.Point(739, 86);
-            this.txtDaysWorked.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txtDaysWorked.Name = "txtDaysWorked";
-            this.txtDaysWorked.PlaceholderText = "";
-            this.txtDaysWorked.SelectedText = "";
-            this.txtDaysWorked.Size = new System.Drawing.Size(229, 48);
-            this.txtDaysWorked.TabIndex = 42;
-            // 
-            // txtOvertimeHours
-            // 
-            this.txtOvertimeHours.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtOvertimeHours.DefaultText = "";
-            this.txtOvertimeHours.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.txtOvertimeHours.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.txtOvertimeHours.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtOvertimeHours.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtOvertimeHours.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtOvertimeHours.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtOvertimeHours.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtOvertimeHours.Location = new System.Drawing.Point(739, 142);
-            this.txtOvertimeHours.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txtOvertimeHours.Name = "txtOvertimeHours";
-            this.txtOvertimeHours.PlaceholderText = "";
-            this.txtOvertimeHours.SelectedText = "";
-            this.txtOvertimeHours.Size = new System.Drawing.Size(229, 48);
-            this.txtOvertimeHours.TabIndex = 43;
-            // 
-            // txtBasicSalary
-            // 
-            this.txtBasicSalary.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtBasicSalary.DefaultText = "";
-            this.txtBasicSalary.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.txtBasicSalary.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.txtBasicSalary.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtBasicSalary.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtBasicSalary.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtBasicSalary.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtBasicSalary.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtBasicSalary.Location = new System.Drawing.Point(739, 211);
-            this.txtBasicSalary.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txtBasicSalary.Name = "txtBasicSalary";
-            this.txtBasicSalary.PlaceholderText = "";
-            this.txtBasicSalary.SelectedText = "";
-            this.txtBasicSalary.Size = new System.Drawing.Size(229, 48);
-            this.txtBasicSalary.TabIndex = 44;
-            // 
-            // txtGrossPay
-            // 
-            this.txtGrossPay.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtGrossPay.DefaultText = "";
-            this.txtGrossPay.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.txtGrossPay.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.txtGrossPay.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtGrossPay.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtGrossPay.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtGrossPay.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtGrossPay.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtGrossPay.Location = new System.Drawing.Point(739, 267);
-            this.txtGrossPay.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txtGrossPay.Name = "txtGrossPay";
-            this.txtGrossPay.PlaceholderText = "";
-            this.txtGrossPay.SelectedText = "";
-            this.txtGrossPay.Size = new System.Drawing.Size(229, 48);
-            this.txtGrossPay.TabIndex = 45;
-            // 
-            // txtSSS
-            // 
-            this.txtSSS.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtSSS.DefaultText = "";
-            this.txtSSS.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.txtSSS.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.txtSSS.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtSSS.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtSSS.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtSSS.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtSSS.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtSSS.Location = new System.Drawing.Point(739, 330);
-            this.txtSSS.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txtSSS.Name = "txtSSS";
-            this.txtSSS.PlaceholderText = "";
-            this.txtSSS.SelectedText = "";
-            this.txtSSS.Size = new System.Drawing.Size(229, 48);
-            this.txtSSS.TabIndex = 46;
-            // 
-            // txtAbsenceDeduction
-            // 
-            this.txtAbsenceDeduction.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAbsenceDeduction.Location = new System.Drawing.Point(739, 540);
-            this.txtAbsenceDeduction.Name = "txtAbsenceDeduction";
-            this.txtAbsenceDeduction.Size = new System.Drawing.Size(372, 45);
-            this.txtAbsenceDeduction.TabIndex = 47;
-            // 
-            // txtTotalDeductions
-            // 
-            this.txtTotalDeductions.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTotalDeductions.Location = new System.Drawing.Point(739, 605);
-            this.txtTotalDeductions.Name = "txtTotalDeductions";
-            this.txtTotalDeductions.Size = new System.Drawing.Size(372, 45);
-            this.txtTotalDeductions.TabIndex = 48;
+            this.lblCaptionPeriod.AutoSize = true;
+            this.lblCaptionPeriod.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblCaptionPeriod.Location = new System.Drawing.Point(460, 58);
+            this.lblCaptionPeriod.Name = "lblCaptionPeriod";
+            this.lblCaptionPeriod.Size = new System.Drawing.Size(66, 23);
+            this.lblCaptionPeriod.TabIndex = 5;
+            this.lblCaptionPeriod.Text = "Period:";
             // 
             // lblEmployeeName
             // 
             this.lblEmployeeName.AutoSize = true;
-            this.lblEmployeeName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEmployeeName.Location = new System.Drawing.Point(1072, 234);
+            this.lblEmployeeName.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblEmployeeName.Location = new System.Drawing.Point(220, 58);
             this.lblEmployeeName.Name = "lblEmployeeName";
-            this.lblEmployeeName.Size = new System.Drawing.Size(162, 25);
-            this.lblEmployeeName.TabIndex = 29;
-            this.lblEmployeeName.Text = "Employee Name:";
+            this.lblEmployeeName.Size = new System.Drawing.Size(140, 23);
+            this.lblEmployeeName.TabIndex = 2;
+            this.lblEmployeeName.Text = "[EmployeeName]";
             // 
             // lblPosition
             // 
             this.lblPosition.AutoSize = true;
-            this.lblPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPosition.Location = new System.Drawing.Point(1072, 279);
+            this.lblPosition.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblPosition.Location = new System.Drawing.Point(220, 86);
             this.lblPosition.Name = "lblPosition";
-            this.lblPosition.Size = new System.Drawing.Size(87, 25);
-            this.lblPosition.TabIndex = 49;
-            this.lblPosition.Text = "Position:";
+            this.lblPosition.Size = new System.Drawing.Size(80, 23);
+            this.lblPosition.TabIndex = 4;
+            this.lblPosition.Text = "[Position]";
             // 
             // lblPeriod
             // 
             this.lblPeriod.AutoSize = true;
-            this.lblPeriod.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPeriod.Location = new System.Drawing.Point(1072, 316);
+            this.lblPeriod.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblPeriod.Location = new System.Drawing.Point(524, 58);
             this.lblPeriod.Name = "lblPeriod";
-            this.lblPeriod.Size = new System.Drawing.Size(74, 25);
-            this.lblPeriod.TabIndex = 50;
-            this.lblPeriod.Text = "Period:";
+            this.lblPeriod.Size = new System.Drawing.Size(68, 23);
+            this.lblPeriod.TabIndex = 6;
+            this.lblPeriod.Text = "[Period]";
+            // 
+            // panelEarnings
+            // 
+            this.panelEarnings.Controls.Add(this.lblGrossPayValue);
+            this.panelEarnings.Controls.Add(this.lblBasicSalaryValue);
+            this.panelEarnings.Controls.Add(this.lblOvertimeHoursValue);
+            this.panelEarnings.Controls.Add(this.lblDaysWorkedValue);
+            this.panelEarnings.Controls.Add(this.lblGrossPayCaption);
+            this.panelEarnings.Controls.Add(this.lblBasicSalaryCaption);
+            this.panelEarnings.Controls.Add(this.lblOvertimeHoursCaption);
+            this.panelEarnings.Controls.Add(this.lblDaysWorkedCaption);
+            this.panelEarnings.Controls.Add(this.lblEarningsTitle);
+            this.panelEarnings.Location = new System.Drawing.Point(40, 170);
+            this.panelEarnings.Name = "panelEarnings";
+            this.panelEarnings.Size = new System.Drawing.Size(520, 360);
+            this.panelEarnings.TabIndex = 1;
+            // 
+            // lblGrossPayValue
+            // 
+            this.lblGrossPayValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblGrossPayValue.Location = new System.Drawing.Point(220, 215);
+            this.lblGrossPayValue.Name = "lblGrossPayValue";
+            this.lblGrossPayValue.Size = new System.Drawing.Size(260, 19);
+            this.lblGrossPayValue.TabIndex = 0;
+            this.lblGrossPayValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblBasicSalaryValue
+            // 
+            this.lblBasicSalaryValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblBasicSalaryValue.Location = new System.Drawing.Point(220, 170);
+            this.lblBasicSalaryValue.Name = "lblBasicSalaryValue";
+            this.lblBasicSalaryValue.Size = new System.Drawing.Size(260, 19);
+            this.lblBasicSalaryValue.TabIndex = 1;
+            this.lblBasicSalaryValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblOvertimeHoursValue
+            // 
+            this.lblOvertimeHoursValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblOvertimeHoursValue.Location = new System.Drawing.Point(220, 125);
+            this.lblOvertimeHoursValue.Name = "lblOvertimeHoursValue";
+            this.lblOvertimeHoursValue.Size = new System.Drawing.Size(260, 19);
+            this.lblOvertimeHoursValue.TabIndex = 2;
+            this.lblOvertimeHoursValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblDaysWorkedValue
+            // 
+            this.lblDaysWorkedValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblDaysWorkedValue.Location = new System.Drawing.Point(220, 80);
+            this.lblDaysWorkedValue.Name = "lblDaysWorkedValue";
+            this.lblDaysWorkedValue.Size = new System.Drawing.Size(260, 19);
+            this.lblDaysWorkedValue.TabIndex = 3;
+            this.lblDaysWorkedValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblGrossPayCaption
+            // 
+            this.lblGrossPayCaption.AutoSize = true;
+            this.lblGrossPayCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblGrossPayCaption.Location = new System.Drawing.Point(40, 215);
+            this.lblGrossPayCaption.Name = "lblGrossPayCaption";
+            this.lblGrossPayCaption.Size = new System.Drawing.Size(88, 23);
+            this.lblGrossPayCaption.TabIndex = 4;
+            this.lblGrossPayCaption.Text = "Gross pay:";
+            // 
+            // lblBasicSalaryCaption
+            // 
+            this.lblBasicSalaryCaption.AutoSize = true;
+            this.lblBasicSalaryCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblBasicSalaryCaption.Location = new System.Drawing.Point(40, 170);
+            this.lblBasicSalaryCaption.Name = "lblBasicSalaryCaption";
+            this.lblBasicSalaryCaption.Size = new System.Drawing.Size(100, 23);
+            this.lblBasicSalaryCaption.TabIndex = 5;
+            this.lblBasicSalaryCaption.Text = "Basic salary:";
+            // 
+            // lblOvertimeHoursCaption
+            // 
+            this.lblOvertimeHoursCaption.AutoSize = true;
+            this.lblOvertimeHoursCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblOvertimeHoursCaption.Location = new System.Drawing.Point(40, 125);
+            this.lblOvertimeHoursCaption.Name = "lblOvertimeHoursCaption";
+            this.lblOvertimeHoursCaption.Size = new System.Drawing.Size(132, 23);
+            this.lblOvertimeHoursCaption.TabIndex = 6;
+            this.lblOvertimeHoursCaption.Text = "Overtime hours:";
+            // 
+            // lblDaysWorkedCaption
+            // 
+            this.lblDaysWorkedCaption.AutoSize = true;
+            this.lblDaysWorkedCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblDaysWorkedCaption.Location = new System.Drawing.Point(40, 80);
+            this.lblDaysWorkedCaption.Name = "lblDaysWorkedCaption";
+            this.lblDaysWorkedCaption.Size = new System.Drawing.Size(113, 23);
+            this.lblDaysWorkedCaption.TabIndex = 7;
+            this.lblDaysWorkedCaption.Text = "Days Worked:";
+            // 
+            // lblEarningsTitle
+            // 
+            this.lblEarningsTitle.AutoSize = true;
+            this.lblEarningsTitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.lblEarningsTitle.Location = new System.Drawing.Point(20, 20);
+            this.lblEarningsTitle.Name = "lblEarningsTitle";
+            this.lblEarningsTitle.Size = new System.Drawing.Size(89, 25);
+            this.lblEarningsTitle.TabIndex = 0;
+            this.lblEarningsTitle.Text = "Earnings";
+            // 
+            // panelDeductions
+            // 
+            this.panelDeductions.Controls.Add(this.lblTotalDeductionsValue);
+            this.panelDeductions.Controls.Add(this.lblAbsenceDeductionValue);
+            this.panelDeductions.Controls.Add(this.lblLateDeductionValue);
+            this.panelDeductions.Controls.Add(this.lblPagIbigValue);
+            this.panelDeductions.Controls.Add(this.lblPhilHealthValue);
+            this.panelDeductions.Controls.Add(this.lblSSSValue);
+            this.panelDeductions.Controls.Add(this.lblTotalDeductionsCaption);
+            this.panelDeductions.Controls.Add(this.lblAbsenceDeductionCaption);
+            this.panelDeductions.Controls.Add(this.lblLateDeductionCaption);
+            this.panelDeductions.Controls.Add(this.lblPagIbigCaption);
+            this.panelDeductions.Controls.Add(this.lblPhilHealthCaption);
+            this.panelDeductions.Controls.Add(this.lblSSSCaption);
+            this.panelDeductions.Controls.Add(this.lblDeductionsTitle);
+            this.panelDeductions.Location = new System.Drawing.Point(600, 170);
+            this.panelDeductions.Name = "panelDeductions";
+            this.panelDeductions.Size = new System.Drawing.Size(520, 360);
+            this.panelDeductions.TabIndex = 2;
+            // 
+            // lblTotalDeductionsValue
+            // 
+            this.lblTotalDeductionsValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblTotalDeductionsValue.Location = new System.Drawing.Point(230, 280);
+            this.lblTotalDeductionsValue.Name = "lblTotalDeductionsValue";
+            this.lblTotalDeductionsValue.Size = new System.Drawing.Size(250, 19);
+            this.lblTotalDeductionsValue.TabIndex = 0;
+            this.lblTotalDeductionsValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblAbsenceDeductionValue
+            // 
+            this.lblAbsenceDeductionValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblAbsenceDeductionValue.Location = new System.Drawing.Point(230, 240);
+            this.lblAbsenceDeductionValue.Name = "lblAbsenceDeductionValue";
+            this.lblAbsenceDeductionValue.Size = new System.Drawing.Size(250, 19);
+            this.lblAbsenceDeductionValue.TabIndex = 1;
+            this.lblAbsenceDeductionValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblLateDeductionValue
+            // 
+            this.lblLateDeductionValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblLateDeductionValue.Location = new System.Drawing.Point(230, 200);
+            this.lblLateDeductionValue.Name = "lblLateDeductionValue";
+            this.lblLateDeductionValue.Size = new System.Drawing.Size(250, 19);
+            this.lblLateDeductionValue.TabIndex = 2;
+            this.lblLateDeductionValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblPagIbigValue
+            // 
+            this.lblPagIbigValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblPagIbigValue.Location = new System.Drawing.Point(230, 160);
+            this.lblPagIbigValue.Name = "lblPagIbigValue";
+            this.lblPagIbigValue.Size = new System.Drawing.Size(250, 19);
+            this.lblPagIbigValue.TabIndex = 3;
+            this.lblPagIbigValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblPhilHealthValue
+            // 
+            this.lblPhilHealthValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblPhilHealthValue.Location = new System.Drawing.Point(230, 120);
+            this.lblPhilHealthValue.Name = "lblPhilHealthValue";
+            this.lblPhilHealthValue.Size = new System.Drawing.Size(250, 19);
+            this.lblPhilHealthValue.TabIndex = 4;
+            this.lblPhilHealthValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblSSSValue
+            // 
+            this.lblSSSValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblSSSValue.Location = new System.Drawing.Point(230, 80);
+            this.lblSSSValue.Name = "lblSSSValue";
+            this.lblSSSValue.Size = new System.Drawing.Size(250, 19);
+            this.lblSSSValue.TabIndex = 5;
+            this.lblSSSValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblTotalDeductionsCaption
+            // 
+            this.lblTotalDeductionsCaption.AutoSize = true;
+            this.lblTotalDeductionsCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblTotalDeductionsCaption.Location = new System.Drawing.Point(40, 280);
+            this.lblTotalDeductionsCaption.Name = "lblTotalDeductionsCaption";
+            this.lblTotalDeductionsCaption.Size = new System.Drawing.Size(139, 23);
+            this.lblTotalDeductionsCaption.TabIndex = 6;
+            this.lblTotalDeductionsCaption.Text = "Total deductions:";
+            // 
+            // lblAbsenceDeductionCaption
+            // 
+            this.lblAbsenceDeductionCaption.AutoSize = true;
+            this.lblAbsenceDeductionCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblAbsenceDeductionCaption.Location = new System.Drawing.Point(40, 240);
+            this.lblAbsenceDeductionCaption.Name = "lblAbsenceDeductionCaption";
+            this.lblAbsenceDeductionCaption.Size = new System.Drawing.Size(160, 23);
+            this.lblAbsenceDeductionCaption.TabIndex = 7;
+            this.lblAbsenceDeductionCaption.Text = "Absence deduction:";
+            // 
+            // lblLateDeductionCaption
+            // 
+            this.lblLateDeductionCaption.AutoSize = true;
+            this.lblLateDeductionCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblLateDeductionCaption.Location = new System.Drawing.Point(40, 200);
+            this.lblLateDeductionCaption.Name = "lblLateDeductionCaption";
+            this.lblLateDeductionCaption.Size = new System.Drawing.Size(128, 23);
+            this.lblLateDeductionCaption.TabIndex = 8;
+            this.lblLateDeductionCaption.Text = "Late deduction:";
+            // 
+            // lblPagIbigCaption
+            // 
+            this.lblPagIbigCaption.AutoSize = true;
+            this.lblPagIbigCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblPagIbigCaption.Location = new System.Drawing.Point(40, 160);
+            this.lblPagIbigCaption.Name = "lblPagIbigCaption";
+            this.lblPagIbigCaption.Size = new System.Drawing.Size(81, 23);
+            this.lblPagIbigCaption.TabIndex = 9;
+            this.lblPagIbigCaption.Text = "Pag-IBIG:";
+            // 
+            // lblPhilHealthCaption
+            // 
+            this.lblPhilHealthCaption.AutoSize = true;
+            this.lblPhilHealthCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblPhilHealthCaption.Location = new System.Drawing.Point(40, 120);
+            this.lblPhilHealthCaption.Name = "lblPhilHealthCaption";
+            this.lblPhilHealthCaption.Size = new System.Drawing.Size(92, 23);
+            this.lblPhilHealthCaption.TabIndex = 10;
+            this.lblPhilHealthCaption.Text = "PhilHealth:";
+            // 
+            // lblSSSCaption
+            // 
+            this.lblSSSCaption.AutoSize = true;
+            this.lblSSSCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblSSSCaption.Location = new System.Drawing.Point(40, 80);
+            this.lblSSSCaption.Name = "lblSSSCaption";
+            this.lblSSSCaption.Size = new System.Drawing.Size(41, 23);
+            this.lblSSSCaption.TabIndex = 11;
+            this.lblSSSCaption.Text = "SSS:";
+            // 
+            // lblDeductionsTitle
+            // 
+            this.lblDeductionsTitle.AutoSize = true;
+            this.lblDeductionsTitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.lblDeductionsTitle.Location = new System.Drawing.Point(20, 20);
+            this.lblDeductionsTitle.Name = "lblDeductionsTitle";
+            this.lblDeductionsTitle.Size = new System.Drawing.Size(113, 25);
+            this.lblDeductionsTitle.TabIndex = 0;
+            this.lblDeductionsTitle.Text = "Deductions";
+            // 
+            // panelNetPay
+            // 
+            this.panelNetPay.Controls.Add(this.lblNetPayValue);
+            this.panelNetPay.Controls.Add(this.lblNetPayCaption);
+            this.panelNetPay.Controls.Add(this.lblNetPayTitle);
+            this.panelNetPay.Location = new System.Drawing.Point(1160, 170);
+            this.panelNetPay.Name = "panelNetPay";
+            this.panelNetPay.Size = new System.Drawing.Size(420, 170);
+            this.panelNetPay.TabIndex = 3;
+            // 
+            // lblNetPayValue
+            // 
+            this.lblNetPayValue.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
+            this.lblNetPayValue.Location = new System.Drawing.Point(24, 85);
+            this.lblNetPayValue.Name = "lblNetPayValue";
+            this.lblNetPayValue.Size = new System.Drawing.Size(370, 45);
+            this.lblNetPayValue.TabIndex = 2;
+            this.lblNetPayValue.Text = "₱ 0.00";
+            this.lblNetPayValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblNetPayCaption
+            // 
+            this.lblNetPayCaption.AutoSize = true;
+            this.lblNetPayCaption.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblNetPayCaption.Location = new System.Drawing.Point(22, 60);
+            this.lblNetPayCaption.Name = "lblNetPayCaption";
+            this.lblNetPayCaption.Size = new System.Drawing.Size(177, 20);
+            this.lblNetPayCaption.TabIndex = 1;
+            this.lblNetPayCaption.Text = "Take-home pay (PHP / ₱):";
+            // 
+            // lblNetPayTitle
+            // 
+            this.lblNetPayTitle.AutoSize = true;
+            this.lblNetPayTitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.lblNetPayTitle.Location = new System.Drawing.Point(20, 20);
+            this.lblNetPayTitle.Name = "lblNetPayTitle";
+            this.lblNetPayTitle.Size = new System.Drawing.Size(81, 25);
+            this.lblNetPayTitle.TabIndex = 0;
+            this.lblNetPayTitle.Text = "Net Pay";
+            // 
+            // btnPrintPayslip
+            // 
+            this.btnPrintPayslip.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnPrintPayslip.ForeColor = System.Drawing.Color.White;
+            this.btnPrintPayslip.Location = new System.Drawing.Point(1164, 400);
+            this.btnPrintPayslip.Name = "btnPrintPayslip";
+            this.btnPrintPayslip.Size = new System.Drawing.Size(180, 45);
+            this.btnPrintPayslip.TabIndex = 0;
+            this.btnPrintPayslip.Text = "Print Payslip";
+            this.btnPrintPayslip.Click += new System.EventHandler(this.btnPrintPayslip_Click);
             // 
             // PayrollDetailsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.lblPeriod);
-            this.Controls.Add(this.lblPosition);
-            this.Controls.Add(this.lblEmployeeName);
-            this.Controls.Add(this.txtTotalDeductions);
-            this.Controls.Add(this.txtAbsenceDeduction);
-            this.Controls.Add(this.txtSSS);
-            this.Controls.Add(this.txtPagIbig);
-            this.Controls.Add(this.txtGrossPay);
-            this.Controls.Add(this.txtNetPay);
-            this.Controls.Add(this.txtBasicSalary);
-            this.Controls.Add(this.txtPhilHealth);
-            this.Controls.Add(this.txtOvertimeHours);
-            this.Controls.Add(this.txtDaysWorked);
-            this.Controls.Add(this.txtLateDeduction);
-            this.Controls.Add(this.computationPanel);
+            this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.btnPrintPayslip);
+            this.Controls.Add(this.panelNetPay);
+            this.Controls.Add(this.panelDeductions);
+            this.Controls.Add(this.panelEarnings);
+            this.Controls.Add(this.headerPanel);
             this.Name = "PayrollDetailsControl";
-            this.Size = new System.Drawing.Size(1750, 1000);
+            this.Size = new System.Drawing.Size(1942, 1087);
             this.Load += new System.EventHandler(this.PayrollDetailsControl_Load);
-            this.computationPanel.ResumeLayout(false);
-            this.computationPanel.PerformLayout();
+            this.headerPanel.ResumeLayout(false);
+            this.headerPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picEmployee)).EndInit();
+            this.panelEarnings.ResumeLayout(false);
+            this.panelEarnings.PerformLayout();
+            this.panelDeductions.ResumeLayout(false);
+            this.panelDeductions.PerformLayout();
+            this.panelNetPay.ResumeLayout(false);
+            this.panelNetPay.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private Guna.UI2.WinForms.Guna2Panel computationPanel;
-        private System.Windows.Forms.TextBox txtRegularHours;
-        private System.Windows.Forms.TextBox txtPagIbig;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox txtPhilHealth;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox txtNetPay;
-        private System.Windows.Forms.TextBox txtLateDeduction;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private Guna.UI2.WinForms.Guna2TextBox txtDaysWorked;
-        private Guna.UI2.WinForms.Guna2TextBox txtOvertimeHours;
-        private Guna.UI2.WinForms.Guna2TextBox txtBasicSalary;
-        private Guna.UI2.WinForms.Guna2TextBox txtGrossPay;
-        private Guna.UI2.WinForms.Guna2TextBox txtSSS;
-        private System.Windows.Forms.TextBox txtAbsenceDeduction;
-        private System.Windows.Forms.TextBox txtTotalDeductions;
-        private System.Windows.Forms.Label lblEmployeeName;
-        private System.Windows.Forms.Label lblPosition;
-        private System.Windows.Forms.Label lblPeriod;
+        private Guna2Panel headerPanel;
+        private Guna2CirclePictureBox picEmployee;
+        private Label lblHeaderTitle;
+        private Label lblCaptionName;
+        private Label lblCaptionPosition;
+        private Label lblCaptionPeriod;
+        private Label lblEmployeeName;
+        private Label lblPosition;
+        private Label lblPeriod;
+
+        private Guna2Panel panelEarnings;
+        private Label lblEarningsTitle;
+        private Label lblDaysWorkedCaption;
+        private Label lblOvertimeHoursCaption;
+        private Label lblBasicSalaryCaption;
+        private Label lblGrossPayCaption;
+        private Label lblDaysWorkedValue;
+        private Label lblOvertimeHoursValue;
+        private Label lblBasicSalaryValue;
+        private Label lblGrossPayValue;
+
+        private Guna2Panel panelDeductions;
+        private Label lblDeductionsTitle;
+        private Label lblSSSCaption;
+        private Label lblPhilHealthCaption;
+        private Label lblPagIbigCaption;
+        private Label lblLateDeductionCaption;
+        private Label lblAbsenceDeductionCaption;
+        private Label lblTotalDeductionsCaption;
+        private Label lblSSSValue;
+        private Label lblPhilHealthValue;
+        private Label lblPagIbigValue;
+        private Label lblLateDeductionValue;
+        private Label lblAbsenceDeductionValue;
+        private Label lblTotalDeductionsValue;
+
+        private Guna2Panel panelNetPay;
+        private Guna.UI2.WinForms.Guna2Button btnPrintPayslip;
+        private Label lblNetPayTitle;
+        private Label lblNetPayCaption;
+        private Label lblNetPayValue;
     }
 }

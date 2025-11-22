@@ -148,12 +148,13 @@ namespace SansuPayrollSystemManagement
         private void guna2ButtonPayroll_Click(object sender, EventArgs e)
         {
             LoadPage(new PayrollControl());
+
         }
         
 
         private void guna2ButtonPerformance_Click(object sender, EventArgs e)
         {
-
+            LoadPage(new PerformanceControl());
         }
 
         private void guna2ButtonSettings_Click(object sender, EventArgs e)

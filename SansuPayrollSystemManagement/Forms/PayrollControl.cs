@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -24,14 +25,24 @@ namespace SansuPayrollSystemManagement.Forms
             InitializeComponent();
         }
 
+        // ============================================================
+        //  LOAD
+        // ============================================================
         private void PayrollControl_Load(object sender, EventArgs e)
         {
             try
             {
+                // Default date range: current month
+                dtpStart.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                dtpEnd.Value = DateTime.Today;
+
                 LoadEmployeeFilter();
                 LoadStatusFilter();
                 LoadPayrollList();
                 LoadSummaryCards();
+
+                // React to employee change
+                cboEmployee.SelectedIndexChanged += cboEmployee_SelectedIndexChanged;
             }
             catch (Exception ex)
             {
@@ -48,10 +59,17 @@ namespace SansuPayrollSystemManagement.Forms
             {
                 string sql = "SELECT EmployeeID, FullName FROM Employees ORDER BY FullName";
                 DataTable dt = db.GetData(sql);
+
+                // Insert "All Employees" at top
+                DataRow allRow = dt.NewRow();
+                allRow["EmployeeID"] = 0;
+                allRow["FullName"] = "All Employees";
+                dt.Rows.InsertAt(allRow, 0);
+
                 cboEmployee.DataSource = dt;
                 cboEmployee.DisplayMember = "FullName";
                 cboEmployee.ValueMember = "EmployeeID";
-                cboEmployee.SelectedIndex = -1;
+                cboEmployee.SelectedIndex = 0;  // default: All Employees
             }
             catch
             {
@@ -77,25 +95,34 @@ namespace SansuPayrollSystemManagement.Forms
             try
             {
                 string sql = @"
-            SELECT 
-                p.PayrollID,
-                e.FullName AS Employee,
-                p.PayPeriodStart,
-                p.PayPeriodEnd,
-                p.TotalPay,
-                p.NetPay,
-                CASE 
-                    WHEN p.NetPay > 0 THEN 'Processed'
-                    WHEN p.NetPay = 0 THEN 'Pending'
-                    ELSE 'Error'
-                END AS Status
-            FROM Payroll p
-            JOIN Employees e ON p.EmployeeID = e.EmployeeID
-            WHERE 1 = 1";
+                    SELECT 
+                        p.PayrollID,
+                        e.FullName AS Employee,
+                        p.PayPeriodStart,
+                        p.PayPeriodEnd,
+                        p.TotalPay,
+                        p.NetPay,
+                        CASE 
+                            WHEN p.NetPay > 0 THEN 'Processed'
+                            WHEN p.NetPay = 0 THEN 'Pending'
+                            ELSE 'Error'
+                        END AS Status
+                    FROM Payroll p
+                    JOIN Employees e ON p.EmployeeID = e.EmployeeID
+                    WHERE 1 = 1";
 
                 var parameters = new List<MySqlParameter>();
 
-                // OPTIONAL search
+                // Employee filter (0 = All Employees)
+                if (cboEmployee.SelectedValue != null &&
+                    int.TryParse(cboEmployee.SelectedValue.ToString(), out int empId) &&
+                    empId > 0)
+                {
+                    sql += " AND p.EmployeeID = @empId";
+                    parameters.Add(new MySqlParameter("@empId", empId));
+                }
+
+                // OPTIONAL search by employee name
                 if (!string.IsNullOrWhiteSpace(txtSearchEmployee.Text))
                 {
                     sql += " AND e.FullName LIKE @search";
@@ -105,11 +132,15 @@ namespace SansuPayrollSystemManagement.Forms
                 // OPTIONAL status filter
                 if (cboStatusFilter.SelectedIndex > 0)
                 {
-                    sql += " AND (CASE WHEN p.NetPay > 0 THEN 'Processed' WHEN p.NetPay = 0 THEN 'Pending' ELSE 'Error' END) = @status";
+                    sql += @" AND (CASE 
+                                      WHEN p.NetPay > 0 THEN 'Processed'
+                                      WHEN p.NetPay = 0 THEN 'Pending'
+                                      ELSE 'Error'
+                                   END) = @status";
                     parameters.Add(new MySqlParameter("@status", cboStatusFilter.SelectedItem.ToString()));
                 }
 
-                // OPTIONAL date range filter
+                // Date range filter
                 DateTime s = dtpStart.Value.Date;
                 DateTime e = dtpEnd.Value.Date;
 
@@ -129,10 +160,9 @@ namespace SansuPayrollSystemManagement.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show("Error loading payroll list: " + ex.Message);
             }
         }
-        
 
         // ============================================================
         //  PAGING
@@ -144,7 +174,7 @@ namespace SansuPayrollSystemManagement.Forms
                 dgvPayroll.AutoGenerateColumns = false;
 
                 // If grid has no columns, define them once
-                if (dgvPayroll.Columns.Count <= 1)
+                if (dgvPayroll.Columns.Count == 0)
                     DefineGridColumns();
 
                 if (_payrollData == null || _payrollData.Rows.Count == 0)
@@ -173,17 +203,71 @@ namespace SansuPayrollSystemManagement.Forms
                 MessageBox.Show("Page error: " + ex.Message);
             }
         }
+
         private void DefineGridColumns()
         {
             dgvPayroll.Columns.Clear();
 
-            dgvPayroll.Columns.Add(new DataGridViewTextBoxColumn { Name = "PayrollID", HeaderText = "Payroll No." });
-            dgvPayroll.Columns.Add(new DataGridViewTextBoxColumn { Name = "Employee", HeaderText = "Employee" });
-            dgvPayroll.Columns.Add(new DataGridViewTextBoxColumn { Name = "PayPeriodStart", HeaderText = "Period Start" });
-            dgvPayroll.Columns.Add(new DataGridViewTextBoxColumn { Name = "PayPeriodEnd", HeaderText = "Period End" });
-            dgvPayroll.Columns.Add(new DataGridViewTextBoxColumn { Name = "TotalPay", HeaderText = "Total Salary Amount" });
-            dgvPayroll.Columns.Add(new DataGridViewTextBoxColumn { Name = "NetPay", HeaderText = "Net Pay" });
-            dgvPayroll.Columns.Add(new DataGridViewTextBoxColumn { Name = "Status", HeaderText = "Status" });
+            // Text columns with DataPropertyName matching SQL SELECT aliases
+            dgvPayroll.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "PayrollID",
+                HeaderText = "Payroll No.",
+                DataPropertyName = "PayrollID",
+                ReadOnly = true
+            });
+
+            dgvPayroll.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "Employee",
+                HeaderText = "Employee",
+                DataPropertyName = "Employee",
+                ReadOnly = true
+            });
+
+            dgvPayroll.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "PayPeriodStart",
+                HeaderText = "Period Start",
+                DataPropertyName = "PayPeriodStart",
+                ReadOnly = true,
+                DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy" }
+            });
+
+            dgvPayroll.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "PayPeriodEnd",
+                HeaderText = "Period End",
+                DataPropertyName = "PayPeriodEnd",
+                ReadOnly = true,
+                DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy" }
+            });
+
+            dgvPayroll.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "TotalPay",
+                HeaderText = "Total Salary Amount",
+                DataPropertyName = "TotalPay",
+                ReadOnly = true,
+                DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" }
+            });
+
+            dgvPayroll.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "NetPay",
+                HeaderText = "Net Pay",
+                DataPropertyName = "NetPay",
+                ReadOnly = true,
+                DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" }
+            });
+
+            dgvPayroll.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "Status",
+                HeaderText = "Status",
+                DataPropertyName = "Status",
+                ReadOnly = true
+            });
 
             // View button
             DataGridViewButtonColumn viewBtn = new DataGridViewButtonColumn
@@ -196,21 +280,6 @@ namespace SansuPayrollSystemManagement.Forms
             dgvPayroll.Columns.Add(viewBtn);
         }
 
-
-        private void EnsureViewButton()
-        {
-            if (!dgvPayroll.Columns.Contains("btnView"))
-            {
-                DataGridViewButtonColumn viewBtn = new DataGridViewButtonColumn
-                {
-                    HeaderText = "Action",
-                    Text = "View",
-                    Name = "btnView",
-                    UseColumnTextForButtonValue = true
-                };
-                dgvPayroll.Columns.Add(viewBtn);
-            }
-        }
 
         private void btnNextPage_Click(object sender, EventArgs e)
         {
@@ -253,10 +322,9 @@ namespace SansuPayrollSystemManagement.Forms
                 Form popup = new Form
                 {
                     Text = "Payroll Details",
-                    StartPosition = FormStartPosition.CenterParent,
-                    Size = new Size(1100, 700),
-                    FormBorderStyle = FormBorderStyle.FixedDialog,
-                    MaximizeBox = false
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized,
+                    BackColor = Color.White
                 };
 
                 details.Dock = DockStyle.Fill;
@@ -264,6 +332,7 @@ namespace SansuPayrollSystemManagement.Forms
                 popup.ShowDialog();
             }
         }
+       
 
         private void dgvPayroll_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
@@ -292,11 +361,11 @@ namespace SansuPayrollSystemManagement.Forms
         {
             try
             {
-                decimal totalCost = Convert.ToDecimal(db.ExecuteScalar(
-                    "SELECT IFNULL(SUM(TotalPay),0) FROM Payroll"));
+                decimal totalCost = Convert.ToDecimal(
+                    db.ExecuteScalar("SELECT IFNULL(SUM(TotalPay),0) FROM Payroll"));
 
-                decimal totalSalary = Convert.ToDecimal(db.ExecuteScalar(
-                    "SELECT IFNULL(SUM(NetPay),0) FROM Payroll"));
+                decimal totalSalary = Convert.ToDecimal(
+                    db.ExecuteScalar("SELECT IFNULL(SUM(NetPay),0) FROM Payroll"));
 
                 decimal balance = totalCost - totalSalary;
 
@@ -311,7 +380,7 @@ namespace SansuPayrollSystemManagement.Forms
         }
 
         // ============================================================
-        //  FILTER EVENTS (SEARCH / STATUS / DATES)
+        //  FILTER EVENTS
         // ============================================================
         private void txtSearchEmployee_TextChanged(object sender, EventArgs e)
         {
@@ -339,16 +408,23 @@ namespace SansuPayrollSystemManagement.Forms
             LoadPayrollList();
         }
 
+        private void cboEmployee_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Avoid reloading while control is still binding during Load()
+            if (!cboEmployee.Focused) return;
+            LoadPayrollList();
+        }
+
         // ============================================================
         //  TOP BUTTONS
         // ============================================================
         private void btnComputePayroll_Click(object sender, EventArgs e)
         {
-            // For now just re-loading list shows how things work.
-            // Later you can add full computation logic here.
+            // Placeholder – later this will compute + save payroll rows.
             LoadPayrollList();
             LoadSummaryCards();
-            MessageBox.Show("Compute logic not implemented yet – this is a test hook.",
+
+            MessageBox.Show("Compute logic not implemented yet – using test data.",
                             "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -366,8 +442,7 @@ namespace SansuPayrollSystemManagement.Forms
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            // If this control is hosted inside Dashboard, the Dashboard
-            // will usually handle navigation. Here we can just notify.
+            // Navigation is usually handled by the parent Dashboard.
             MessageBox.Show("Return to dashboard (handled by parent form).",
                             "Back", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -384,9 +459,90 @@ namespace SansuPayrollSystemManagement.Forms
 
         private void btnExportPdf_Click(object sender, EventArgs e)
         {
-            int rows = _payrollData?.Rows.Count ?? 0;
-            MessageBox.Show($"[Stub] Export to PDF for {rows} record(s).",
-                            "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (_payrollData == null || _payrollData.Rows.Count == 0)
+            {
+                MessageBox.Show("There is no payroll data to export.",
+                    "Export Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Setup Save Dialog
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            saveDialog.Filter = "PDF File|*.pdf";
+            saveDialog.Title = "Export Payroll List to PDF";
+            saveDialog.FileName = $"Payroll_List_{DateTime.Now:yyyyMMdd}.pdf";
+
+            if (saveDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            PrintDocument pdfDoc = new PrintDocument();
+            pdfDoc.DocumentName = "Payroll List";
+            pdfDoc.DefaultPageSettings.Landscape = true;
+
+            int left = 40;
+            int top = 40;
+            int rowHeight = 25;
+
+            // Use Microsoft Print to PDF
+            pdfDoc.PrinterSettings = new PrinterSettings()
+            {
+                PrinterName = "Microsoft Print to PDF",
+                PrintToFile = true,
+                PrintFileName = saveDialog.FileName
+            };
+
+            // PRINT PAGE EVENT
+            pdfDoc.PrintPage += (s, ev) =>
+            {
+                Font headerFont = new Font("Arial", 18, FontStyle.Bold);
+                Font colFont = new Font("Arial", 10, FontStyle.Bold);
+                Font rowFont = new Font("Arial", 10);
+
+                // Header
+                ev.Graphics.DrawString("SANZU RESTAURANT — PAYROLL LIST",
+                    headerFont, Brushes.Black, left, top);
+                top += 40;
+
+                // Column headers
+                int colLeft = left;
+                foreach (DataColumn col in _payrollData.Columns)
+                {
+                    ev.Graphics.DrawString(col.ColumnName, colFont, Brushes.Black, colLeft, top);
+                    colLeft += 140;
+                }
+
+                top += rowHeight + 5;
+
+                // Rows
+                foreach (DataRow row in _payrollData.Rows)
+                {
+                    colLeft = left;
+
+                    foreach (DataColumn col in _payrollData.Columns)
+                    {
+                        string text = row[col].ToString();
+                        ev.Graphics.DrawString(text, rowFont, Brushes.Black, colLeft, top);
+                        colLeft += 140;
+                    }
+
+                    top += rowHeight;
+
+                    // Page overflow handling
+                    if (top > ev.MarginBounds.Bottom - 50)
+                    {
+                        ev.HasMorePages = true;
+                        top = 40;
+                        return;
+                    }
+                }
+
+                ev.HasMorePages = false;
+            };
+
+            pdfDoc.Print();
+
+            MessageBox.Show("PDF exported successfully!",
+                "Export Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

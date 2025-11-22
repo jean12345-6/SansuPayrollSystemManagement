@@ -1,5 +1,6 @@
 ﻿using Guna.UI2.WinForms;
 using MySql.Data.MySqlClient;
+using Mysqlx.Crud;
 using SansuPayrollSystemManagement.Services;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,8 @@ namespace SansuPayrollSystemManagement.Forms
     {
         private readonly DBHelper db = new DBHelper();
 
-        private DataTable _performanceData;
+        // Paging
+        private DataTable _data;
         private int _currentPage = 0;
         private const int PageSize = 10;
 
@@ -25,28 +27,14 @@ namespace SansuPayrollSystemManagement.Forms
 
         private void PerformanceControl_Load(object sender, EventArgs e)
         {
-            try
-            {
-                // Default: current month
-                dtpStart.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-                dtpEnd.Value = DateTime.Today;
-
-                LoadEmployeeFilter();
-                LoadStatusFilter();
-                LoadPerformanceList();
-                LoadSummaryCards();
-
-                cboEmployee.SelectedIndexChanged += cboEmployee_SelectedIndexChanged;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading Performance page: " + ex.Message);
-            }
+            LoadEmployeeFilter();
+            LoadPerformanceList();
+            UpdateTotalSales();
         }
 
-        // ====================================================
-        // Filters
-        // ====================================================
+        // =============================================================
+        // LOAD EMPLOYEE FILTER
+        // =============================================================
         private void LoadEmployeeFilter()
         {
             try
@@ -54,377 +42,256 @@ namespace SansuPayrollSystemManagement.Forms
                 string sql = "SELECT EmployeeID, FullName FROM Employees ORDER BY FullName";
                 DataTable dt = db.GetData(sql);
 
-                DataRow allRow = dt.NewRow();
-                allRow["EmployeeID"] = 0;
-                allRow["FullName"] = "All Employees";
-                dt.Rows.InsertAt(allRow, 0);
+                DataRow row = dt.NewRow();
+                row["EmployeeID"] = 0;
+                row["FullName"] = "All Employees";
+                dt.Rows.InsertAt(row, 0);
 
                 cboEmployee.DataSource = dt;
                 cboEmployee.DisplayMember = "FullName";
                 cboEmployee.ValueMember = "EmployeeID";
-                cboEmployee.SelectedIndex = 0;
             }
-            catch
-            {
-                // non-critical
-            }
+            catch { }
         }
 
-        private void LoadStatusFilter()
-        {
-            cboStatusFilter.Items.Clear();
-            cboStatusFilter.Items.Add("All");
-            cboStatusFilter.Items.Add("Excellent");
-            cboStatusFilter.Items.Add("Good");
-            cboStatusFilter.Items.Add("Average");
-            cboStatusFilter.Items.Add("Needs Improvement");
-            cboStatusFilter.SelectedIndex = 0;
-        }
-
-        // ====================================================
-        // Load Performance list
-        // ====================================================
+        // =============================================================
+        // LOAD PERFORMANCE LIST (with filters)
+        // =============================================================
         private void LoadPerformanceList()
         {
             try
             {
                 string sql = @"
-                    SELECT
+                    SELECT 
                         p.PerformanceID,
                         e.FullName AS EmployeeName,
                         p.Date,
                         p.Sales,
                         p.FeedbackScore,
                         p.AttendanceScore,
-                        ROUND((IFNULL(p.FeedbackScore,0) + IFNULL(p.AttendanceScore,0)) / 2, 2) AS TotalScore,
-                        CASE
-                            WHEN (IFNULL(p.FeedbackScore,0) + IFNULL(p.AttendanceScore,0)) / 2 >= 4.5 THEN 'Excellent'
-                            WHEN (IFNULL(p.FeedbackScore,0) + IFNULL(p.AttendanceScore,0)) / 2 >= 3.5 THEN 'Good'
-                            WHEN (IFNULL(p.FeedbackScore,0) + IFNULL(p.AttendanceScore,0)) / 2 >= 2.5 THEN 'Average'
-                            ELSE 'Needs Improvement'
-                        END AS Status
+                        (p.FeedbackScore + p.AttendanceScore + (p.Sales / 100)) AS TotalScore
                     FROM Performance p
                     JOIN Employees e ON p.EmployeeID = e.EmployeeID
-                    WHERE 1 = 1";
+                    WHERE 1 = 1
+                ";
 
-                var parameters = new List<MySqlParameter>();
+                List<MySqlParameter> prms = new List<MySqlParameter>();
 
-                // Employee filter (0 = All)
+                // Employee filter
                 if (cboEmployee.SelectedValue != null &&
                     int.TryParse(cboEmployee.SelectedValue.ToString(), out int empId) &&
-                    empId > 0)
+                    empId != 0)
                 {
-                    sql += " AND p.EmployeeID = @empId";
-                    parameters.Add(new MySqlParameter("@empId", empId));
+                    sql += " AND p.EmployeeID = @emp";
+                    prms.Add(new MySqlParameter("@emp", empId));
                 }
 
-                // Search name
-                if (!string.IsNullOrWhiteSpace(txtSearchEmployee.Text))
-                {
-                    sql += " AND e.FullName LIKE @search";
-                    parameters.Add(new MySqlParameter("@search", "%" + txtSearchEmployee.Text.Trim() + "%"));
-                }
+                // Date filter
+                sql += " AND DATE(p.Date) = @date";
+                prms.Add(new MySqlParameter("@date", dtpDate.Value.Date));
 
-                // Status filter
-                if (cboStatusFilter.SelectedIndex > 0)
-                {
-                    sql += @" HAVING Status = @status";
-                    parameters.Add(new MySqlParameter("@status", cboStatusFilter.SelectedItem.ToString()));
-                }
+                sql += " ORDER BY p.Date DESC";
 
-                // Date range
-                DateTime s = dtpStart.Value.Date;
-                DateTime e = dtpEnd.Value.Date;
-                if (s <= e)
-                {
-                    sql += " AND p.Date BETWEEN @s AND @e";
-                    parameters.Add(new MySqlParameter("@s", s));
-                    parameters.Add(new MySqlParameter("@e", e));
-                }
+                _data = db.GetData(sql, prms.ToArray());
 
-                sql += " ORDER BY p.Date DESC, e.FullName ASC";
-
-                _performanceData = db.GetData(sql, parameters.ToArray());
                 _currentPage = 0;
-                BindPage();
+                BindGridPage();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading performance list: " + ex.Message);
+                MessageBox.Show($"Error loading performance: {ex.Message}");
             }
         }
 
-        // ====================================================
-        // Paging
-        // ====================================================
-        private void BindPage()
-        {
-            try
-            {
-                dgvPerformance.AutoGenerateColumns = false;
-
-                if (dgvPerformance.Columns.Count == 0)
-                    DefineGridColumns();
-
-                if (_performanceData == null || _performanceData.Rows.Count == 0)
-                {
-                    dgvPerformance.DataSource = null;
-                    lblPageInfo.Text = "No records";
-                    return;
-                }
-
-                int totalRows = _performanceData.Rows.Count;
-                int totalPages = (int)Math.Ceiling(totalRows / (double)PageSize);
-
-                if (_currentPage >= totalPages) _currentPage = totalPages - 1;
-                if (_currentPage < 0) _currentPage = 0;
-
-                var pageRows = _performanceData.AsEnumerable()
-                    .Skip(_currentPage * PageSize)
-                    .Take(PageSize);
-
-                dgvPerformance.DataSource = pageRows.Any()
-                    ? pageRows.CopyToDataTable()
-                    : null;
-
-                lblPageInfo.Text = $"Page {_currentPage + 1} of {totalPages}";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Page error: " + ex.Message);
-            }
-        }
-
-        private void DefineGridColumns()
+        // =============================================================
+        // BIND PAGED RESULTS
+        // =============================================================
+        private void BindGridPage()
         {
             dgvPerformance.Columns.Clear();
+            DefineGridColumns();
 
-            // Hidden ID (used when viewing details)
-            var colId = new DataGridViewTextBoxColumn
+            if (_data == null || _data.Rows.Count == 0)
             {
-                Name = "PerformanceID",
-                HeaderText = "ID",
-                DataPropertyName = "PerformanceID",
-                Visible = false
-            };
-            dgvPerformance.Columns.Add(colId);
+                dgvPerformance.DataSource = null;
+                lblPageInfo.Text = "No records";
+                lblTotalSales.Text = "Total Sales: ₱0.00";
+                return;
+            }
+
+            int totalRows = _data.Rows.Count;
+            int totalPages = (int)Math.Ceiling(totalRows / (double)PageSize);
+
+            _currentPage = Math.Max(0, Math.Min(_currentPage, totalPages - 1));
+
+            var pageRows = _data.AsEnumerable()
+                                .Skip(_currentPage * PageSize)
+                                .Take(PageSize);
+
+            dgvPerformance.DataSource = pageRows.CopyToDataTable();
+
+            lblPageInfo.Text = $"Page {_currentPage + 1} of {totalPages}";
+        }
+
+        // =============================================================
+        // DEFINE COLUMNS
+        // =============================================================
+        private void DefineGridColumns()
+        {
+            dgvPerformance.AutoGenerateColumns = false;
 
             dgvPerformance.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = "EmployeeName",
-                HeaderText = "Employee Name",
                 DataPropertyName = "EmployeeName",
-                ReadOnly = true
+                HeaderText = "Employee Name",
+                Width = 200
             });
 
             dgvPerformance.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = "Date",
-                HeaderText = "Date",
                 DataPropertyName = "Date",
-                ReadOnly = true,
+                HeaderText = "Date",
+                Width = 120,
                 DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy" }
             });
 
             dgvPerformance.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = "Sales",
-                HeaderText = "Sales",
                 DataPropertyName = "Sales",
-                ReadOnly = true,
+                HeaderText = "Sales",
+                Width = 100,
                 DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" }
             });
 
             dgvPerformance.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = "FeedbackScore",
-                HeaderText = "Feedback Score",
                 DataPropertyName = "FeedbackScore",
-                ReadOnly = true,
-                DefaultCellStyle = new DataGridViewCellStyle { Format = "N1" }
+                HeaderText = "Feedback",
+                Width = 120
             });
 
             dgvPerformance.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = "AttendanceScore",
-                HeaderText = "Attendance Score",
                 DataPropertyName = "AttendanceScore",
-                ReadOnly = true,
-                DefaultCellStyle = new DataGridViewCellStyle { Format = "N1" }
+                HeaderText = "Attendance",
+                Width = 120
             });
 
             dgvPerformance.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = "TotalScore",
-                HeaderText = "Total Score",
                 DataPropertyName = "TotalScore",
-                ReadOnly = true,
+                HeaderText = "Total Score",
+                Width = 120,
                 DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" }
             });
 
+            // Status column (computed)
             dgvPerformance.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "Status",
                 HeaderText = "Status",
-                DataPropertyName = "Status",
-                ReadOnly = true
+                Width = 120
             });
 
-            var viewBtn = new DataGridViewButtonColumn
+            // View button
+            DataGridViewButtonColumn viewBtn = new DataGridViewButtonColumn
             {
-                Name = "btnView",
                 HeaderText = "Action",
+                Name = "btnView",
                 Text = "View",
                 UseColumnTextForButtonValue = true
             };
             dgvPerformance.Columns.Add(viewBtn);
+
+            dgvPerformance.CellFormatting += DgvPerformance_CellFormatting;
         }
 
-        private void btnNextPage_Click(object sender, EventArgs e)
+        // =============================================================
+        // STATUS COLOR + COMPUTATION
+        // =============================================================
+        private void DgvPerformance_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (_performanceData == null) return;
-
-            int totalRows = _performanceData.Rows.Count;
-            int totalPages = (int)Math.Ceiling(totalRows / (double)PageSize);
-
-            if (_currentPage < totalPages - 1)
+            if (dgvPerformance.Columns[e.ColumnIndex].Name == "Status")
             {
-                _currentPage++;
-                BindPage();
+                double score = Convert.ToDouble(dgvPerformance.Rows[e.RowIndex].Cells["TotalScore"].Value);
+
+                string status =
+                    score >= 85 ? "Excellent" :
+                    score >= 70 ? "Good" :
+                    score >= 50 ? "Average" :
+                    "Poor";
+
+                e.Value = status;
+                e.CellStyle.ForeColor =
+                    status == "Excellent" ? Color.Green :
+                    status == "Good" ? Color.SeaGreen :
+                    status == "Average" ? Color.DarkOrange :
+                    Color.Red;
             }
         }
 
-        private void btnPrevPage_Click(object sender, EventArgs e)
+        // =============================================================
+        // PAGING
+        // =============================================================
+        private void btnPrev_Click(object sender, EventArgs e)
         {
-            if (_performanceData == null) return;
-
             if (_currentPage > 0)
             {
                 _currentPage--;
-                BindPage();
+                BindGridPage();
             }
         }
 
-        // ====================================================
-        // Grid events
-        // ====================================================
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            int totalPages = (int)Math.Ceiling(_data.Rows.Count / (double)PageSize);
+            if (_currentPage < totalPages - 1)
+            {
+                _currentPage++;
+                BindGridPage();
+            }
+        }
+
+        // =============================================================
+        // VIEW BUTTON
+        // =============================================================
         private void dgvPerformance_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
+            if (dgvPerformance.Columns[e.ColumnIndex].Name != "btnView") return;
 
-            if (dgvPerformance.Columns[e.ColumnIndex].Name == "btnView")
-            {
-                int id = Convert.ToInt32(
-                    dgvPerformance.Rows[e.RowIndex].Cells["PerformanceID"].Value);
+            int performanceId = Convert.ToInt32(_data.Rows[e.RowIndex]["PerformanceID"]);
 
-                string employee = dgvPerformance.Rows[e.RowIndex].Cells["EmployeeName"].Value?.ToString();
-                string date = Convert.ToDateTime(
-                    dgvPerformance.Rows[e.RowIndex].Cells["Date"].Value).ToString("dd MMM yyyy");
-                string sales = dgvPerformance.Rows[e.RowIndex].Cells["Sales"].Value?.ToString();
-                string fb = dgvPerformance.Rows[e.RowIndex].Cells["FeedbackScore"].Value?.ToString();
-                string att = dgvPerformance.Rows[e.RowIndex].Cells["AttendanceScore"].Value?.ToString();
-                string total = dgvPerformance.Rows[e.RowIndex].Cells["TotalScore"].Value?.ToString();
-                string status = dgvPerformance.Rows[e.RowIndex].Cells["Status"].Value?.ToString();
+            MessageBox.Show($"Open PERFORMANCE DETAILS for ID: {performanceId}",
+                "View", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                MessageBox.Show(
-                    $"Employee: {employee}\n" +
-                    $"Date: {date}\n" +
-                    $"Sales: {sales}\n" +
-                    $"Feedback: {fb}\n" +
-                    $"Attendance: {att}\n" +
-                    $"Total Score: {total}\n" +
-                    $"Status: {status}",
-                    "Performance Details",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-            }
+            // Later:
+            // PerformanceDetailsControl details = new PerformanceDetailsControl(performanceId);
+            // Show popup
         }
 
-        private void dgvPerformance_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        // =============================================================
+        // EXPORT
+        // =============================================================
+        private void btnExport_Click(object sender, EventArgs e)
         {
-            if (dgvPerformance.Columns[e.ColumnIndex].Name == "Status" && e.Value != null)
-            {
-                string status = e.Value.ToString();
-                if (status == "Excellent")
-                    e.CellStyle.ForeColor = Color.Green;
-                else if (status == "Good")
-                    e.CellStyle.ForeColor = Color.DarkBlue;
-                else if (status == "Average")
-                    e.CellStyle.ForeColor = Color.DarkOrange;
-                else
-                    e.CellStyle.ForeColor = Color.Red;
-            }
+            int rows = _data?.Rows.Count ?? 0;
+            MessageBox.Show($"[Stub] Export performance list ({rows} rows).",
+                "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        // ====================================================
-        // Summary cards
-        // ====================================================
-        private void LoadSummaryCards()
+        // =============================================================
+        // TOTAL SALES DISPLAY
+        // =============================================================
+        private void UpdateTotalSales()
         {
             try
             {
-                decimal totalSales = Convert.ToDecimal(
-                    db.ExecuteScalar("SELECT IFNULL(SUM(Sales),0) FROM Performance"));
-
-                decimal avgFeedback = Convert.ToDecimal(
-                    db.ExecuteScalar("SELECT IFNULL(AVG(FeedbackScore),0) FROM Performance"));
-
-                decimal avgAttendance = Convert.ToDecimal(
-                    db.ExecuteScalar("SELECT IFNULL(AVG(AttendanceScore),0) FROM Performance"));
-
-                lblTotalSales.Text = totalSales.ToString("N2");
-                lblAvgFeedback.Text = avgFeedback.ToString("N2");
-                lblAvgAttendance.Text = avgAttendance.ToString("N2");
+                string sql = "SELECT IFNULL(SUM(Sales),0) FROM Performance";
+                decimal total = Convert.ToDecimal(db.ExecuteScalar(sql));
+                lblTotalSales.Text = $"Total Sales: ₱{total:N2}";
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading performance summary: " + ex.Message);
-            }
-        }
-
-        // ====================================================
-        // Filter events
-        // ====================================================
-        private void txtSearchEmployee_TextChanged(object sender, EventArgs e)
-        {
-            LoadPerformanceList();
-        }
-
-        private void cboStatusFilter_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            LoadPerformanceList();
-        }
-
-        private void dtpStart_ValueChanged(object sender, EventArgs e)
-        {
-            if (dtpStart.Value.Date > dtpEnd.Value.Date)
-                dtpEnd.Value = dtpStart.Value.Date;
-
-            LoadPerformanceList();
-        }
-
-        private void dtpEnd_ValueChanged(object sender, EventArgs e)
-        {
-            if (dtpEnd.Value.Date < dtpStart.Value.Date)
-                dtpStart.Value = dtpEnd.Value.Date;
-
-            LoadPerformanceList();
-        }
-
-        private void cboEmployee_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!cboEmployee.Focused) return;
-            LoadPerformanceList();
-        }
-
-        // ====================================================
-        // Export stub
-        // ====================================================
-        private void btnExportPdf_Click(object sender, EventArgs e)
-        {
-            int rows = _performanceData?.Rows.Count ?? 0;
-            MessageBox.Show($"[Stub] Export performance to PDF for {rows} record(s).",
-                "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            catch { }
         }
     }
 }

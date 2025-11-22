@@ -137,6 +137,7 @@
     <Compile Include="Forms\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\LoginSession.cs" />
     <Compile Include="Forms\PayrollControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -161,11 +162,23 @@
     <Compile Include="Forms\PerformanceControl.Designer.cs">
       <DependentUpon>PerformanceControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\PerformanceDetailsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\PerformanceDetailsControl.Designer.cs">
+      <DependentUpon>PerformanceDetailsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\PerformanceForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\PerformanceForm.Designer.cs">
       <DependentUpon>PerformanceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SettingsControl.Designer.cs">
+      <DependentUpon>SettingsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Attendance.cs" />
     <Compile Include="Models\Employee.cs" />
@@ -222,6 +235,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PerformanceControl.resx">
       <DependentUpon>PerformanceControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PerformanceDetailsControl.resx">
+      <DependentUpon>PerformanceDetailsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SettingsControl.resx">
+      <DependentUpon>SettingsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

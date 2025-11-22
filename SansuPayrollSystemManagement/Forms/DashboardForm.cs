@@ -159,7 +159,7 @@ namespace SansuPayrollSystemManagement
 
         private void guna2ButtonSettings_Click(object sender, EventArgs e)
         {
-
+            LoadPage(new SettingsControl());
         }
 
         private void guna2ButtonDashboard_Click(object sender, EventArgs e)

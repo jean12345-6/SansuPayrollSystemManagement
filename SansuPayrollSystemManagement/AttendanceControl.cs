@@ -212,5 +212,10 @@ namespace SansuPayrollSystemManagement
                 MessageBox.Show("Error importing attendance: " + ex.Message);
             }
         }
+
+        private void AttendanceControl_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

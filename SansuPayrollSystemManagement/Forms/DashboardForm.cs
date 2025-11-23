@@ -1,4 +1,5 @@
 ﻿using Guna.UI2.WinForms;
+using MySql.Data.MySqlClient;
 using SansuPayrollSystemManagement.Forms;
 using SansuPayrollSystemManagement.Services;
 using System;
@@ -10,218 +11,347 @@ namespace SansuPayrollSystemManagement
 {
     public partial class DashboardForm : Form
     {
+        private readonly DBHelper db = new DBHelper();
         private string userRole;
 
-        // ✅ Default constructor (needed by the designer)
+        // Root panel for the dashboard layout (inside panelContainer)
+        private Panel dashboardRoot;
+
+        // KPI value labels
+        private Label lblKpiEmployees;
+        private Label lblKpiPresentToday;
+        private Label lblKpiPaidThisMonth;
+        private Label lblKpiTotalPayrollCost;
+
+        // Secondary info labels (if you want later – for now only main KPIs)
+        private Label lblNotification;
+
+        // Bottom icon buttons
+        private Guna2Button btnIconEmployees;
+        private Guna2Button btnIconAttendance;
+        private Guna2Button btnIconPayroll;
+        private Guna2Button btnIconPerformance;
+        private Guna2Button btnIconSettings;
+
         public DashboardForm()
         {
             InitializeComponent();
         }
 
-        // ✅ Constructor that accepts the role from LoginForm
         public DashboardForm(string role)
         {
             InitializeComponent();
-            userRole = role;  // assign the role passed from LoginForm
-            lblRole1.Text = $"Logged in as: {role}";
+            userRole = role;
+            //lblRole1.Text = $"Logged in as: {role}";
         }
 
-        private void dataGridView3_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-        }
-
+        // ===========================
+        // FORM LOAD
+        // ===========================
         private void DashboardForm_Load(object sender, EventArgs e)
         {
-            if (userRole == "Admin")
-            {
-                btnManageEmployees.Visible = true;
-            }
-            else
-            {
-                btnManageEmployees.Visible = false;
-            }
             this.WindowState = FormWindowState.Maximized;
-            CreateDashboardPanels();
-            lblEmpCount.Text = "99";
-            lblAttCount.Text = "15";
-            lblPayCount.Text = "7";
+
+            BuildDashboardLayout();   // build PaySail-style UI inside panelContainer
+            OpenDashboard();          // show dashboard
+            LoadDashboardStats();     // load data from DB
         }
 
-        private void CreateDashboardPanels()
+        // ===========================
+        // BUILD LAYOUT (PaySail-style)
+        // ===========================
+        private void BuildDashboardLayout()
         {
-            // ===== Panel 1: Employees =====
-            var shadowPanelEmployees = new Guna2ShadowPanel
+            // Root container for everything inside panelContainer
+            dashboardRoot = new Panel
             {
-                Name = "shadowPanelEmployees",
-                Size = new Size(250, 120),
-                FillColor = Color.White,
-                Radius = 10,
-                ShadowColor = Color.FromArgb(128, 128, 128),
-                Location = new Point(40, 100)
+                Dock = DockStyle.Fill,
+                BackColor = Color.White
             };
 
-            var lblEmpTitle = new Label
+            // ---------- Title + subtitle ----------
+            var lblTitle = new Label
             {
-                Text = "Employees",
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                ForeColor = Color.Gray,
-                Location = new Point(20, 20)
+                Text = "Dashboard Overview",
+                AutoSize = true,
+                Font = new Font("Century Gothic", 26, FontStyle.Bold),
+                Location = new Point(40, 30)
             };
 
-            var lblEmpCount = new Label
+            var lblSub = new Label
             {
-                Text = "25", // sample data; later bind from DB
+                Text = "Welcome to Sansu Payroll Performance Dashboard.",
+                AutoSize = true,
+                Font = new Font("Segoe UI", 10),
+                Location = new Point(44, 80)
+            };
+
+            dashboardRoot.Controls.Add(lblTitle);
+            dashboardRoot.Controls.Add(lblSub);
+
+            // ---------- KPI row (4 cards) ----------
+            var kpiRow = new FlowLayoutPanel
+            {
+                Location = new Point(40, 120),
+                Size = new Size(1400, 140),
+                AutoSize = false,
+                WrapContents = false
+            };
+
+            // Card 1 – Total Employees (blue)
+            var cardEmployees = CreateKpiCard("Total Employees", out lblKpiEmployees, "#00AEEF", "#FFFFFF");
+            // Card 2 – Present Today (teal)
+            var cardPresent = CreateKpiCard("Present Today", out lblKpiPresentToday, "#00796B", "#FFFFFF");
+            // Card 3 – Paid This Month (₱) (dark)
+            var cardPaid = CreateKpiCard("Paid This Month (₱)", out lblKpiPaidThisMonth, "#37474F", "#FFFFFF");
+            // Card 4 – Total Payroll Cost (₱) (red)
+            var cardTotal = CreateKpiCard("Total Payroll Cost (₱)", out lblKpiTotalPayrollCost, "#D84315", "#FFFFFF");
+
+            kpiRow.Controls.Add(cardEmployees);
+            kpiRow.Controls.Add(cardPresent);
+            kpiRow.Controls.Add(cardPaid);
+            kpiRow.Controls.Add(cardTotal);
+
+            dashboardRoot.Controls.Add(kpiRow);
+
+            // ---------- Notification bar ----------
+            var notifBar = new Panel
+            {
+                Location = new Point(40, 270),
+                Size = new Size(1400, 45),
+                BackColor = Color.FromArgb(40, 53, 70)
+            };
+
+            lblNotification = new Label
+            {
+                Text = "You are currently set up to run payroll every month.",
+                AutoSize = false,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft,
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 10, FontStyle.Regular),
+                Padding = new Padding(15, 0, 0, 0)
+            };
+
+            notifBar.Controls.Add(lblNotification);
+            dashboardRoot.Controls.Add(notifBar);
+
+            // ---------- Bottom icon row (navigation) ----------
+            var iconRow = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Bottom,
+                Height = 140,
+                Padding = new Padding(0, 20, 0, 20),
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = false,
+                AutoScroll = false
+            };
+
+            // Center the icons: create a spacer on left
+            iconRow.Controls.Add(new Panel { Width = 200 });
+
+            btnIconEmployees = CreateIconButton("EMPLOYEES");
+            btnIconAttendance = CreateIconButton("ATTENDANCE");
+            btnIconPayroll = CreateIconButton("PAYROLL");
+            btnIconPerformance = CreateIconButton("PERFORMANCE");
+            btnIconSettings = CreateIconButton("SETTINGS");
+
+            btnIconEmployees.Click += (s, e) => OpenEmployeesPage();
+            btnIconAttendance.Click += (s, e) => OpenAttendancePage();
+            btnIconPayroll.Click += (s, e) => OpenPayrollPage();
+            btnIconPerformance.Click += (s, e) => OpenPerformancePage();
+            btnIconSettings.Click += (s, e) => OpenSettingsPage();
+
+            iconRow.Controls.Add(btnIconEmployees);
+            iconRow.Controls.Add(btnIconAttendance);
+            iconRow.Controls.Add(btnIconPayroll);
+            iconRow.Controls.Add(btnIconPerformance);
+            iconRow.Controls.Add(btnIconSettings);
+
+            dashboardRoot.Controls.Add(iconRow);
+        }
+
+        // Create one KPI card
+        private Guna2ShadowPanel CreateKpiCard(string title, out Label valueLabel, string hexBackColor, string hexTextColor)
+        {
+            var panel = new Guna2ShadowPanel
+            {
+                Size = new Size(320, 120),
+                Margin = new Padding(10, 0, 10, 0),
+                ShadowColor = Color.Gray,
+                ShadowDepth = 20,
+                FillColor = ColorTranslator.FromHtml(hexBackColor),
+                Radius = 6
+            };
+
+            var lblTitle = new Label
+            {
+                Text = title,
+                AutoSize = true,
+                Font = new Font("Segoe UI", 10, FontStyle.Regular),
+                ForeColor = ColorTranslator.FromHtml(hexTextColor),
+                Location = new Point(20, 15)
+            };
+
+            valueLabel = new Label
+            {
+                Text = "-",
+                AutoSize = true,
                 Font = new Font("Segoe UI", 24, FontStyle.Bold),
-                ForeColor = Color.FromArgb(33, 150, 243),
+                ForeColor = ColorTranslator.FromHtml(hexTextColor),
                 Location = new Point(20, 50)
             };
 
-            shadowPanelEmployees.Controls.Add(lblEmpTitle);
-            shadowPanelEmployees.Controls.Add(lblEmpCount);
+            panel.Controls.Add(lblTitle);
+            panel.Controls.Add(valueLabel);
+            return panel;
+        }
 
-            // ===== Panel 2: Attendance =====
-            var shadowPanelAttendance = new Guna2ShadowPanel
+        // Create one bottom icon-style button
+        private Guna2Button CreateIconButton(string text)
+        {
+            return new Guna2Button
             {
-                Name = "shadowPanelAttendance",
-                Size = new Size(250, 120),
-                FillColor = Color.White,
-                Radius = 10,
-                ShadowColor = Color.FromArgb(128, 128, 128),
-                Location = new Point(320, 100)
-            };
-
-            var lblAttTitle = new Label
-            {
-                Text = "Attendance Today",
+                Text = text,
+                Size = new Size(180, 80),
+                Margin = new Padding(20, 0, 20, 0),
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                ForeColor = Color.Gray,
-                Location = new Point(20, 20)
-            };
-
-            var lblAttCount = new Label
-            {
-                Text = "22", // sample data; later bind from DB
-                Font = new Font("Segoe UI", 24, FontStyle.Bold),
-                ForeColor = Color.FromArgb(76, 175, 80),
-                Location = new Point(20, 50)
-            };
-
-            shadowPanelAttendance.Controls.Add(lblAttTitle);
-            shadowPanelAttendance.Controls.Add(lblAttCount);
-
-            // ===== Panel 3: Payroll =====
-            var shadowPanelPayroll = new Guna2ShadowPanel
-            {
-                Name = "shadowPanelPayroll",
-                Size = new Size(250, 120),
                 FillColor = Color.White,
-                Radius = 10,
-                ShadowColor = Color.FromArgb(128, 128, 128),
-                Location = new Point(600, 100)
+                ForeColor = Color.Black,
+                BorderColor = Color.Silver,
+                BorderThickness = 1,
+                AutoRoundedCorners = true,
+                BorderRadius = 35
             };
-
-            var lblPayTitle = new Label
-            {
-                Text = "Pending Payroll",
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                ForeColor = Color.Gray,
-                Location = new Point(20, 20)
-            };
-
-            var lblPayCount = new Label
-            {
-                Text = "5", // sample data; later bind from DB
-                Font = new Font("Segoe UI", 24, FontStyle.Bold),
-                ForeColor = Color.FromArgb(255, 152, 0),
-                Location = new Point(20, 50)
-            };
-
-            shadowPanelPayroll.Controls.Add(lblPayTitle);
-            shadowPanelPayroll.Controls.Add(lblPayCount);
-
-            // ===== Add all panels to form =====
-            this.Controls.Add(shadowPanelEmployees);
-            this.Controls.Add(shadowPanelAttendance);
-            this.Controls.Add(shadowPanelPayroll);
         }
 
-        private void guna2ButtonPayroll_Click(object sender, EventArgs e)
-        {
-            LoadPage(new PayrollControl());
-
-        }
-        
-
-        private void guna2ButtonPerformance_Click(object sender, EventArgs e)
-        {
-            LoadPage(new PerformanceControl());
-        }
-
-        private void guna2ButtonSettings_Click(object sender, EventArgs e)
-        {
-            LoadPage(new SettingsControl());
-        }
-
-        private void guna2ButtonDashboard_Click(object sender, EventArgs e)
-        {
-            LoadDashboardStats();
-
-            // Optional feedback to the user
-            lblStatus.Text = "Dashboard refreshed.";
-
-        }
+        // ===========================
+        // LOAD DATA FOR KPIs
+        // ===========================
         private void LoadDashboardStats()
         {
-            DBHelper db = new DBHelper();
-
-            // Refresh real-time data from the database
-            lblEmpCount.Text = db.ExecuteScalar("SELECT COUNT(*) FROM Employees").ToString();
-            lblAttCount.Text = db.ExecuteScalar("SELECT COUNT(*) FROM Attendance WHERE Date = CURDATE()").ToString();
-            lblPayCount.Text = db.ExecuteScalar("SELECT COUNT(*) FROM Payroll WHERE NetPay = 0").ToString();
-        }
-
-        private void guna2ButtonManageEmployees_Click(object sender, EventArgs e)
-        {
-            LoadPage(new EmployeeControl());
-        }
-
-        private void guna2ShadowPanelEmployees_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void guna2Button1_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show(
-        "Are you sure you want to log out?",
-        "Confirm Logout",
-        MessageBoxButtons.YesNo,
-        MessageBoxIcon.Question
-    );
-
-            if (result == DialogResult.Yes)
+            try
             {
-                // Hide the dashboard
-                this.Hide();
+                // Total employees
+                object empObj = db.ExecuteScalar("SELECT COUNT(*) FROM Employees");
+                int totalEmployees = Convert.ToInt32(empObj);
 
-                // Go back to the login form
-                LoginForm loginForm = new LoginForm();
-                loginForm.Show();
+                // Present today
+                string sqlPresent = @"
+                    SELECT COUNT(DISTINCT EmployeeID)
+                    FROM Attendance
+                    WHERE Date = CURDATE() AND TimeIn IS NOT NULL;";
+                object presObj = db.ExecuteScalar(sqlPresent);
+                int presentToday = Convert.ToInt32(presObj);
 
-                // Close the dashboard form properly
-                this.Close();
+                // Paid this month (NetPay)
+                string sqlPaid = @"
+                    SELECT IFNULL(SUM(NetPay),0)
+                    FROM Payroll
+                    WHERE MONTH(PayPeriodEnd) = MONTH(CURDATE())
+                      AND YEAR(PayPeriodEnd) = YEAR(CURDATE());";
+                decimal paidThisMonth = Convert.ToDecimal(db.ExecuteScalar(sqlPaid));
+
+                // Total payroll cost (TotalPay)
+                string sqlTotalCost = @"SELECT IFNULL(SUM(TotalPay),0) FROM Payroll;";
+                decimal totalCost = Convert.ToDecimal(db.ExecuteScalar(sqlTotalCost));
+
+                // Assign to labels (formatted)
+                lblKpiEmployees.Text = totalEmployees.ToString();
+                lblKpiPresentToday.Text = presentToday.ToString();
+                lblKpiPaidThisMonth.Text = FormatPeso(paidThisMonth);
+                lblKpiTotalPayrollCost.Text = FormatPeso(totalCost);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading dashboard stats: " + ex.Message,
+                    "Dashboard", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void guna2ButtonAttendance_Click(object sender, EventArgs e)
+        private string FormatPeso(decimal value)
         {
-            LoadPage(new AttendanceControl());
+            return "₱ " + value.ToString("N2");
         }
-        private void LoadPage(UserControl page)
+
+        // ===========================
+        // NAVIGATION HELPERS
+        // ===========================
+        private void OpenDashboard()
+        {
+            panelContainer.Controls.Clear();
+            dashboardRoot.Dock = DockStyle.Fill;
+            panelContainer.Controls.Add(dashboardRoot);
+            LoadDashboardStats();
+        }
+
+        public void LoadPage(UserControl page)
         {
             panelContainer.Controls.Clear();
             page.Dock = DockStyle.Fill;
             panelContainer.Controls.Add(page);
         }
+
+        private void OpenEmployeesPage() => LoadPage(new EmployeeControl());
+        private void OpenAttendancePage() => LoadPage(new AttendanceControl());
+        private void OpenPayrollPage() => LoadPage(new PayrollControl());
+        private void OpenPerformancePage() => LoadPage(new PerformanceControl());
+        private void OpenSettingsPage() => LoadPage(new SettingsControl());
+
+        // ===========================
+        // LEFT NAV BUTTON HANDLERS
+        // (they now just call the same helpers)
+        // ===========================
+        private void guna2ButtonDashboard_Click(object sender, EventArgs e)
+        {
+            OpenDashboard();
+        }
+
+        private void guna2ButtonManageEmployees_Click(object sender, EventArgs e)
+        {
+            OpenEmployeesPage();
+        }
+
+        private void guna2ButtonAttendance_Click(object sender, EventArgs e)
+        {
+            OpenAttendancePage();
+        }
+
+        private void guna2ButtonPayroll_Click(object sender, EventArgs e)
+        {
+            OpenPayrollPage();
+        }
+
+        private void guna2ButtonPerformance_Click(object sender, EventArgs e)
+        {
+            OpenPerformancePage();
+        }
+
+        private void guna2ButtonSettings_Click(object sender, EventArgs e)
+        {
+            OpenSettingsPage();
+        }
+
+        // Logout
+        private void guna2Button1_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+                "Are you sure you want to log out?",
+                "Confirm Logout",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                this.Hide();
+                var loginForm = new LoginForm();
+                loginForm.Show();
+                this.Close();
+            }
+        }
+
+        // Designer-generated empty handlers can stay:
+        private void guna2ShadowPanelEmployees_Paint(object sender, PaintEventArgs e) { }
+        private void dataGridView3_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
     }
 }

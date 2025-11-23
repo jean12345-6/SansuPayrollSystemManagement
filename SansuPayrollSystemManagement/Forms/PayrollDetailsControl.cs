@@ -239,5 +239,10 @@ namespace SansuPayrollSystemManagement.Forms
             decimal v = SafeDecimal(value);
             return "₱ " + v.ToString("N2");
         }
+
+        private void headerPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

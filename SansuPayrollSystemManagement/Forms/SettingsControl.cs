@@ -78,5 +78,10 @@ namespace SansuPayrollSystemManagement.Forms
         {
             MessageBox.Show("Settings saved!", "Info");
         }
+
+        private void SettingsControl_Load_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

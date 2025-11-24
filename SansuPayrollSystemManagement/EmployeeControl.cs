@@ -59,12 +59,12 @@ namespace SansuPayrollSystemManagement
             }
 
             // Delete
-            if (!dgvEmployees.Columns.Contains("Delete"))
+            if (!dgvEmployees.Columns.Contains("Archive"))
             {
                 DataGridViewButtonColumn deleteBtn = new DataGridViewButtonColumn();
-                deleteBtn.Name = "Delete";
-                deleteBtn.HeaderText = "Delete";
-                deleteBtn.Text = "Delete";
+                deleteBtn.Name = "Archive";
+                deleteBtn.HeaderText = "Archive";
+                deleteBtn.Text = "Archive";
                 deleteBtn.UseColumnTextForButtonValue = true;
                 dgvEmployees.Columns.Add(deleteBtn);
             }
@@ -85,8 +85,8 @@ namespace SansuPayrollSystemManagement
             if (col == "Edit")
                 PaintButton(e, Color.FromArgb(251, 188, 5), "Edit"); // Yellow
 
-            if (col == "Delete")
-                PaintButton(e, Color.FromArgb(234, 67, 53), "Delete"); // Red
+            if (col == "Archive")
+                PaintButton(e, Color.FromArgb(234, 67, 53), "Archive"); // Red
         }
 
         private void PaintButton(DataGridViewCellPaintingEventArgs e, Color color, string text)
@@ -122,12 +122,22 @@ namespace SansuPayrollSystemManagement
         {
             if (e.RowIndex < 0) return;
 
-            int id = Convert.ToInt32(dgvEmployees.Rows[e.RowIndex].Cells["EmployeeID"].Value);
             string col = dgvEmployees.Columns[e.ColumnIndex].Name;
 
-            if (col == "View") ViewEmployee(id);
-            if (col == "Edit") EditEmployee(id);
-            if (col == "Delete") DeleteEmployee(id);
+            if (col == "View")
+            {
+                int id = Convert.ToInt32(dgvEmployees.Rows[e.RowIndex].Cells["EmployeeID"].Value);
+                ViewEmployee(id);
+            }
+            else if (col == "Edit")
+            {
+                int id = Convert.ToInt32(dgvEmployees.Rows[e.RowIndex].Cells["EmployeeID"].Value);
+                EditEmployee(id);
+            }
+            else if (col == "Archive")  // now archive
+            {
+                ArchiveEmployee(e.RowIndex);
+            }
         }
 
         // -------------------------------------------------------------------
@@ -146,22 +156,17 @@ namespace SansuPayrollSystemManagement
                 LoadEmployees();
         }
 
-        private void DeleteEmployee(int id)
+        private void ArchiveEmployee(int rowIndex)
         {
-            DialogResult confirm = MessageBox.Show(
-                "Are you sure you want to delete this employee?",
-                "Confirm Delete",
+            DialogResult result = MessageBox.Show(
+                "Archive this employee from the list? (This will NOT delete from database)",
+                "Archive Employee",
                 MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning);
+                MessageBoxIcon.Question);
 
-            if (confirm == DialogResult.Yes)
+            if (result == DialogResult.Yes)
             {
-                DBHelper db = new DBHelper();
-                db.ExecuteNonQuery(
-                    "DELETE FROM Employees WHERE EmployeeID=@id",
-                    new MySqlParameter[] { new MySqlParameter("@id", id) });
-
-                LoadEmployees();
+                dgvEmployees.Rows.RemoveAt(rowIndex);
             }
         }
 
@@ -209,6 +214,27 @@ namespace SansuPayrollSystemManagement
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void EmployeeControl_Load_1(object sender, EventArgs e)
+        {
+
+        }
+        private void GoBackToDashboard()
+        {
+            // Find the parent DashboardForm
+            Form parent = this.FindForm();
+
+            if (parent is DashboardForm dashboard)
+            {
+                dashboard.OpenDashboard(); // Call the method that loads the dashboard
+            }
+        }
+
+
+        private void btnBackDashboard_Click(object sender, EventArgs e)
+        {
+            GoBackToDashboard();
         }
     }
 }

@@ -114,6 +114,7 @@ namespace SansuPayrollSystemManagement.Forms
             this.headerPanel.Name = "headerPanel";
             this.headerPanel.Size = new System.Drawing.Size(1437, 80);
             this.headerPanel.TabIndex = 3;
+            this.headerPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.headerPanel_Paint);
             // 
             // lblSubtitle
             // 

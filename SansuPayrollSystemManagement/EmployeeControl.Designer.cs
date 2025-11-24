@@ -59,7 +59,7 @@ namespace SansuPayrollSystemManagement
             this.dgvEmployees.RowHeadersVisible = false;
             this.dgvEmployees.RowHeadersWidth = 51;
             this.dgvEmployees.RowTemplate.Height = 50;
-            this.dgvEmployees.Size = new System.Drawing.Size(1375, 584);
+            this.dgvEmployees.Size = new System.Drawing.Size(1438, 467);
             this.dgvEmployees.TabIndex = 4;
             this.dgvEmployees.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
             this.dgvEmployees.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -107,6 +107,7 @@ namespace SansuPayrollSystemManagement
             this.btnBackDashboard.Size = new System.Drawing.Size(260, 60);
             this.btnBackDashboard.TabIndex = 3;
             this.btnBackDashboard.Text = "BACK TO DASHBOARD";
+            this.btnBackDashboard.Click += new System.EventHandler(this.btnBackDashboard_Click);
             // 
             // txtSearch
             // 
@@ -142,7 +143,8 @@ namespace SansuPayrollSystemManagement
             this.Controls.Add(this.btnBackDashboard);
             this.Controls.Add(this.dgvEmployees);
             this.Name = "EmployeeControl";
-            this.Size = new System.Drawing.Size(1477, 866);
+            this.Size = new System.Drawing.Size(1540, 749);
+            this.Load += new System.EventHandler(this.EmployeeControl_Load_1);
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmployees)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

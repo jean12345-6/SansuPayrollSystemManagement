@@ -23,7 +23,30 @@ namespace SansuPayrollSystemManagement
         }
 
         // ==========================================
-        // LOAD ATTENDANCE
+        // SAFE CONVERTERS
+        // ==========================================
+        private decimal GetDecimal(object value)
+        {
+            if (value == null || value == DBNull.Value) return 0;
+            decimal result;
+            return decimal.TryParse(value.ToString(), out result) ? result : 0;
+        }
+
+        private int GetInt(object value)
+        {
+            if (value == null || value == DBNull.Value) return 0;
+            int result;
+            return int.TryParse(value.ToString(), out result) ? result : 0;
+        }
+
+        private string GetString(object value)
+        {
+            if (value == null || value == DBNull.Value) return "";
+            return value.ToString().Trim();
+        }
+
+        // ==========================================
+        // LOAD ATTENDANCE (SUMMARY)
         // ==========================================
         private void LoadAttendanceData(string search = "")
         {
@@ -34,31 +57,41 @@ namespace SansuPayrollSystemManagement
                 {
                     conn.Open();
 
-                    string query = @"
+                    string sql = @"
                         SELECT 
-                            a.AttendanceID AS 'ID',
+                            s.SummaryID AS 'ID',
                             e.FullName AS 'Employee Name',
-                            a.Date AS 'Date',
-                            a.TimeIn AS 'Time In',
-                            a.TimeOut AS 'Time Out',
-                            a.Status AS 'Status'
-                        FROM Attendance a
-                        JOIN Employees e ON a.EmployeeID = e.EmployeeID";
+                            CONCAT(s.PeriodStart, ' to ', s.PeriodEnd) AS 'Period',
+                            s.WorktimeNormal AS 'Normal Hours',
+                            s.WorktimeActual AS 'Actual Hours',
+                            s.LateMinutes AS 'Late (min)',
+                            s.AbsenceDays AS 'Absences',
+                            s.OvertimeNormal AS 'OT Normal',
+                            s.OvertimeHoliday AS 'OT Holiday'
+                        FROM AttendanceSummary s
+                        JOIN Employees e ON s.EmployeeID = e.EmployeeID";
 
                     if (!string.IsNullOrEmpty(search))
-                        query += " WHERE e.FullName LIKE @search";
+                    {
+                        sql += " WHERE e.FullName LIKE @search";
+                    }
 
-                    query += " ORDER BY a.Date DESC";
+                    sql += " ORDER BY s.PeriodStart DESC, e.FullName ASC";
 
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        if (!string.IsNullOrEmpty(search))
+                        {
+                            cmd.Parameters.AddWithValue("@search", "%" + search + "%");
+                        }
 
-                    if (!string.IsNullOrEmpty(search))
-                        cmd.Parameters.AddWithValue("@search", $"%{search}%");
-
-                    DataTable dt = new DataTable();
-                    new MySqlDataAdapter(cmd).Fill(dt);
-
-                    dgvAttendance.DataSource = dt;
+                        using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+                            dgvAttendance.DataSource = dt;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -97,7 +130,7 @@ namespace SansuPayrollSystemManagement
         }
 
         // ==========================================
-        // IMPORT ATTENDANCE — FIXED FOR YOUR EXCEL
+        // IMPORT ATTENDANCE SUMMARY FROM EXCEL
         // ==========================================
         private void btnImportAttendance_Click(object sender, EventArgs e)
         {
@@ -115,83 +148,156 @@ namespace SansuPayrollSystemManagement
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
                 {
                     DataSet result = reader.AsDataSet();
-                    DataTable sheet = result.Tables[0];
+
+                    // Find the "Attendance Statistic Table" sheet
+                    DataTable sheet = result.Tables
+                        .Cast<DataTable>()
+                        .FirstOrDefault(t => t.TableName.Contains("Attendance Statistic"));
+
+                    if (sheet == null)
+                    {
+                        // Fallback: use second sheet if exists, otherwise first
+                        sheet = result.Tables.Count > 1 ? result.Tables[1] : result.Tables[0];
+                    }
+
+                    if (sheet.Rows.Count < 5)
+                    {
+                        MessageBox.Show("The selected file does not contain attendance data.",
+                            "Import Attendance",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    // ======================================
+                    // READ PERIOD FROM ROW 1, COL 0
+                    // "Date:2025-11-01~2025-11-12"
+                    // ======================================
+                    DateTime periodStart = DateTime.MinValue;
+                    DateTime periodEnd = DateTime.MinValue;
+                    string dateText = GetString(sheet.Rows[1][0]); // row index 1, column 0
+
+                    if (dateText.StartsWith("Date:", StringComparison.OrdinalIgnoreCase))
+                    {
+                        string range = dateText.Substring(5); // remove "Date:"
+                        string[] parts = range.Split('~');
+
+                        if (parts.Length == 2)
+                        {
+                            DateTime.TryParse(parts[0], out periodStart);
+                            DateTime.TryParse(parts[1], out periodEnd);
+                        }
+                    }
+
+                    if (periodStart == DateTime.MinValue || periodEnd == DateTime.MinValue)
+                    {
+                        // fallback: use today
+                        periodStart = DateTime.Today;
+                        periodEnd = DateTime.Today;
+                    }
+
+                    // Remove existing records for this period (avoid duplicates)
+                    db.ExecuteNonQuery(
+                        "DELETE FROM AttendanceSummary WHERE PeriodStart=@ps AND PeriodEnd=@pe",
+                        new MySqlParameter[]
+                        {
+                            new MySqlParameter("@ps", periodStart),
+                            new MySqlParameter("@pe", periodEnd)
+                        });
 
                     int imported = 0;
                     int skipped = 0;
 
-                    // Your file starts at row index 1 (row 2 in Excel)
-                    for (int i = 1; i < sheet.Rows.Count; i++)
+                    // Data starts at row index 4 (after headers & subheaders)
+                    for (int i = 4; i < sheet.Rows.Count; i++)
                     {
                         DataRow row = sheet.Rows[i];
 
-                        // -----------------------------------------
-                        // FullName (Column B = index 1)
-                        // -----------------------------------------
-                        string fullName = row[1]?.ToString().Trim();
-                        if (string.IsNullOrEmpty(fullName))
+                        // Skip completely empty rows
+                        if (row[0] == null || row[0] == DBNull.Value)
+                            continue;
+
+                        // USER ID (maps to EmployeeID)
+                        int excelUserId;
+                        if (!int.TryParse(row[0].ToString(), out excelUserId))
                         {
                             skipped++;
                             continue;
                         }
 
                         object empIdObj = db.ExecuteScalar(
-                            "SELECT EmployeeID FROM Employees WHERE LOWER(FullName)=LOWER(@name)",
-                            new MySqlParameter[] { new MySqlParameter("@name", fullName) }
-                        );
+                            "SELECT EmployeeID FROM Employees WHERE EmployeeID=@id",
+                            new MySqlParameter[]
+                            {
+                                new MySqlParameter("@id", excelUserId)
+                            });
 
-                        if (empIdObj == null)
+                        if (empIdObj == null || empIdObj == DBNull.Value)
                         {
+                            // User ID not found in Employees table
                             skipped++;
                             continue;
                         }
 
                         int employeeId = Convert.ToInt32(empIdObj);
 
-                        // -----------------------------------------
-                        // Date (Column A = index 0)
-                        // -----------------------------------------
-                        DateTime date;
-                        if (!DateTime.TryParse(row[0]?.ToString(), out date))
-                        {
-                            skipped++;
-                            continue;
-                        }
+                        // ==== CORRECT COLUMN MAPPING (SEE TABLE ABOVE) ====
+                        decimal workNormal = GetDecimal(row[3]);  // Worktime Normal
+                        decimal workActual = GetDecimal(row[4]);  // Worktime Actual
 
-                        // -----------------------------------------
-                        // Time In (Column C = index 2)
-                        // -----------------------------------------
-                        DateTime timeInParsed;
-                        DateTime? timeIn = DateTime.TryParse(row[2]?.ToString(), out timeInParsed)
-                            ? (DateTime?)timeInParsed
-                            : null;
+                        int lateTimes = GetInt(row[5]);      // not shown in grid
+                        int lateMinutes = GetInt(row[6]);      // Late (min)
 
-                        // -----------------------------------------
-                        // Time Out (Column D = index 3)
-                        // -----------------------------------------
-                        DateTime timeOutParsed;
-                        DateTime? timeOut = DateTime.TryParse(row[3]?.ToString(), out timeOutParsed)
-                            ? (DateTime?)timeOutParsed
-                            : null;
+                        int earlyTimes = GetInt(row[7]);      // not shown
+                        int earlyMinutes = GetInt(row[8]);      // not shown
 
-                        // -----------------------------------------
-                        // Status (Column R = index 17)
-                        // -----------------------------------------
-                        string status = row[17]?.ToString().Trim();
-                        if (string.IsNullOrEmpty(status))
-                            status = "Present";
+                        decimal otNormal = GetDecimal(row[9]);  // OT Normal
+                        decimal otHoliday = GetDecimal(row[10]); // OT Holiday
+
+                        string workDay = GetString(row[11]);  // "8/1", etc.
+                        int tripDays = GetInt(row[12]);     // Trip (Day)
+
+                        int absenceDays = GetInt(row[13]);     // Absence (Day)
+                        int leaveDays = GetInt(row[14]);     // Leave (Day)
 
                         string insertSql = @"
-                            INSERT INTO Attendance (EmployeeID, Date, TimeIn, TimeOut, Status)
-                            VALUES (@id, @date, @timeIn, @timeOut, @status)";
+                            INSERT INTO AttendanceSummary 
+                            (EmployeeID, PeriodStart, PeriodEnd,
+                             WorktimeNormal, WorktimeActual,
+                             LateTimes, LateMinutes,
+                             EarlyTimes, EarlyMinutes,
+                             OvertimeNormal, OvertimeHoliday,
+                             WorkdayNormalActual, TripDays, AbsenceDays, LeaveDays)
+                            VALUES
+                            (@eid, @ps, @pe,
+                             @wn, @wa,
+                             @lt, @lm,
+                             @et, @em,
+                             @otn, @oth,
+                             @wd, @trip, @abs, @leave)";
 
                         db.ExecuteNonQuery(insertSql, new MySqlParameter[]
                         {
-                            new MySqlParameter("@id", employeeId),
-                            new MySqlParameter("@date", date),
-                            new MySqlParameter("@timeIn", (object)timeIn ?? DBNull.Value),
-                            new MySqlParameter("@timeOut", (object)timeOut ?? DBNull.Value),
-                            new MySqlParameter("@status", status)
+                            new MySqlParameter("@eid", employeeId),
+                            new MySqlParameter("@ps", periodStart),
+                            new MySqlParameter("@pe", periodEnd),
+
+                            new MySqlParameter("@wn", workNormal),
+                            new MySqlParameter("@wa", workActual),
+
+                            new MySqlParameter("@lt", lateTimes),
+                            new MySqlParameter("@lm", lateMinutes),
+
+                            new MySqlParameter("@et", earlyTimes),
+                            new MySqlParameter("@em", earlyMinutes),
+
+                            new MySqlParameter("@otn", otNormal),
+                            new MySqlParameter("@oth", otHoliday),
+
+                            new MySqlParameter("@wd", workDay),
+                            new MySqlParameter("@trip", tripDays),
+                            new MySqlParameter("@abs", absenceDays),
+                            new MySqlParameter("@leave", leaveDays)
                         });
 
                         imported++;
@@ -201,11 +307,11 @@ namespace SansuPayrollSystemManagement
                         $"Imported {imported} record(s).\nSkipped {skipped}.",
                         "Import Complete",
                         MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-
-                    LoadAttendanceData();
+                        MessageBoxIcon.Information);
                 }
+
+                // Refresh grid after import
+                LoadAttendanceData();
             }
             catch (Exception ex)
             {
@@ -213,9 +319,30 @@ namespace SansuPayrollSystemManagement
             }
         }
 
+        // ==========================================
+        // BACK TO DASHBOARD BUTTON
+        // ==========================================
+        private void GoBackToDashboard()
+        {
+            Form parent = this.FindForm();
+
+            if (parent is DashboardForm dashboard)
+            {
+                dashboard.OpenDashboard(); // same behavior as EmployeeControl
+            }
+        }
+
+        private void btnBackToDashboard_Click(object sender, EventArgs e)
+        {
+            GoBackToDashboard();
+        }
+
         private void AttendanceControl_Load(object sender, EventArgs e)
         {
+        }
 
+        private void AttendanceControl_Load_1(object sender, EventArgs e)
+        {
         }
     }
 }

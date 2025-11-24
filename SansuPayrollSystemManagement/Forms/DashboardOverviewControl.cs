@@ -154,5 +154,10 @@ namespace SansuPayrollSystemManagement.Forms
         {
 
         }
+
+        private void headerPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

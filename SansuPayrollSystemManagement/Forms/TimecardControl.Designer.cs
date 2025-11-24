@@ -18,9 +18,9 @@ namespace SansuPayrollSystemManagement
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblTitle = new System.Windows.Forms.Label();
             this.lblSubTitle = new System.Windows.Forms.Label();
             this.picEmployeePhoto = new Guna.UI2.WinForms.Guna2CirclePictureBox();
@@ -29,7 +29,7 @@ namespace SansuPayrollSystemManagement
             this.btnNextPeriod = new Guna.UI2.WinForms.Guna2Button();
             this.lblDateRange = new System.Windows.Forms.Label();
             this.btnExportPdf = new Guna.UI2.WinForms.Guna2Button();
-            this.btnClose = new Guna.UI2.WinForms.Guna2ControlBox();
+            this.btnClose = new Guna.UI2.WinForms.Guna2Button();
             this.dgvTimecard = new Guna.UI2.WinForms.Guna2DataGridView();
             this.lblTotalRegularCaption = new System.Windows.Forms.Label();
             this.lblTotalRegularHours = new System.Windows.Forms.Label();
@@ -50,7 +50,7 @@ namespace SansuPayrollSystemManagement
             this.lblTitle.AutoSize = true;
             this.lblTitle.Font = new System.Drawing.Font("Century Gothic", 26F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.Black;
-            this.lblTitle.Location = new System.Drawing.Point(40, 30);
+            this.lblTitle.Location = new System.Drawing.Point(40, 25);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(631, 51);
             this.lblTitle.TabIndex = 0;
@@ -61,7 +61,7 @@ namespace SansuPayrollSystemManagement
             this.lblSubTitle.AutoSize = true;
             this.lblSubTitle.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblSubTitle.ForeColor = System.Drawing.Color.Black;
-            this.lblSubTitle.Location = new System.Drawing.Point(44, 80);
+            this.lblSubTitle.Location = new System.Drawing.Point(44, 76);
             this.lblSubTitle.Name = "lblSubTitle";
             this.lblSubTitle.Size = new System.Drawing.Size(438, 23);
             this.lblSubTitle.TabIndex = 1;
@@ -71,7 +71,7 @@ namespace SansuPayrollSystemManagement
             // 
             this.picEmployeePhoto.BackColor = System.Drawing.Color.White;
             this.picEmployeePhoto.ImageRotate = 0F;
-            this.picEmployeePhoto.Location = new System.Drawing.Point(40, 125);
+            this.picEmployeePhoto.Location = new System.Drawing.Point(40, 120);
             this.picEmployeePhoto.Name = "picEmployeePhoto";
             this.picEmployeePhoto.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
             this.picEmployeePhoto.Size = new System.Drawing.Size(70, 70);
@@ -84,7 +84,7 @@ namespace SansuPayrollSystemManagement
             this.lblEmployeeName.AutoSize = true;
             this.lblEmployeeName.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold);
             this.lblEmployeeName.ForeColor = System.Drawing.Color.Black;
-            this.lblEmployeeName.Location = new System.Drawing.Point(130, 145);
+            this.lblEmployeeName.Location = new System.Drawing.Point(130, 139);
             this.lblEmployeeName.Name = "lblEmployeeName";
             this.lblEmployeeName.Size = new System.Drawing.Size(318, 32);
             this.lblEmployeeName.TabIndex = 4;
@@ -96,7 +96,7 @@ namespace SansuPayrollSystemManagement
             this.btnPrevPeriod.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(239)))));
             this.btnPrevPeriod.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.btnPrevPeriod.ForeColor = System.Drawing.Color.White;
-            this.btnPrevPeriod.Location = new System.Drawing.Point(520, 138);
+            this.btnPrevPeriod.Location = new System.Drawing.Point(520, 132);
             this.btnPrevPeriod.Name = "btnPrevPeriod";
             this.btnPrevPeriod.Size = new System.Drawing.Size(45, 45);
             this.btnPrevPeriod.TabIndex = 5;
@@ -108,7 +108,7 @@ namespace SansuPayrollSystemManagement
             this.btnNextPeriod.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(239)))));
             this.btnNextPeriod.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.btnNextPeriod.ForeColor = System.Drawing.Color.White;
-            this.btnNextPeriod.Location = new System.Drawing.Point(882, 138);
+            this.btnNextPeriod.Location = new System.Drawing.Point(880, 132);
             this.btnNextPeriod.Name = "btnNextPeriod";
             this.btnNextPeriod.Size = new System.Drawing.Size(45, 45);
             this.btnNextPeriod.TabIndex = 6;
@@ -119,7 +119,7 @@ namespace SansuPayrollSystemManagement
             this.lblDateRange.AutoSize = true;
             this.lblDateRange.Font = new System.Drawing.Font("Century Gothic", 13F);
             this.lblDateRange.ForeColor = System.Drawing.Color.Black;
-            this.lblDateRange.Location = new System.Drawing.Point(575, 148);
+            this.lblDateRange.Location = new System.Drawing.Point(575, 142);
             this.lblDateRange.Name = "lblDateRange";
             this.lblDateRange.Size = new System.Drawing.Size(301, 25);
             this.lblDateRange.TabIndex = 7;
@@ -132,7 +132,7 @@ namespace SansuPayrollSystemManagement
             this.btnExportPdf.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(133)))), ((int)(((byte)(244)))));
             this.btnExportPdf.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
             this.btnExportPdf.ForeColor = System.Drawing.Color.White;
-            this.btnExportPdf.Location = new System.Drawing.Point(2880, 133);
+            this.btnExportPdf.Location = new System.Drawing.Point(1290, 132);
             this.btnExportPdf.Name = "btnExportPdf";
             this.btnExportPdf.Size = new System.Drawing.Size(175, 50);
             this.btnExportPdf.TabIndex = 8;
@@ -141,45 +141,48 @@ namespace SansuPayrollSystemManagement
             // btnClose
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClose.BorderRadius = 14;
             this.btnClose.FillColor = System.Drawing.Color.White;
-            this.btnClose.IconColor = System.Drawing.Color.Black;
-            this.btnClose.Location = new System.Drawing.Point(3020, 20);
+            this.btnClose.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnClose.ForeColor = System.Drawing.Color.Black;
+            this.btnClose.Location = new System.Drawing.Point(1440, 25);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(35, 30);
+            this.btnClose.Size = new System.Drawing.Size(40, 30);
             this.btnClose.TabIndex = 2;
+            this.btnClose.Text = "X";
             // 
             // dgvTimecard
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            this.dgvTimecard.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            this.dgvTimecard.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvTimecard.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvTimecard.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvTimecard.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvTimecard.ColumnHeadersHeight = 45;
             this.dgvTimecard.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTimecard.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTimecard.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvTimecard.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.dgvTimecard.Location = new System.Drawing.Point(48, 201);
+            this.dgvTimecard.Location = new System.Drawing.Point(48, 205);
             this.dgvTimecard.Name = "dgvTimecard";
             this.dgvTimecard.RowHeadersVisible = false;
             this.dgvTimecard.RowHeadersWidth = 51;
             this.dgvTimecard.RowTemplate.Height = 40;
-            this.dgvTimecard.Size = new System.Drawing.Size(1472, 624);
+            this.dgvTimecard.Size = new System.Drawing.Size(1417, 421);
             this.dgvTimecard.TabIndex = 0;
             this.dgvTimecard.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
             this.dgvTimecard.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -207,7 +210,7 @@ namespace SansuPayrollSystemManagement
             // 
             this.lblTotalRegularCaption.AutoSize = true;
             this.lblTotalRegularCaption.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.lblTotalRegularCaption.Location = new System.Drawing.Point(40, 630);
+            this.lblTotalRegularCaption.Location = new System.Drawing.Point(30, 724);
             this.lblTotalRegularCaption.Name = "lblTotalRegularCaption";
             this.lblTotalRegularCaption.Size = new System.Drawing.Size(134, 22);
             this.lblTotalRegularCaption.TabIndex = 9;
@@ -217,7 +220,7 @@ namespace SansuPayrollSystemManagement
             // 
             this.lblTotalRegularHours.AutoSize = true;
             this.lblTotalRegularHours.Font = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Bold);
-            this.lblTotalRegularHours.Location = new System.Drawing.Point(175, 630);
+            this.lblTotalRegularHours.Location = new System.Drawing.Point(170, 724);
             this.lblTotalRegularHours.Name = "lblTotalRegularHours";
             this.lblTotalRegularHours.Size = new System.Drawing.Size(21, 23);
             this.lblTotalRegularHours.TabIndex = 10;
@@ -227,7 +230,7 @@ namespace SansuPayrollSystemManagement
             // 
             this.lblTotalOTCaption.AutoSize = true;
             this.lblTotalOTCaption.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.lblTotalOTCaption.Location = new System.Drawing.Point(280, 630);
+            this.lblTotalOTCaption.Location = new System.Drawing.Point(266, 724);
             this.lblTotalOTCaption.Name = "lblTotalOTCaption";
             this.lblTotalOTCaption.Size = new System.Drawing.Size(102, 22);
             this.lblTotalOTCaption.TabIndex = 11;
@@ -237,7 +240,7 @@ namespace SansuPayrollSystemManagement
             // 
             this.lblTotalOvertimeHours.AutoSize = true;
             this.lblTotalOvertimeHours.Font = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Bold);
-            this.lblTotalOvertimeHours.Location = new System.Drawing.Point(385, 630);
+            this.lblTotalOvertimeHours.Location = new System.Drawing.Point(374, 724);
             this.lblTotalOvertimeHours.Name = "lblTotalOvertimeHours";
             this.lblTotalOvertimeHours.Size = new System.Drawing.Size(21, 23);
             this.lblTotalOvertimeHours.TabIndex = 12;
@@ -247,7 +250,7 @@ namespace SansuPayrollSystemManagement
             // 
             this.lblTotalHoursCaption.AutoSize = true;
             this.lblTotalHoursCaption.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.lblTotalHoursCaption.Location = new System.Drawing.Point(500, 630);
+            this.lblTotalHoursCaption.Location = new System.Drawing.Point(486, 724);
             this.lblTotalHoursCaption.Name = "lblTotalHoursCaption";
             this.lblTotalHoursCaption.Size = new System.Drawing.Size(65, 22);
             this.lblTotalHoursCaption.TabIndex = 13;
@@ -257,7 +260,7 @@ namespace SansuPayrollSystemManagement
             // 
             this.lblTotalHoursReported.AutoSize = true;
             this.lblTotalHoursReported.Font = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Bold);
-            this.lblTotalHoursReported.Location = new System.Drawing.Point(572, 630);
+            this.lblTotalHoursReported.Location = new System.Drawing.Point(557, 724);
             this.lblTotalHoursReported.Name = "lblTotalHoursReported";
             this.lblTotalHoursReported.Size = new System.Drawing.Size(21, 23);
             this.lblTotalHoursReported.TabIndex = 14;
@@ -267,7 +270,7 @@ namespace SansuPayrollSystemManagement
             // 
             this.lblTotalPayCaption.AutoSize = true;
             this.lblTotalPayCaption.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.lblTotalPayCaption.Location = new System.Drawing.Point(700, 630);
+            this.lblTotalPayCaption.Location = new System.Drawing.Point(686, 724);
             this.lblTotalPayCaption.Name = "lblTotalPayCaption";
             this.lblTotalPayCaption.Size = new System.Drawing.Size(50, 22);
             this.lblTotalPayCaption.TabIndex = 15;
@@ -277,7 +280,7 @@ namespace SansuPayrollSystemManagement
             // 
             this.lblTotalPay.AutoSize = true;
             this.lblTotalPay.Font = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Bold);
-            this.lblTotalPay.Location = new System.Drawing.Point(755, 630);
+            this.lblTotalPay.Location = new System.Drawing.Point(742, 724);
             this.lblTotalPay.Name = "lblTotalPay";
             this.lblTotalPay.Size = new System.Drawing.Size(60, 23);
             this.lblTotalPay.TabIndex = 16;
@@ -287,7 +290,7 @@ namespace SansuPayrollSystemManagement
             // 
             this.lblEmployeeSigLine.AutoSize = true;
             this.lblEmployeeSigLine.Font = new System.Drawing.Font("Century Gothic", 10F);
-            this.lblEmployeeSigLine.Location = new System.Drawing.Point(40, 670);
+            this.lblEmployeeSigLine.Location = new System.Drawing.Point(30, 759);
             this.lblEmployeeSigLine.Name = "lblEmployeeSigLine";
             this.lblEmployeeSigLine.Size = new System.Drawing.Size(579, 21);
             this.lblEmployeeSigLine.TabIndex = 17;
@@ -297,7 +300,7 @@ namespace SansuPayrollSystemManagement
             // 
             this.lblSupervisorSigLine.AutoSize = true;
             this.lblSupervisorSigLine.Font = new System.Drawing.Font("Century Gothic", 10F);
-            this.lblSupervisorSigLine.Location = new System.Drawing.Point(40, 700);
+            this.lblSupervisorSigLine.Location = new System.Drawing.Point(30, 789);
             this.lblSupervisorSigLine.Name = "lblSupervisorSigLine";
             this.lblSupervisorSigLine.Size = new System.Drawing.Size(564, 21);
             this.lblSupervisorSigLine.TabIndex = 18;
@@ -308,16 +311,6 @@ namespace SansuPayrollSystemManagement
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.lblTitle);
-            this.Controls.Add(this.lblSubTitle);
-            this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.picEmployeePhoto);
-            this.Controls.Add(this.lblEmployeeName);
-            this.Controls.Add(this.btnPrevPeriod);
-            this.Controls.Add(this.btnNextPeriod);
-            this.Controls.Add(this.lblDateRange);
-            this.Controls.Add(this.btnExportPdf);
-            this.Controls.Add(this.dgvTimecard);
             this.Controls.Add(this.lblTotalRegularCaption);
             this.Controls.Add(this.lblTotalRegularHours);
             this.Controls.Add(this.lblTotalOTCaption);
@@ -328,8 +321,18 @@ namespace SansuPayrollSystemManagement
             this.Controls.Add(this.lblTotalPay);
             this.Controls.Add(this.lblEmployeeSigLine);
             this.Controls.Add(this.lblSupervisorSigLine);
+            this.Controls.Add(this.lblTitle);
+            this.Controls.Add(this.lblSubTitle);
+            this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.picEmployeePhoto);
+            this.Controls.Add(this.lblEmployeeName);
+            this.Controls.Add(this.btnPrevPeriod);
+            this.Controls.Add(this.btnNextPeriod);
+            this.Controls.Add(this.lblDateRange);
+            this.Controls.Add(this.btnExportPdf);
+            this.Controls.Add(this.dgvTimecard);
             this.Name = "TimecardControl";
-            this.Size = new System.Drawing.Size(1540, 663);
+            this.Size = new System.Drawing.Size(1540, 900);
             this.Load += new System.EventHandler(this.TimecardControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picEmployeePhoto)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTimecard)).EndInit();
@@ -349,7 +352,7 @@ namespace SansuPayrollSystemManagement
         private Guna.UI2.WinForms.Guna2Button btnNextPeriod;
         private System.Windows.Forms.Label lblDateRange;
         private Guna.UI2.WinForms.Guna2Button btnExportPdf;
-        private Guna.UI2.WinForms.Guna2ControlBox btnClose;
+        private Guna.UI2.WinForms.Guna2Button btnClose;
 
         private Guna.UI2.WinForms.Guna2DataGridView dgvTimecard;
 

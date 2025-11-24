@@ -63,6 +63,16 @@ namespace SansuPayrollSystemManagement.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _9879e9d9_10ba_42a9_8679_5765275cf8ed {
+            get {
+                object obj = ResourceManager.GetObject("_9879e9d9_10ba_42a9_8679_5765275cf8ed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap delete_icon {
             get {
                 object obj = ResourceManager.GetObject("delete_icon", resourceCulture);

@@ -28,28 +28,42 @@ namespace SansuPayrollSystemManagement
         {
             InitializeComponent();
 
+            // Always fill the parent (Dashboard panel)
+            this.Dock = DockStyle.Fill;
+
             dgvTimecard.AutoGenerateColumns = true;
 
-            // updated control names
+            // events
             btnPrevPeriod.Click += BtnPrev_Click;
             btnNextPeriod.Click += BtnNext_Click;
             btnExportPdf.Click += BtnExportPdf_Click;
             btnClose.Click += BtnClose_Click;
         }
 
+        // ---------------------------------------------------------
+        // CLOSE / BACK
+        // ---------------------------------------------------------
         private void BtnClose_Click(object sender, EventArgs e)
         {
-            this.Visible = false;
+            var dash = this.FindForm() as DashboardForm;
+            if (dash != null)
+            {
+                dash.OpenDashboard();
+                return;
+            }
+
             this.Parent?.Controls.Remove(this);
+            this.Dispose();
         }
 
         // ---------------------------------------------------------
         // PUBLIC API
         // ---------------------------------------------------------
-        public void InitializeTimecard(int employeeId,
-                                       DateTime periodStart,
-                                       DateTime periodEnd,
-                                       System.Drawing.Image employeePhoto = null)
+        public void InitializeTimecard(
+            int employeeId,
+            DateTime periodStart,
+            DateTime periodEnd,
+            System.Drawing.Image employeePhoto = null)
         {
             _employeeId = employeeId;
             _periodStart = periodStart.Date;
@@ -158,7 +172,6 @@ namespace SansuPayrollSystemManagement
                 }
 
                 decimal reg = 0, ot = 0, sick = 0, vac = 0, hol = 0, unpaid = 0, other = 0;
-
                 string s = status.Trim().ToLower();
 
                 if (s == "" || s == "present" || s == "late")
@@ -170,10 +183,13 @@ namespace SansuPayrollSystemManagement
                 else if (s == "vacation") vac = 8m;
                 else if (s == "holiday") hol = totalHours > 0 ? totalHours : 8m;
                 else if (s == "unpaid") unpaid = 8m;
-                else if (s == "absent") { }
+                else if (s == "absent")
+                {
+                    // zero everything
+                }
                 else
                 {
-                    reg = totalHours;
+                    reg = Math.Min(totalHours, 8m);
                     ot = Math.Max(0m, totalHours - 8m);
                 }
 
@@ -281,10 +297,11 @@ namespace SansuPayrollSystemManagement
                 return;
             }
 
-            SaveFileDialog s = new SaveFileDialog();
-            s.Filter = "PDF Files (*.pdf)|*.pdf";
-            s.FileName =
-                $"{_employeeName}_Timecard_{_periodStart:yyyyMMdd}_{_periodEnd:yyyyMMdd}.pdf";
+            SaveFileDialog s = new SaveFileDialog
+            {
+                Filter = "PDF Files (*.pdf)|*.pdf",
+                FileName = $"{_employeeName}_Timecard_{_periodStart:yyyyMMdd}_{_periodEnd:yyyyMMdd}.pdf"
+            };
 
             if (s.ShowDialog() == DialogResult.OK)
             {
@@ -312,16 +329,18 @@ namespace SansuPayrollSystemManagement
                 var titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14);
                 var normalFont = FontFactory.GetFont(FontFactory.HELVETICA, 10);
 
-                doc.Add(new Paragraph("Weekly Employee Timesheet\n\n", titleFont)
+                Paragraph t = new Paragraph("Weekly Employee Timesheet\n\n", titleFont)
                 {
                     Alignment = Element.ALIGN_CENTER
-                });
+                };
+                doc.Add(t);
 
-                doc.Add(new Paragraph(
+                Paragraph info = new Paragraph(
                     $"Employee: {_employeeName}\n" +
                     $"Position: {_employeePosition}\n" +
                     $"Period: {_periodStart:MMM dd, yyyy} – {_periodEnd:MMM dd, yyyy}\n\n",
-                    normalFont));
+                    normalFont);
+                doc.Add(info);
 
                 PdfPTable pdfTable = new PdfPTable(dgvTimecard.Columns.Count)
                 {
@@ -349,19 +368,20 @@ namespace SansuPayrollSystemManagement
                     }
                 }
 
-                doc.Add(pdfTable);
-
-                doc.Add(new Paragraph(
+                Paragraph totals = new Paragraph(
                     $"\nTotal Regular Hours: {lblTotalRegularHours.Text}\n" +
                     $"Total Overtime Hours: {lblTotalOvertimeHours.Text}\n" +
                     $"Total Hours: {lblTotalHoursReported.Text}\n" +
                     $"Total Pay: {lblTotalPay.Text}\n\n",
-                    normalFont));
+                    normalFont);
+                doc.Add(pdfTable);
+                doc.Add(totals);
 
-                doc.Add(new Paragraph(
+                Paragraph sig = new Paragraph(
                     "\nEmployee Signature: ____________________________   Date: _________\n" +
                     "Supervisor Signature: __________________________   Date: _________\n",
-                    normalFont));
+                    normalFont);
+                doc.Add(sig);
 
                 doc.Close();
                 writer.Close();
@@ -370,7 +390,7 @@ namespace SansuPayrollSystemManagement
 
         private void TimecardControl_Load(object sender, EventArgs e)
         {
-
+            // nothing extra for now
         }
     }
 }

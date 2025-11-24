@@ -1,117 +1,142 @@
-﻿using MySql.Data.MySqlClient;
-using SansuPayrollSystemManagement.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
+using SansuPayrollSystemManagement.Services;
 
 namespace SansuPayrollSystemManagement
 {
     public partial class LoginForm : Form
     {
-        private DBHelper db = new DBHelper();
-        private FingerprintService fpService = new FingerprintService();
+        private bool dragging = false;
+        private Point dragCursor;
+        private Point dragForm;
+
         public LoginForm()
         {
             InitializeComponent();
+
+            // Enable dragging for borderless window
+            this.MouseDown += LoginForm_MouseDown;
+            this.MouseMove += LoginForm_MouseMove;
+            this.MouseUp += LoginForm_MouseUp;
+
+            // Center the main card on load & resize
+            this.Load += LoginForm_Load;
+            this.Resize += LoginForm_Resize;
         }
 
+        // ============================
+        // DRAGGING (borderless form)
+        // ============================
+        private void LoginForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            dragging = true;
+            dragCursor = Cursor.Position;
+            dragForm = this.Location;
+        }
+
+        private void LoginForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (dragging)
+            {
+                Point dif = Point.Subtract(Cursor.Position, new Size(dragCursor));
+                this.Location = Point.Add(dragForm, new Size(dif));
+            }
+        }
+
+        private void LoginForm_MouseUp(object sender, MouseEventArgs e)
+        {
+            dragging = false;
+        }
+
+        // ============================
+        // CENTER CARD
+        // ============================
         private void LoginForm_Load(object sender, EventArgs e)
         {
-            try
-            {
-                using (var conn = new MySqlConnection("server=localhost;user id=root;password=;database=sansu_payroll_db;"))
-                {
-                    conn.Open();
-                    MessageBox.Show("Connection successful!");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Connection failed: " + ex.Message);
-            }
+            CenterCard();
         }
 
+        private void LoginForm_Resize(object sender, EventArgs e)
+        {
+            CenterCard();
+        }
+
+        private void CenterCard()
+        {
+            if (card == null) return;
+
+            int x = (this.ClientSize.Width - card.Width) / 2;
+            int y = (this.ClientSize.Height - card.Height) / 2;
+            card.Location = new Point(x, y);
+        }
+
+        // ============================
+        // LOGIN CLICK
+        // ============================
         private void btnLogin_Click(object sender, EventArgs e)
         {
             string username = txtUsername.Text.Trim();
-            string password = txtPassword.Text;
+            string password = txtPassword.Text.Trim();
 
-            string sql = "SELECT UserID, EmployeeID, Username, PasswordHash, Role FROM Users WHERE Username=@u LIMIT 1";
-            var p = new MySqlParameter[] { new MySqlParameter("@u", username) };
-            DataTable dt = db.GetData(sql, p);
-            if (dt.Rows.Count == 0)
+            if (username == "" || password == "")
             {
-                lblError.Text = "User not found.";
+                MessageBox.Show("Please enter username and password.");
                 return;
             }
-            var row = dt.Rows[0];
-            string storedHash = row["PasswordHash"].ToString();
-            if (password == storedHash)
-            {
-                OpenDashboard(row["Role"].ToString());
-            }
-            else
-            {
-                lblError.Text = "Invalid password.";
-            }
-        }
 
-        private int MatchFingerprintAndGetEmployeeId()
-        {
-            byte[] scanned;
             try
             {
-                scanned = fpService.CaptureTemplate();
-            }
-            catch (NotImplementedException)
-            {
-                MessageBox.Show("Fingerprint capture not implemented. Replace FingerprintService with your SDK.");
-                return -1;
-            }
+                string connStr = "server=localhost;database=sansu_payroll_db;uid=root;pwd=;";
+                string query = "SELECT PasswordHash FROM Users WHERE Username=@u LIMIT 1";
 
-            string sql = "SELECT EmployeeID, FingerprintTemplate FROM Employees WHERE FingerprintTemplate IS NOT NULL";
-            DataTable dt = db.GetData(sql);
-            foreach (DataRow r in dt.Rows)
-            {
-                if (r["FingerprintTemplate"] == DBNull.Value) continue;
-                byte[] stored = (byte[])r["FingerprintTemplate"];
-                if (fpService.MatchTemplates(stored, scanned))
+                using (MySqlConnection conn = new MySqlConnection(connStr))
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
-                    return Convert.ToInt32(r["EmployeeID"]);
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@u", username);
+
+                    using (MySqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (!dr.Read())
+                        {
+                            MessageBox.Show("Invalid username or password.");
+                            return;
+                        }
+
+                        string storedHash = dr.GetString("PasswordHash");
+
+                        if (!HashHelper.VerifyPassword(password, storedHash))
+                        {
+                            MessageBox.Show("Invalid username or password.");
+                            return;
+                        }
+                    }
                 }
-            }
-            return -1;
-        }
 
-        private void btnFingerprintLogin_Click(object sender, EventArgs e)
-        {
-            int empId = MatchFingerprintAndGetEmployeeId();
-            if (empId == -1)
+                // Successful login → open dashboard
+                DashboardForm dashboard = new DashboardForm();
+                dashboard.Show();
+                this.Hide();
+            }
+            catch (Exception ex)
             {
-                lblError.Text = "Fingerprint not recognized.";
-                return;
+                MessageBox.Show("Login failed:\n" + ex.Message);
             }
-
-            // find the role (User may be linked in Users table)
-            string sql = "SELECT Role FROM Users WHERE EmployeeID=@id LIMIT 1";
-            var p = new MySqlParameter[] { new MySqlParameter("@id", empId) };
-            DataTable dt = db.GetData(sql, p);
-            string role = dt.Rows.Count > 0 ? dt.Rows[0]["Role"].ToString() : "Employee";
-            OpenDashboard(role);
         }
 
-        private void OpenDashboard(string role)
+        // ============================
+        // FORGOT PASSWORD
+        // ============================
+        private void lnkForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            var dash = new DashboardForm(role);
-            this.Hide();
-            dash.ShowDialog();
-            this.Show();
+            MessageBox.Show(
+                "Please contact HR or your System Administrator to reset your password.",
+                "Forgot Password",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
         }
     }
 }

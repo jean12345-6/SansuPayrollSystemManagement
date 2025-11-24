@@ -14,29 +14,27 @@ namespace SansuPayrollSystemManagement
         private readonly DBHelper db = new DBHelper();
         private string userRole;
 
-        public DashboardForm()
-        {
-            InitializeComponent();
-        }
-
-        public DashboardForm(string role)
+        // ===========================================
+        // CORRECT CONSTRUCTOR
+        // ===========================================
+        public DashboardForm(string role = "")
         {
             InitializeComponent();
             userRole = role;
         }
 
-        // ===========================
+        // ===========================================
         // FORM LOAD
-        // ===========================
+        // ===========================================
         private void DashboardForm_Load(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Maximized;
             OpenDashboard();
         }
 
-        // ===========================
+        // ===========================================
         // NAVIGATION
-        // ===========================
+        // ===========================================
         public void OpenDashboard()
         {
             panelContainer.Controls.Clear();
@@ -61,13 +59,7 @@ namespace SansuPayrollSystemManagement
         private void OpenPerformancePage() => LoadPage(new PerformanceControl());
         private void OpenSettingsPage() => LoadPage(new SettingsControl());
 
-        // Bottom buttons
-        private void btnIconEmployees_Click(object sender, EventArgs e) => OpenEmployeesPage();
-        private void btnIconAttendance_Click(object sender, EventArgs e) => OpenAttendancePage();
-        private void btnIconPayroll_Click(object sender, EventArgs e) => OpenPayrollPage();
-        private void btnIconPerformance_Click(object sender, EventArgs e) => OpenPerformancePage();
-        private void btnIconSettings_Click(object sender, EventArgs e) => OpenSettingsPage();
-
+        // Side menu buttons
         private void guna2ButtonDashboard_Click(object sender, EventArgs e) => OpenDashboard();
         private void guna2ButtonManageEmployees_Click(object sender, EventArgs e) => OpenEmployeesPage();
         private void guna2ButtonAttendance_Click(object sender, EventArgs e) => OpenAttendancePage();
@@ -75,39 +67,39 @@ namespace SansuPayrollSystemManagement
         private void guna2ButtonPerformance_Click(object sender, EventArgs e) => OpenPerformancePage();
         private void guna2ButtonSettings_Click(object sender, EventArgs e) => OpenSettingsPage();
 
+        // Bottom icon buttons
+        private void btnIconEmployees_Click(object sender, EventArgs e) => OpenEmployeesPage();
+        private void btnIconAttendance_Click(object sender, EventArgs e) => OpenAttendancePage();
+        private void btnIconPayroll_Click(object sender, EventArgs e) => OpenPayrollPage();
+        private void btnIconPerformance_Click(object sender, EventArgs e) => OpenPerformancePage();
+        private void btnIconSettings_Click(object sender, EventArgs e) => OpenSettingsPage();
 
-        // ===========================
-        // LOAD DASHBOARD KPIs
-        // ===========================
+        // ===========================================
+        // DASHBOARD KPIs
+        // ===========================================
         private void LoadDashboardStats()
         {
             try
             {
-                // Total employees
                 object empObj = db.ExecuteScalar("SELECT COUNT(*) FROM Employees");
                 int totalEmployees = Convert.ToInt32(empObj);
 
-                // Present today
                 string sqlPresent = @"
                     SELECT COUNT(DISTINCT EmployeeID)
                     FROM Attendance
                     WHERE Date = CURDATE() AND TimeIn IS NOT NULL;";
-                object presObj = db.ExecuteScalar(sqlPresent);
-                int presentToday = Convert.ToInt32(presObj);
+                int presentToday = Convert.ToInt32(db.ExecuteScalar(sqlPresent));
 
-                // Paid this month
                 string sqlPaid = @"
                     SELECT IFNULL(SUM(NetPay),0)
                     FROM Payroll
                     WHERE MONTH(PayPeriodEnd) = MONTH(CURDATE())
-                      AND YEAR(PayPeriodEnd) = YEAR(CURDATE());";
+                    AND YEAR(PayPeriodEnd) = YEAR(CURDATE());";
                 decimal paidThisMonth = Convert.ToDecimal(db.ExecuteScalar(sqlPaid));
 
-                // Total payroll cost
-                string sqlTotalCost = @"SELECT IFNULL(SUM(TotalPay),0) FROM Payroll;";
+                string sqlTotalCost = "SELECT IFNULL(SUM(TotalPay),0) FROM Payroll;";
                 decimal totalCost = Convert.ToDecimal(db.ExecuteScalar(sqlTotalCost));
 
-                // Set text
                 lblKpiEmployees.Text = totalEmployees.ToString();
                 lblKpiPresentToday.Text = presentToday.ToString();
                 lblKpiPaidThisMonth.Text = FormatPeso(paidThisMonth);
@@ -125,9 +117,9 @@ namespace SansuPayrollSystemManagement
             return "₱ " + value.ToString("N2");
         }
 
-        // ===========================
+        // ===========================================
         // RECENT ACTIVITY GRID
-        // ===========================
+        // ===========================================
         private void LoadRecentActivity()
         {
             if (dgvRecentActivity == null)
@@ -135,7 +127,6 @@ namespace SansuPayrollSystemManagement
 
             dgvRecentActivity.Rows.Clear();
 
-            // FAKE SAMPLE DATA
             dgvRecentActivity.Rows.Add("Nov 23, 2025 10:30 AM", "Employee Logged In", "Raven");
             dgvRecentActivity.Rows.Add("Nov 23, 2025 09:15 AM", "New Employee Added", "Admin");
             dgvRecentActivity.Rows.Add("Nov 22, 2025 04:50 PM", "Payroll Generated", "HR Manager");
@@ -143,10 +134,9 @@ namespace SansuPayrollSystemManagement
             dgvRecentActivity.Rows.Add("Nov 21, 2025 05:30 PM", "Performance Score Updated", "Manager");
         }
 
-
-        // ===========================
+        // ===========================================
         // LOGOUT
-        // ===========================
+        // ===========================================
         private void guna2Button1_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show(
@@ -158,22 +148,17 @@ namespace SansuPayrollSystemManagement
             if (result == DialogResult.Yes)
             {
                 this.Hide();
-                var loginForm = new LoginForm();
+                var loginForm = new LoginForm();    // FIXED
                 loginForm.Show();
                 this.Close();
             }
         }
 
-        // ===========================
-        // EMPTY HANDLERS
-        // ===========================
+        // Empty handlers
         private void guna2ShadowPanelEmployees_Paint(object sender, PaintEventArgs e) { }
         private void dataGridView3_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
         private void dgvRecentActivity_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
-
-        private void flowKpiRow_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
+        private void flowKpiRow_Paint(object sender, PaintEventArgs e) { }
+        private void panelDashboard_Paint(object sender, PaintEventArgs e) { }
     }
 }

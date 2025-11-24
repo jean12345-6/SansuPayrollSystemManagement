@@ -18,6 +18,7 @@ namespace SansuPayrollSystemManagement
         public AttendanceControl()
         {
             InitializeComponent();
+            dgvAttendance.CellClick += dgvAttendance_CellClick;
             CustomizeGridAppearance();
             LoadAttendanceData();
         }
@@ -90,6 +91,7 @@ namespace SansuPayrollSystemManagement
                             DataTable dt = new DataTable();
                             da.Fill(dt);
                             dgvAttendance.DataSource = dt;
+                            AddTimecardButtonColumn();
                         }
                     }
                 }
@@ -110,6 +112,20 @@ namespace SansuPayrollSystemManagement
 
             dgvAttendance.RowTemplate.Height = 40;
             dgvAttendance.ColumnHeadersHeight = 40;
+        }
+        private void AddTimecardButtonColumn()
+        {
+            if (dgvAttendance.Columns.Contains("ViewTimecard"))
+                return;
+
+            DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
+            btn.Name = "ViewTimecard";
+            btn.HeaderText = "";
+            btn.Text = "Timecard";
+            btn.UseColumnTextForButtonValue = true;
+            btn.Width = 95;
+
+            dgvAttendance.Columns.Add(btn);
         }
 
         // ==========================================
@@ -331,6 +347,66 @@ namespace SansuPayrollSystemManagement
                 dashboard.OpenDashboard(); // same behavior as EmployeeControl
             }
         }
+        private void dgvAttendance_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            if (dgvAttendance.Columns[e.ColumnIndex].Name == "ViewTimecard")
+            {
+                int summaryId = Convert.ToInt32(dgvAttendance.Rows[e.RowIndex].Cells["ID"].Value);
+
+                // ✔ Get EmployeeID based on SummaryID
+                int employeeId = GetEmployeeIdFromSummary(summaryId);
+
+                // ✔ Determine date range from the Period column
+                string period = dgvAttendance.Rows[e.RowIndex].Cells["Period"].Value.ToString();
+                string[] range = period.Split(new[] { " to " }, StringSplitOptions.None);
+
+                DateTime start = DateTime.Parse(range[0]);
+                DateTime end = DateTime.Parse(range[1]);
+
+                OpenTimecardModal(employeeId, start, end);
+            }
+        }
+        private int GetEmployeeIdFromSummary(int summaryId)
+        {
+            string sql = "SELECT EmployeeID FROM AttendanceSummary WHERE SummaryID=@id";
+
+            object result = db.ExecuteScalar(sql, new MySqlParameter[]
+            {
+        new MySqlParameter("@id", summaryId)
+            });
+
+            return result == null || result == DBNull.Value
+                ? 0
+                : Convert.ToInt32(result);
+        }
+        private void OpenTimecardModal(int employeeId, DateTime start, DateTime end)
+        {
+            // DARK OVERLAY
+            Panel overlay = new Panel();
+            overlay.Dock = DockStyle.Fill;
+            overlay.BackColor = Color.FromArgb(120, 0, 0, 0);
+            this.Parent.Controls.Add(overlay);
+            overlay.BringToFront();
+
+            // MODAL CONTROL
+            TimecardControl tc = new TimecardControl();
+            tc.Dock = DockStyle.Fill;
+            overlay.Controls.Add(tc);
+            tc.BringToFront();
+
+            // Load the timecard
+            tc.InitializeTimecard(employeeId, start, end);
+
+            // When closed → remove overlay
+            tc.VisibleChanged += (s, e) =>
+            {
+                if (!tc.Visible)
+                    overlay.Dispose();
+            };
+        }
+
 
         private void btnBackToDashboard_Click(object sender, EventArgs e)
         {

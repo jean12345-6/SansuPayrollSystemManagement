@@ -22,12 +22,16 @@ namespace SansuPayrollSystemManagement
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
             this.panelContainer = new System.Windows.Forms.Panel();
             this.panelDashboard = new System.Windows.Forms.Panel();
+            this.dgvRecentActivity = new Guna.UI2.WinForms.Guna2DataGridView();
+            this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.user = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Action = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.flowBottomNav = new System.Windows.Forms.FlowLayoutPanel();
             this.btnIconEmployees = new Guna.UI2.WinForms.Guna2Button();
             this.btnIconAttendance = new Guna.UI2.WinForms.Guna2Button();
@@ -51,13 +55,10 @@ namespace SansuPayrollSystemManagement
             this.lblCardTotalTitle = new System.Windows.Forms.Label();
             this.lblSubTitle = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
-            this.dgvRecentActivity = new Guna.UI2.WinForms.Guna2DataGridView();
-            this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.user = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Action = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.guna2Panel2.SuspendLayout();
             this.panelContainer.SuspendLayout();
             this.panelDashboard.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvRecentActivity)).BeginInit();
             this.flowBottomNav.SuspendLayout();
             this.panelNotification.SuspendLayout();
             this.flowKpiRow.SuspendLayout();
@@ -65,7 +66,6 @@ namespace SansuPayrollSystemManagement
             this.shadowPresent.SuspendLayout();
             this.shadowPaid.SuspendLayout();
             this.shadowTotal.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvRecentActivity)).BeginInit();
             this.SuspendLayout();
             // 
             // guna2Panel2
@@ -102,6 +102,80 @@ namespace SansuPayrollSystemManagement
             this.panelDashboard.Name = "panelDashboard";
             this.panelDashboard.Size = new System.Drawing.Size(1924, 1055);
             this.panelDashboard.TabIndex = 0;
+            // 
+            // dgvRecentActivity
+            // 
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            this.dgvRecentActivity.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRecentActivity.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvRecentActivity.ColumnHeadersHeight = 18;
+            this.dgvRecentActivity.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            this.dgvRecentActivity.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Date,
+            this.user,
+            this.Action});
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvRecentActivity.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvRecentActivity.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
+            this.dgvRecentActivity.Location = new System.Drawing.Point(40, 321);
+            this.dgvRecentActivity.Name = "dgvRecentActivity";
+            this.dgvRecentActivity.RowHeadersVisible = false;
+            this.dgvRecentActivity.RowHeadersWidth = 51;
+            this.dgvRecentActivity.RowTemplate.Height = 24;
+            this.dgvRecentActivity.Size = new System.Drawing.Size(1884, 337);
+            this.dgvRecentActivity.TabIndex = 5;
+            this.dgvRecentActivity.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
+            this.dgvRecentActivity.ThemeStyle.AlternatingRowsStyle.Font = null;
+            this.dgvRecentActivity.ThemeStyle.AlternatingRowsStyle.ForeColor = System.Drawing.Color.Empty;
+            this.dgvRecentActivity.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = System.Drawing.Color.Empty;
+            this.dgvRecentActivity.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = System.Drawing.Color.Empty;
+            this.dgvRecentActivity.ThemeStyle.BackColor = System.Drawing.Color.White;
+            this.dgvRecentActivity.ThemeStyle.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
+            this.dgvRecentActivity.ThemeStyle.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.dgvRecentActivity.ThemeStyle.HeaderStyle.BorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dgvRecentActivity.ThemeStyle.HeaderStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgvRecentActivity.ThemeStyle.HeaderStyle.ForeColor = System.Drawing.Color.White;
+            this.dgvRecentActivity.ThemeStyle.HeaderStyle.HeaightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            this.dgvRecentActivity.ThemeStyle.HeaderStyle.Height = 18;
+            this.dgvRecentActivity.ThemeStyle.ReadOnly = false;
+            this.dgvRecentActivity.ThemeStyle.RowsStyle.BackColor = System.Drawing.Color.White;
+            this.dgvRecentActivity.ThemeStyle.RowsStyle.BorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvRecentActivity.ThemeStyle.RowsStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgvRecentActivity.ThemeStyle.RowsStyle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            this.dgvRecentActivity.ThemeStyle.RowsStyle.Height = 24;
+            this.dgvRecentActivity.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
+            this.dgvRecentActivity.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            // 
+            // Date
+            // 
+            this.Date.HeaderText = "Date";
+            this.Date.MinimumWidth = 6;
+            this.Date.Name = "Date";
+            // 
+            // user
+            // 
+            this.user.HeaderText = "Performed By";
+            this.user.MinimumWidth = 6;
+            this.user.Name = "user";
+            // 
+            // Action
+            // 
+            this.Action.HeaderText = "Action";
+            this.Action.MinimumWidth = 6;
+            this.Action.Name = "Action";
             // 
             // flowBottomNav
             // 
@@ -245,6 +319,7 @@ namespace SansuPayrollSystemManagement
             this.flowKpiRow.Name = "flowKpiRow";
             this.flowKpiRow.Size = new System.Drawing.Size(1842, 140);
             this.flowKpiRow.TabIndex = 2;
+            this.flowKpiRow.Paint += new System.Windows.Forms.PaintEventHandler(this.flowKpiRow_Paint);
             // 
             // shadowEmployees
             // 
@@ -410,79 +485,6 @@ namespace SansuPayrollSystemManagement
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Dashboard Overview";
             // 
-            // dgvRecentActivity
-            // 
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            this.dgvRecentActivity.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRecentActivity.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
-            this.dgvRecentActivity.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvRecentActivity.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Date,
-            this.user,
-            this.Action});
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvRecentActivity.DefaultCellStyle = dataGridViewCellStyle6;
-            this.dgvRecentActivity.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgvRecentActivity.Location = new System.Drawing.Point(40, 321);
-            this.dgvRecentActivity.Name = "dgvRecentActivity";
-            this.dgvRecentActivity.RowHeadersVisible = false;
-            this.dgvRecentActivity.RowHeadersWidth = 51;
-            this.dgvRecentActivity.RowTemplate.Height = 24;
-            this.dgvRecentActivity.Size = new System.Drawing.Size(1884, 337);
-            this.dgvRecentActivity.TabIndex = 5;
-            this.dgvRecentActivity.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
-            this.dgvRecentActivity.ThemeStyle.AlternatingRowsStyle.Font = null;
-            this.dgvRecentActivity.ThemeStyle.AlternatingRowsStyle.ForeColor = System.Drawing.Color.Empty;
-            this.dgvRecentActivity.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = System.Drawing.Color.Empty;
-            this.dgvRecentActivity.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = System.Drawing.Color.Empty;
-            this.dgvRecentActivity.ThemeStyle.BackColor = System.Drawing.Color.White;
-            this.dgvRecentActivity.ThemeStyle.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgvRecentActivity.ThemeStyle.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.dgvRecentActivity.ThemeStyle.HeaderStyle.BorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.dgvRecentActivity.ThemeStyle.HeaderStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgvRecentActivity.ThemeStyle.HeaderStyle.ForeColor = System.Drawing.Color.White;
-            this.dgvRecentActivity.ThemeStyle.HeaderStyle.HeaightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvRecentActivity.ThemeStyle.HeaderStyle.Height = 18;
-            this.dgvRecentActivity.ThemeStyle.ReadOnly = false;
-            this.dgvRecentActivity.ThemeStyle.RowsStyle.BackColor = System.Drawing.Color.White;
-            this.dgvRecentActivity.ThemeStyle.RowsStyle.BorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            this.dgvRecentActivity.ThemeStyle.RowsStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgvRecentActivity.ThemeStyle.RowsStyle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            this.dgvRecentActivity.ThemeStyle.RowsStyle.Height = 24;
-            this.dgvRecentActivity.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgvRecentActivity.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            // 
-            // Date
-            // 
-            this.Date.HeaderText = "Date";
-            this.Date.MinimumWidth = 6;
-            this.Date.Name = "Date";
-            // 
-            // user
-            // 
-            this.user.HeaderText = "Performed By";
-            this.user.MinimumWidth = 6;
-            this.user.Name = "user";
-            // 
-            // Action
-            // 
-            this.Action.HeaderText = "Action";
-            this.Action.MinimumWidth = 6;
-            this.Action.Name = "Action";
-            // 
             // DashboardForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -497,6 +499,7 @@ namespace SansuPayrollSystemManagement
             this.panelContainer.ResumeLayout(false);
             this.panelDashboard.ResumeLayout(false);
             this.panelDashboard.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvRecentActivity)).EndInit();
             this.flowBottomNav.ResumeLayout(false);
             this.panelNotification.ResumeLayout(false);
             this.flowKpiRow.ResumeLayout(false);
@@ -508,7 +511,6 @@ namespace SansuPayrollSystemManagement
             this.shadowPaid.PerformLayout();
             this.shadowTotal.ResumeLayout(false);
             this.shadowTotal.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvRecentActivity)).EndInit();
             this.ResumeLayout(false);
 
         }

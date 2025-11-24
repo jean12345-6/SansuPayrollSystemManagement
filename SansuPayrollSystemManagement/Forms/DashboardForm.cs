@@ -170,5 +170,10 @@ namespace SansuPayrollSystemManagement
         private void guna2ShadowPanelEmployees_Paint(object sender, PaintEventArgs e) { }
         private void dataGridView3_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
         private void dgvRecentActivity_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
+
+        private void flowKpiRow_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

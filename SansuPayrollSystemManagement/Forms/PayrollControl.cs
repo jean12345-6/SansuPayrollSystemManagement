@@ -14,6 +14,13 @@ namespace SansuPayrollSystemManagement.Forms
     public partial class PayrollControl : UserControl
     {
         private readonly DBHelper db = new DBHelper();
+        private string userRole = "employee";
+
+        // ================== PAYROLL CONSTANTS ==================
+        private const int RequiredHoursPerDay = 10;         // required hours/day
+        private const int WorkingDaysPerMonth = 26;         // ONLY used if DailyRate is 0
+        private const decimal OvertimeMultiplier = 1.25m;   // OT = 1.25 × hourly
+        private const decimal LatePenaltyPerOccur = 50m;    // fixed penalty per late
 
         // Paging
         private DataTable _payrollData;
@@ -23,6 +30,12 @@ namespace SansuPayrollSystemManagement.Forms
         public PayrollControl()
         {
             InitializeComponent();
+        }
+
+        public PayrollControl(string role)
+        {
+            InitializeComponent();
+            userRole = role?.ToLower() ?? "employee";
         }
 
         // ============================================================
@@ -40,13 +53,34 @@ namespace SansuPayrollSystemManagement.Forms
                 LoadStatusFilter();
                 LoadPayrollList();
                 LoadSummaryCards();
+                ApplyRoleRestrictions();
 
-                // React to employee change
                 cboEmployee.SelectedIndexChanged += cboEmployee_SelectedIndexChanged;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error loading Payroll page: " + ex.Message);
+            }
+        }
+
+        // ============================================================
+        //  ROLE-BASED UI
+        // ============================================================
+        private void ApplyRoleRestrictions()
+        {
+            bool isPowerUser =
+                userRole == "admin" ||
+                userRole == "administrator" ||
+                userRole == "hr" ||
+                userRole == "hr manager";
+
+            if (!isPowerUser)
+            {
+                btnComputePayroll.Visible = false;
+                btnSave.Visible = false;
+                btnGeneratePayslip.Visible = false;
+                btnExportExcel.Visible = false;
+                btnExportPdf.Visible = false;
             }
         }
 
@@ -60,7 +94,6 @@ namespace SansuPayrollSystemManagement.Forms
                 string sql = "SELECT EmployeeID, FullName FROM Employees ORDER BY FullName";
                 DataTable dt = db.GetData(sql);
 
-                // Insert "All Employees" at top
                 DataRow allRow = dt.NewRow();
                 allRow["EmployeeID"] = 0;
                 allRow["FullName"] = "All Employees";
@@ -69,11 +102,11 @@ namespace SansuPayrollSystemManagement.Forms
                 cboEmployee.DataSource = dt;
                 cboEmployee.DisplayMember = "FullName";
                 cboEmployee.ValueMember = "EmployeeID";
-                cboEmployee.SelectedIndex = 0;  // default: All Employees
+                cboEmployee.SelectedIndex = 0;
             }
             catch
             {
-                // non-critical: ignore if fails, page still works
+                // Non-critical
             }
         }
 
@@ -113,7 +146,7 @@ namespace SansuPayrollSystemManagement.Forms
 
                 var parameters = new List<MySqlParameter>();
 
-                // Employee filter (0 = All Employees)
+                // Employee filter
                 if (cboEmployee.SelectedValue != null &&
                     int.TryParse(cboEmployee.SelectedValue.ToString(), out int empId) &&
                     empId > 0)
@@ -122,14 +155,14 @@ namespace SansuPayrollSystemManagement.Forms
                     parameters.Add(new MySqlParameter("@empId", empId));
                 }
 
-                // OPTIONAL search by employee name
+                // Search by name
                 if (!string.IsNullOrWhiteSpace(txtSearchEmployee.Text))
                 {
                     sql += " AND e.FullName LIKE @search";
                     parameters.Add(new MySqlParameter("@search", "%" + txtSearchEmployee.Text.Trim() + "%"));
                 }
 
-                // OPTIONAL status filter
+                // Status filter
                 if (cboStatusFilter.SelectedIndex > 0)
                 {
                     sql += @" AND (CASE 
@@ -173,7 +206,6 @@ namespace SansuPayrollSystemManagement.Forms
             {
                 dgvPayroll.AutoGenerateColumns = false;
 
-                // If grid has no columns, define them once
                 if (dgvPayroll.Columns.Count == 0)
                     DefineGridColumns();
 
@@ -195,7 +227,6 @@ namespace SansuPayrollSystemManagement.Forms
                                            .Take(PageSize);
 
                 dgvPayroll.DataSource = pageRows.Any() ? pageRows.CopyToDataTable() : null;
-
                 lblPageInfo.Text = $"Page {_currentPage + 1} of {totalPages}";
             }
             catch (Exception ex)
@@ -208,7 +239,6 @@ namespace SansuPayrollSystemManagement.Forms
         {
             dgvPayroll.Columns.Clear();
 
-            // Text columns with DataPropertyName matching SQL SELECT aliases
             dgvPayroll.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "PayrollID",
@@ -269,8 +299,7 @@ namespace SansuPayrollSystemManagement.Forms
                 ReadOnly = true
             });
 
-            // View button
-            DataGridViewButtonColumn viewBtn = new DataGridViewButtonColumn
+            var viewBtn = new DataGridViewButtonColumn
             {
                 HeaderText = "Action",
                 Text = "View",
@@ -279,7 +308,6 @@ namespace SansuPayrollSystemManagement.Forms
             };
             dgvPayroll.Columns.Add(viewBtn);
         }
-
 
         private void btnNextPage_Click(object sender, EventArgs e)
         {
@@ -307,7 +335,7 @@ namespace SansuPayrollSystemManagement.Forms
         }
 
         // ============================================================
-        //  GRID EVENTS (VIEW BUTTON + STATUS COLOR)
+        //  GRID EVENTS
         // ============================================================
         private void dgvPayroll_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -315,9 +343,10 @@ namespace SansuPayrollSystemManagement.Forms
 
             if (dgvPayroll.Columns[e.ColumnIndex].Name == "btnView")
             {
-                int payrollId = Convert.ToInt32(dgvPayroll.Rows[e.RowIndex].Cells["PayrollID"].Value);
+                int payrollId = Convert.ToInt32(
+                    dgvPayroll.Rows[e.RowIndex].Cells["PayrollID"].Value);
 
-                PayrollDetailsControl details = new PayrollDetailsControl(payrollId);
+                var details = new PayrollDetailsControl(payrollId);
 
                 Form popup = new Form
                 {
@@ -332,26 +361,19 @@ namespace SansuPayrollSystemManagement.Forms
                 popup.ShowDialog();
             }
         }
-       
 
         private void dgvPayroll_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (dgvPayroll.Columns[e.ColumnIndex].Name == "Status" && e.Value != null)
-            {
-                string status = e.Value.ToString();
-                if (status == "Processed")
-                {
-                    e.CellStyle.ForeColor = Color.Green;
-                }
-                else if (status == "Pending")
-                {
-                    e.CellStyle.ForeColor = Color.DarkOrange;
-                }
-                else if (status == "Error")
-                {
-                    e.CellStyle.ForeColor = Color.Red;
-                }
-            }
+            if (e.RowIndex < 0) return;
+            if (dgvPayroll.Columns[e.ColumnIndex].Name != "Status" || e.Value == null) return;
+
+            string status = e.Value.ToString();
+            if (status == "Processed")
+                e.CellStyle.ForeColor = Color.Green;
+            else if (status == "Pending")
+                e.CellStyle.ForeColor = Color.DarkOrange;
+            else if (status == "Error")
+                e.CellStyle.ForeColor = Color.Red;
         }
 
         // ============================================================
@@ -369,14 +391,19 @@ namespace SansuPayrollSystemManagement.Forms
 
                 decimal balance = totalCost - totalSalary;
 
-                lblTotalCost.Text = totalCost.ToString("C");
-                lblSalaryPaid.Text = totalSalary.ToString("C");
-                lblBalance.Text = balance.ToString("C");
+                lblTotalCost.Text = FormatPeso(totalCost);
+                lblSalaryPaid.Text = FormatPeso(totalSalary);
+                lblBalance.Text = FormatPeso(balance);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error loading summary: " + ex.Message);
             }
+        }
+
+        private string FormatPeso(decimal value)
+        {
+            return "₱ " + value.ToString("N2");
         }
 
         // ============================================================
@@ -410,45 +437,322 @@ namespace SansuPayrollSystemManagement.Forms
 
         private void cboEmployee_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Avoid reloading while control is still binding during Load()
             if (!cboEmployee.Focused) return;
             LoadPayrollList();
         }
 
         // ============================================================
-        //  TOP BUTTONS
+        //  COMPUTE PAYROLL  (USING AttendanceSummary)
         // ============================================================
         private void btnComputePayroll_Click(object sender, EventArgs e)
         {
-            // Placeholder – later this will compute + save payroll rows.
-            LoadPayrollList();
-            LoadSummaryCards();
+            bool isPowerUser =
+                userRole == "admin" ||
+                userRole == "administrator" ||
+                userRole == "hr" ||
+                userRole == "hr manager";
 
-            MessageBox.Show("Compute logic not implemented yet – using test data.",
-                            "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (!isPowerUser)
+            {
+                MessageBox.Show("You do not have permission to compute payroll.",
+                    "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DateTime periodStart = dtpStart.Value.Date;
+            DateTime periodEnd = dtpEnd.Value.Date;
+
+            if (periodStart > periodEnd)
+            {
+                MessageBox.Show("Start date cannot be after end date.",
+                    "Invalid Period", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                string sql = @"
+                    SELECT 
+                        e.EmployeeID,
+                        e.FullName,
+                        e.Salary,
+                        e.DailyRate,
+                        s.WorktimeActual,
+                        s.LateTimes,
+                        s.AbsenceDays,
+                        s.OvertimeNormal,
+                        s.OvertimeHoliday,
+                        s.WorkdayNormalActual
+                    FROM Employees e
+                    LEFT JOIN AttendanceSummary s
+                        ON e.EmployeeID = s.EmployeeID
+                       AND s.PeriodStart = @ps
+                       AND s.PeriodEnd   = @pe
+                    WHERE 1 = 1";
+
+                var parameters = new List<MySqlParameter>
+                {
+                    new MySqlParameter("@ps", periodStart),
+                    new MySqlParameter("@pe", periodEnd)
+                };
+
+                if (cboEmployee.SelectedValue != null &&
+                    int.TryParse(cboEmployee.SelectedValue.ToString(), out int filterEmpId) &&
+                    filterEmpId > 0)
+                {
+                    sql += " AND e.EmployeeID = @empId";
+                    parameters.Add(new MySqlParameter("@empId", filterEmpId));
+                }
+
+                DataTable summary = db.GetData(sql, parameters.ToArray());
+
+                if (summary.Rows.Count == 0)
+                {
+                    MessageBox.Show(
+                        "No AttendanceSummary records found for this period.\n" +
+                        "Please import the biometric Excel (sheet 2,3,413) first.",
+                        "Compute Payroll",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                    return;
+                }
+
+                int affected = 0;
+
+                foreach (DataRow row in summary.Rows)
+                {
+                    int employeeId = Convert.ToInt32(row["EmployeeID"]);
+
+                    // -------- Rates --------
+                    decimal salary = row["Salary"] != DBNull.Value ? Convert.ToDecimal(row["Salary"]) : 0m;
+                    decimal dbDailyRate = row["DailyRate"] != DBNull.Value ? Convert.ToDecimal(row["DailyRate"]) : 0m;
+
+                    decimal dailyRate;
+                    if (dbDailyRate > 0)
+                        dailyRate = dbDailyRate;
+                    else if (salary > 0 && WorkingDaysPerMonth > 0)
+                        dailyRate = salary / WorkingDaysPerMonth;
+                    else
+                        dailyRate = 0m;
+
+                    decimal hourlyRate = (RequiredHoursPerDay > 0)
+                        ? dailyRate / RequiredHoursPerDay
+                        : 0m;
+
+                    // -------- AttendanceSummary metrics --------
+                    decimal worktimeActual = row["WorktimeActual"] != DBNull.Value
+                        ? Convert.ToDecimal(row["WorktimeActual"])
+                        : 0m;
+
+                    int lateTimes = row["LateTimes"] != DBNull.Value
+                        ? Convert.ToInt32(row["LateTimes"])
+                        : 0;
+
+                    int absenceDays = row["AbsenceDays"] != DBNull.Value
+                        ? Convert.ToInt32(row["AbsenceDays"])
+                        : 0;
+
+                    decimal overtimeNormal = row["OvertimeNormal"] != DBNull.Value
+                        ? Convert.ToDecimal(row["OvertimeNormal"])
+                        : 0m;
+
+                    decimal overtimeHoliday = row["OvertimeHoliday"] != DBNull.Value
+                        ? Convert.ToDecimal(row["OvertimeHoliday"])
+                        : 0m;
+
+                    string workdayStr = row["WorkdayNormalActual"] != DBNull.Value
+                        ? row["WorkdayNormalActual"].ToString()
+                        : string.Empty;
+
+                    // -------- Days Worked --------
+                    int daysWorked = 0;
+
+                    if (!string.IsNullOrWhiteSpace(workdayStr))
+                    {
+                        string digitsOnly = new string(workdayStr.Where(char.IsDigit).ToArray());
+                        if (int.TryParse(digitsOnly, out int parsed))
+                            daysWorked = parsed;
+                    }
+
+                    if (daysWorked == 0 && RequiredHoursPerDay > 0)
+                    {
+                        daysWorked = (int)Math.Round(
+                            worktimeActual / RequiredHoursPerDay,
+                            MidpointRounding.AwayFromZero);
+                    }
+
+                    if (daysWorked < 0) daysWorked = 0;
+
+                    // -------- Hours --------
+                    decimal regularHours = daysWorked * RequiredHoursPerDay;
+                    decimal overtimeHours = overtimeNormal + overtimeHoliday;
+
+                    // -------- Pay --------
+                    decimal basicSalary = dailyRate * daysWorked;
+                    decimal overtimePay = overtimeHours * hourlyRate * OvertimeMultiplier;
+                    decimal grossPay = basicSalary + overtimePay;
+
+                    // -------- Deductions --------
+                    decimal lateDeduction = lateTimes * LatePenaltyPerOccur;
+                    decimal absenceDeduction = absenceDays * dailyRate;
+
+                    // Government deductions – you can plug real formulas later
+                    decimal sss = 0m;
+                    decimal philHealth = 0m;
+                    decimal pagIbig = 0m;
+
+                    decimal totalDeductions =
+                        sss + philHealth + pagIbig +
+                        lateDeduction + absenceDeduction;
+
+                    decimal netPay = grossPay - totalDeductions;
+                    if (netPay < 0) netPay = 0m;
+
+                    // -------- UPSERT into Payroll --------
+                    object existingIdObj = db.ExecuteScalar(
+                        @"SELECT PayrollID 
+                          FROM Payroll
+                          WHERE EmployeeID = @eid
+                            AND PayPeriodStart = @ps
+                            AND PayPeriodEnd   = @pe
+                          LIMIT 1",
+                        new MySqlParameter[]
+                        {
+                            new MySqlParameter("@eid", employeeId),
+                            new MySqlParameter("@ps", periodStart),
+                            new MySqlParameter("@pe", periodEnd)
+                        });
+
+                    if (existingIdObj != null && existingIdObj != DBNull.Value)
+                    {
+                        int payrollId = Convert.ToInt32(existingIdObj);
+
+                        string updateSql = @"
+                            UPDATE Payroll
+                            SET RegularHours      = @rh,
+                                OvertimeHours     = @oh,
+                                DaysWorked        = @dw,
+                                BasicSalary       = @bs,
+                                OvertimePay       = @op,
+                                GrossPay          = @gp,
+                                SSS               = @sss,
+                                PhilHealth        = @ph,
+                                PagIbig           = @pi,
+                                LateDeduction     = @late,
+                                AbsenceDeduction  = @abs,
+                                TotalDeductions   = @td,
+                                TotalPay          = @tp,
+                                Deductions        = @td,
+                                NetPay            = @np
+                            WHERE PayrollID = @pid";
+
+                        affected += db.ExecuteNonQuery(updateSql,
+                            new MySqlParameter[]
+                            {
+                                new MySqlParameter("@rh",   regularHours),
+                                new MySqlParameter("@oh",   overtimeHours),
+                                new MySqlParameter("@dw",   daysWorked),
+                                new MySqlParameter("@bs",   basicSalary),
+                                new MySqlParameter("@op",   overtimePay),
+                                new MySqlParameter("@gp",   grossPay),
+                                new MySqlParameter("@sss",  sss),
+                                new MySqlParameter("@ph",   philHealth),
+                                new MySqlParameter("@pi",   pagIbig),
+                                new MySqlParameter("@late", lateDeduction),
+                                new MySqlParameter("@abs",  absenceDeduction),
+                                new MySqlParameter("@td",   totalDeductions),
+                                new MySqlParameter("@tp",   grossPay),
+                                new MySqlParameter("@np",   netPay),
+                                new MySqlParameter("@pid",  payrollId)
+                            });
+                    }
+                    else
+                    {
+                        string insertSql = @"
+                            INSERT INTO Payroll
+                            (
+                                EmployeeID, PayPeriodStart, PayPeriodEnd,
+                                RegularHours, OvertimeHours,
+                                DaysWorked, BasicSalary, OvertimePay, GrossPay,
+                                SSS, PhilHealth, PagIbig,
+                                LateDeduction, AbsenceDeduction, TotalDeductions,
+                                TotalPay, Deductions, NetPay
+                            )
+                            VALUES
+                            (
+                                @eid, @ps, @pe,
+                                @rh, @oh,
+                                @dw, @bs, @op, @gp,
+                                @sss, @ph, @pi,
+                                @late, @abs, @td,
+                                @tp, @td, @np
+                            )";
+
+                        affected += db.ExecuteNonQuery(insertSql,
+                            new MySqlParameter[]
+                            {
+                                new MySqlParameter("@eid",  employeeId),
+                                new MySqlParameter("@ps",   periodStart),
+                                new MySqlParameter("@pe",   periodEnd),
+                                new MySqlParameter("@rh",   regularHours),
+                                new MySqlParameter("@oh",   overtimeHours),
+                                new MySqlParameter("@dw",   daysWorked),
+                                new MySqlParameter("@bs",   basicSalary),
+                                new MySqlParameter("@op",   overtimePay),
+                                new MySqlParameter("@gp",   grossPay),
+                                new MySqlParameter("@sss",  sss),
+                                new MySqlParameter("@ph",   philHealth),
+                                new MySqlParameter("@pi",   pagIbig),
+                                new MySqlParameter("@late", lateDeduction),
+                                new MySqlParameter("@abs",  absenceDeduction),
+                                new MySqlParameter("@td",   totalDeductions),
+                                new MySqlParameter("@tp",   grossPay),
+                                new MySqlParameter("@np",   netPay)
+                            });
+                    }
+                }
+
+                LoadPayrollList();
+                LoadSummaryCards();
+
+                MessageBox.Show(
+                    "Payroll computed from AttendanceSummary.\n" +
+                    $"Employees processed: {summary.Rows.Count}\n" +
+                    $"Database rows affected: {affected}.",
+                    "Compute Payroll",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error computing payroll: " + ex.Message,
+                    "Compute Payroll", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
+        // ============================================================
+        //  OTHER BUTTONS
+        // ============================================================
         private void btnSave_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Save payroll logic will go here.", "Info",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Payroll data is already saved when you click COMPUTE.",
+                            "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnGeneratePayslip_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Generate payslip logic will go here.", "Info",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Open a payroll row and click 'Print Payslip' in the details screen.",
+                            "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            // Navigation is usually handled by the parent Dashboard.
-            MessageBox.Show("Return to dashboard (handled by parent form).",
+            MessageBox.Show("Back to dashboard is handled by DashboardForm.",
                             "Back", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         // ============================================================
-        //  EXPORT STUBS
+        //  EXPORT BUTTONS
         // ============================================================
         private void btnExportExcel_Click(object sender, EventArgs e)
         {
@@ -466,44 +770,45 @@ namespace SansuPayrollSystemManagement.Forms
                 return;
             }
 
-            // Setup Save Dialog
-            SaveFileDialog saveDialog = new SaveFileDialog();
-            saveDialog.Filter = "PDF File|*.pdf";
-            saveDialog.Title = "Export Payroll List to PDF";
-            saveDialog.FileName = $"Payroll_List_{DateTime.Now:yyyyMMdd}.pdf";
+            SaveFileDialog saveDialog = new SaveFileDialog
+            {
+                Filter = "PDF File|*.pdf",
+                Title = "Export Payroll List to PDF",
+                FileName = $"Payroll_List_{DateTime.Now:yyyyMMdd}.pdf"
+            };
 
             if (saveDialog.ShowDialog() != DialogResult.OK)
                 return;
 
-            PrintDocument pdfDoc = new PrintDocument();
-            pdfDoc.DocumentName = "Payroll List";
+            PrintDocument pdfDoc = new PrintDocument
+            {
+                DocumentName = "Payroll List"
+            };
             pdfDoc.DefaultPageSettings.Landscape = true;
 
             int left = 40;
             int top = 40;
             int rowHeight = 25;
 
-            // Use Microsoft Print to PDF
-            pdfDoc.PrinterSettings = new PrinterSettings()
+            pdfDoc.PrinterSettings = new PrinterSettings
             {
                 PrinterName = "Microsoft Print to PDF",
                 PrintToFile = true,
                 PrintFileName = saveDialog.FileName
             };
 
-            // PRINT PAGE EVENT
             pdfDoc.PrintPage += (s, ev) =>
             {
                 Font headerFont = new Font("Arial", 18, FontStyle.Bold);
                 Font colFont = new Font("Arial", 10, FontStyle.Bold);
                 Font rowFont = new Font("Arial", 10);
 
-                // Header
+                top = 40;
+
                 ev.Graphics.DrawString("SANZU RESTAURANT — PAYROLL LIST",
                     headerFont, Brushes.Black, left, top);
                 top += 40;
 
-                // Column headers
                 int colLeft = left;
                 foreach (DataColumn col in _payrollData.Columns)
                 {
@@ -513,7 +818,6 @@ namespace SansuPayrollSystemManagement.Forms
 
                 top += rowHeight + 5;
 
-                // Rows
                 foreach (DataRow row in _payrollData.Rows)
                 {
                     colLeft = left;
@@ -527,7 +831,6 @@ namespace SansuPayrollSystemManagement.Forms
 
                     top += rowHeight;
 
-                    // Page overflow handling
                     if (top > ev.MarginBounds.Bottom - 50)
                     {
                         ev.HasMorePages = true;

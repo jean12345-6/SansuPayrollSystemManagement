@@ -228,12 +228,12 @@ namespace SansuPayrollSystemManagement
             }
         }
 
-        private void btnBackDashboard_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            new DashboardForm("Admin").ShowDialog();
-            this.Close();
-        }
+        //private void btnBackDashboard_Click(object sender, EventArgs e)
+        //{
+        //    this.Hide();
+        //    new DashboardForm("Admin").ShowDialog();
+        //    this.Close();
+        //}
 
         private void btnGeneratePayslip_Click(object sender, EventArgs e)
         {

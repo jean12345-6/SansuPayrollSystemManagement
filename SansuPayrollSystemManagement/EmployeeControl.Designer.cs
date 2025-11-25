@@ -28,6 +28,7 @@ namespace SansuPayrollSystemManagement
             this.btnBackDashboard = new Guna.UI2.WinForms.Guna2Button();
             this.txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             this.lblHeader = new System.Windows.Forms.Label();
+            this.btnSearch = new Guna.UI2.WinForms.Guna2Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmployees)).BeginInit();
             this.SuspendLayout();
             // 
@@ -35,8 +36,8 @@ namespace SansuPayrollSystemManagement
             // 
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
             this.dgvEmployees.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvEmployees.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvEmployees.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
@@ -87,11 +88,11 @@ namespace SansuPayrollSystemManagement
             // 
             this.btnAddEmployee.BorderRadius = 25;
             this.btnAddEmployee.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(191)))), ((int)(((byte)(0)))));
-            this.btnAddEmployee.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
+            this.btnAddEmployee.Font = new System.Drawing.Font("Century Gothic", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddEmployee.ForeColor = System.Drawing.Color.Black;
-            this.btnAddEmployee.Location = new System.Drawing.Point(1158, 130);
+            this.btnAddEmployee.Location = new System.Drawing.Point(1313, 130);
             this.btnAddEmployee.Name = "btnAddEmployee";
-            this.btnAddEmployee.Size = new System.Drawing.Size(260, 60);
+            this.btnAddEmployee.Size = new System.Drawing.Size(175, 56);
             this.btnAddEmployee.TabIndex = 2;
             this.btnAddEmployee.Text = "Add Employee";
             this.btnAddEmployee.Click += new System.EventHandler(this.btnAddEmployee_Click);
@@ -102,9 +103,9 @@ namespace SansuPayrollSystemManagement
             this.btnBackDashboard.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(133)))), ((int)(((byte)(244)))));
             this.btnBackDashboard.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
             this.btnBackDashboard.ForeColor = System.Drawing.Color.White;
-            this.btnBackDashboard.Location = new System.Drawing.Point(1158, 53);
+            this.btnBackDashboard.Location = new System.Drawing.Point(1158, 66);
             this.btnBackDashboard.Name = "btnBackDashboard";
-            this.btnBackDashboard.Size = new System.Drawing.Size(260, 60);
+            this.btnBackDashboard.Size = new System.Drawing.Size(330, 47);
             this.btnBackDashboard.TabIndex = 3;
             this.btnBackDashboard.Text = "BACK TO DASHBOARD";
             this.btnBackDashboard.Click += new System.EventHandler(this.btnBackDashboard_Click);
@@ -122,6 +123,7 @@ namespace SansuPayrollSystemManagement
             this.txtSearch.SelectedText = "";
             this.txtSearch.Size = new System.Drawing.Size(1100, 60);
             this.txtSearch.TabIndex = 1;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // lblHeader
             // 
@@ -134,9 +136,23 @@ namespace SansuPayrollSystemManagement
             this.lblHeader.TabIndex = 0;
             this.lblHeader.Text = "EMPLOYEE MANAGEMENT";
             // 
+            // btnSearch
+            // 
+            this.btnSearch.BorderRadius = 25;
+            this.btnSearch.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(133)))), ((int)(((byte)(244)))));
+            this.btnSearch.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
+            this.btnSearch.ForeColor = System.Drawing.Color.White;
+            this.btnSearch.Location = new System.Drawing.Point(1158, 130);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(149, 56);
+            this.btnSearch.TabIndex = 5;
+            this.btnSearch.Text = "SEARCH";
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
             // EmployeeControl
             // 
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(236)))), ((int)(((byte)(214)))));
+            this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.lblHeader);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.btnAddEmployee);
@@ -144,7 +160,6 @@ namespace SansuPayrollSystemManagement
             this.Controls.Add(this.dgvEmployees);
             this.Name = "EmployeeControl";
             this.Size = new System.Drawing.Size(1540, 749);
-            this.Load += new System.EventHandler(this.EmployeeControl_Load_1);
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmployees)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -158,5 +173,6 @@ namespace SansuPayrollSystemManagement
         private Guna.UI2.WinForms.Guna2Button btnBackDashboard;
         private Guna.UI2.WinForms.Guna2TextBox txtSearch;
         private System.Windows.Forms.Label lblHeader;
+        private Guna.UI2.WinForms.Guna2Button btnSearch;
     }
 }

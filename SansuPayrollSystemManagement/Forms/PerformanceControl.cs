@@ -19,10 +19,16 @@ namespace SansuPayrollSystemManagement.Forms
         private DataTable _data;
         private int _currentPage = 0;
         private const int PageSize = 10;
+        private string userRole = "employee";
 
         public PerformanceControl()
         {
             InitializeComponent();
+        }
+        public PerformanceControl(string role)
+        {
+            InitializeComponent();
+            userRole = role?.ToLower() ?? "employee";
         }
 
         private void PerformanceControl_Load(object sender, EventArgs e)

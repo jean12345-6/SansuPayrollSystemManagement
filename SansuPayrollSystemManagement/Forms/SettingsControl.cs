@@ -9,10 +9,16 @@ namespace SansuPayrollSystemManagement.Forms
     public partial class SettingsControl : UserControl
     {
         private readonly DBHelper db = new DBHelper();
+        private string userRole = "employee";
 
         public SettingsControl()
         {
             InitializeComponent();
+        }
+        public SettingsControl(string role)
+        {
+            InitializeComponent();
+            userRole = role?.ToLower() ?? "employee";
         }
 
         private void SettingsControl_Load(object sender, EventArgs e)

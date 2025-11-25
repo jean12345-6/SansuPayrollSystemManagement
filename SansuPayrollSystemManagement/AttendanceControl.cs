@@ -15,6 +15,7 @@ namespace SansuPayrollSystemManagement
     public partial class AttendanceControl : UserControl
     {
         private readonly DBHelper db = new DBHelper();
+        private string userRole = "employee";
 
         public AttendanceControl()
         {
@@ -25,7 +26,19 @@ namespace SansuPayrollSystemManagement
             // Handle Timecard button clicks
             dgvAttendance.CellClick += dgvAttendance_CellClick;
         }
+        public AttendanceControl(string role)
+        {
+            InitializeComponent();
+            userRole = role?.ToLower() ?? "employee";
 
+            CustomizeGridAppearance();
+            LoadAttendanceData();
+
+            // important! same as default constructor
+            dgvAttendance.CellClick += dgvAttendance_CellClick;
+
+            // load data, restrictions, etc.
+        }
         // ==========================================
         // SAFE HELPERS
         // ==========================================

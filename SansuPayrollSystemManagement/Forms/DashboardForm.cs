@@ -13,13 +13,13 @@ namespace SansuPayrollSystemManagement
     {
         private readonly DBHelper db = new DBHelper();
         private string userRole;
+        private string loggedInName;
 
-        // ===========================================
-        // CORRECT CONSTRUCTOR
-        // ===========================================
-        public DashboardForm(string role = "")
+        // FIXED CONSTRUCTOR — accepts both FULL NAME and ROLE
+        public DashboardForm(string fullName, string role)
         {
             InitializeComponent();
+            loggedInName = fullName;
             userRole = role;
         }
 
@@ -29,6 +29,13 @@ namespace SansuPayrollSystemManagement
         private void DashboardForm_Load(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Maximized;
+
+            // Set welcome label with employee name
+            if (!string.IsNullOrWhiteSpace(loggedInName))
+                lblSubTitle.Text = $"Welcome, {loggedInName} — to Sansu Payroll Performance Dashboard.";
+            else
+                lblSubTitle.Text = "Welcome to Sansu Payroll Performance Dashboard.";
+
             OpenDashboard();
         }
 
@@ -53,11 +60,11 @@ namespace SansuPayrollSystemManagement
             panelContainer.Controls.Add(page);
         }
 
-        private void OpenEmployeesPage() => LoadPage(new EmployeeControl());
-        private void OpenAttendancePage() => LoadPage(new AttendanceControl());
-        private void OpenPayrollPage() => LoadPage(new PayrollControl());
-        private void OpenPerformancePage() => LoadPage(new PerformanceControl());
-        private void OpenSettingsPage() => LoadPage(new SettingsControl());
+        private void OpenEmployeesPage() => LoadPage(new EmployeeControl(userRole));
+        private void OpenAttendancePage() => LoadPage(new AttendanceControl(userRole));
+        private void OpenPayrollPage() => LoadPage(new PayrollControl(userRole));
+        private void OpenPerformancePage() => LoadPage(new PerformanceControl(userRole));
+        private void OpenSettingsPage() => LoadPage(new SettingsControl(userRole));
 
         // Side menu buttons
         private void guna2ButtonDashboard_Click(object sender, EventArgs e) => OpenDashboard();
@@ -122,16 +129,34 @@ namespace SansuPayrollSystemManagement
         // ===========================================
         private void LoadRecentActivity()
         {
-            if (dgvRecentActivity == null)
-                return;
+            try
+            {
+                string sql = @"
+                    SELECT 
+                        DateTimeLogged,
+                        FullName,
+                        Action
+                    FROM ActivityLog
+                    ORDER BY DateTimeLogged DESC
+                    LIMIT 20;";
 
-            dgvRecentActivity.Rows.Clear();
+                DataTable dt = db.GetData(sql);
 
-            dgvRecentActivity.Rows.Add("Nov 23, 2025 10:30 AM", "Employee Logged In", "Raven");
-            dgvRecentActivity.Rows.Add("Nov 23, 2025 09:15 AM", "New Employee Added", "Admin");
-            dgvRecentActivity.Rows.Add("Nov 22, 2025 04:50 PM", "Payroll Generated", "HR Manager");
-            dgvRecentActivity.Rows.Add("Nov 22, 2025 01:22 PM", "Attendance Logged", "Ellen");
-            dgvRecentActivity.Rows.Add("Nov 21, 2025 05:30 PM", "Performance Score Updated", "Manager");
+                dgvRecentActivity.Rows.Clear();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    dgvRecentActivity.Rows.Add(
+                        Convert.ToDateTime(row["DateTimeLogged"]).ToString("MMM dd, yyyy hh:mm tt"),
+                        row["FullName"].ToString(),
+                        row["Action"].ToString()
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to load recent activity:\n" + ex.Message);
+            }
         }
 
         // ===========================================
@@ -148,7 +173,7 @@ namespace SansuPayrollSystemManagement
             if (result == DialogResult.Yes)
             {
                 this.Hide();
-                var loginForm = new LoginForm();    // FIXED
+                var loginForm = new LoginForm();
                 loginForm.Show();
                 this.Close();
             }
@@ -160,5 +185,23 @@ namespace SansuPayrollSystemManagement
         private void dgvRecentActivity_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
         private void flowKpiRow_Paint(object sender, PaintEventArgs e) { }
         private void panelDashboard_Paint(object sender, PaintEventArgs e) { }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+        "Are you sure you want to log out?",
+        "Logout",
+        MessageBoxButtons.YesNo,
+        MessageBoxIcon.Question
+    );
+
+            if (result == DialogResult.Yes)
+            {
+                this.Hide();
+                LoginForm login = new LoginForm();
+                login.Show();
+                this.Close();
+            }
+        }
     }
 }

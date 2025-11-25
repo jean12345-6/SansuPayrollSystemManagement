@@ -91,7 +91,7 @@
             this.btnBackDashboard.Size = new System.Drawing.Size(245, 35);
             this.btnBackDashboard.TabIndex = 11;
             this.btnBackDashboard.Text = "Back to Dashboard";
-            this.btnBackDashboard.Click += new System.EventHandler(this.btnBackDashboard_Click);
+            //this.btnBackDashboard.Click += new System.EventHandler(this.btnBackDashboard_Click);
             // 
             // label4
             // 

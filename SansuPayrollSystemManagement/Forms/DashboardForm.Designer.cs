@@ -22,9 +22,9 @@ namespace SansuPayrollSystemManagement
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
             this.panelContainer = new System.Windows.Forms.Panel();
             this.panelDashboard = new System.Windows.Forms.Panel();
@@ -38,6 +38,7 @@ namespace SansuPayrollSystemManagement
             this.btnIconPayroll = new Guna.UI2.WinForms.Guna2Button();
             this.btnIconPerformance = new Guna.UI2.WinForms.Guna2Button();
             this.btnIconSettings = new Guna.UI2.WinForms.Guna2Button();
+            this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
             this.panelNotification = new System.Windows.Forms.Panel();
             this.lblNotification = new System.Windows.Forms.Label();
             this.flowKpiRow = new System.Windows.Forms.FlowLayoutPanel();
@@ -53,8 +54,13 @@ namespace SansuPayrollSystemManagement
             this.shadowTotal = new Guna.UI2.WinForms.Guna2ShadowPanel();
             this.lblKpiTotalPayrollCost = new System.Windows.Forms.Label();
             this.lblCardTotalTitle = new System.Windows.Forms.Label();
+            this.panelHeaderUnderline = new System.Windows.Forms.Panel();
             this.lblSubTitle = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
+            this.guna2ShadowPanel1 = new Guna.UI2.WinForms.Guna2ShadowPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btnLogout = new Guna.UI2.WinForms.Guna2Button();
             this.guna2Panel2.SuspendLayout();
             this.panelContainer.SuspendLayout();
             this.panelDashboard.SuspendLayout();
@@ -66,6 +72,7 @@ namespace SansuPayrollSystemManagement
             this.shadowPresent.SuspendLayout();
             this.shadowPaid.SuspendLayout();
             this.shadowTotal.SuspendLayout();
+            this.guna2ShadowPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // guna2Panel2
@@ -91,10 +98,12 @@ namespace SansuPayrollSystemManagement
             // panelDashboard
             // 
             this.panelDashboard.BackColor = System.Drawing.Color.White;
+            this.panelDashboard.Controls.Add(this.btnLogout);
             this.panelDashboard.Controls.Add(this.dgvRecentActivity);
             this.panelDashboard.Controls.Add(this.flowBottomNav);
             this.panelDashboard.Controls.Add(this.panelNotification);
             this.panelDashboard.Controls.Add(this.flowKpiRow);
+            this.panelDashboard.Controls.Add(this.panelHeaderUnderline);
             this.panelDashboard.Controls.Add(this.lblSubTitle);
             this.panelDashboard.Controls.Add(this.lblTitle);
             this.panelDashboard.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -106,32 +115,32 @@ namespace SansuPayrollSystemManagement
             // 
             // dgvRecentActivity
             // 
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            this.dgvRecentActivity.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRecentActivity.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            this.dgvRecentActivity.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRecentActivity.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvRecentActivity.ColumnHeadersHeight = 18;
             this.dgvRecentActivity.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             this.dgvRecentActivity.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Date,
             this.user,
             this.Action});
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvRecentActivity.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvRecentActivity.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvRecentActivity.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgvRecentActivity.Location = new System.Drawing.Point(40, 321);
+            this.dgvRecentActivity.Location = new System.Drawing.Point(40, 335);
             this.dgvRecentActivity.Name = "dgvRecentActivity";
             this.dgvRecentActivity.RowHeadersVisible = false;
             this.dgvRecentActivity.RowHeadersWidth = 51;
@@ -147,14 +156,14 @@ namespace SansuPayrollSystemManagement
             this.dgvRecentActivity.ThemeStyle.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
             this.dgvRecentActivity.ThemeStyle.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.dgvRecentActivity.ThemeStyle.HeaderStyle.BorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.dgvRecentActivity.ThemeStyle.HeaderStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgvRecentActivity.ThemeStyle.HeaderStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F);
             this.dgvRecentActivity.ThemeStyle.HeaderStyle.ForeColor = System.Drawing.Color.White;
             this.dgvRecentActivity.ThemeStyle.HeaderStyle.HeaightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             this.dgvRecentActivity.ThemeStyle.HeaderStyle.Height = 18;
             this.dgvRecentActivity.ThemeStyle.ReadOnly = false;
             this.dgvRecentActivity.ThemeStyle.RowsStyle.BackColor = System.Drawing.Color.White;
             this.dgvRecentActivity.ThemeStyle.RowsStyle.BorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            this.dgvRecentActivity.ThemeStyle.RowsStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgvRecentActivity.ThemeStyle.RowsStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F);
             this.dgvRecentActivity.ThemeStyle.RowsStyle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
             this.dgvRecentActivity.ThemeStyle.RowsStyle.Height = 24;
             this.dgvRecentActivity.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
@@ -188,6 +197,7 @@ namespace SansuPayrollSystemManagement
             this.flowBottomNav.Controls.Add(this.btnIconPayroll);
             this.flowBottomNav.Controls.Add(this.btnIconPerformance);
             this.flowBottomNav.Controls.Add(this.btnIconSettings);
+            this.flowBottomNav.Controls.Add(this.guna2Button1);
             this.flowBottomNav.Location = new System.Drawing.Point(40, 896);
             this.flowBottomNav.Margin = new System.Windows.Forms.Padding(0);
             this.flowBottomNav.Name = "flowBottomNav";
@@ -283,13 +293,29 @@ namespace SansuPayrollSystemManagement
             this.btnIconSettings.Text = "SETTINGS";
             this.btnIconSettings.Click += new System.EventHandler(this.btnIconSettings_Click);
             // 
+            // guna2Button1
+            // 
+            this.guna2Button1.Animated = true;
+            this.guna2Button1.AutoRoundedCorners = true;
+            this.guna2Button1.BorderRadius = 44;
+            this.guna2Button1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(67)))), ((int)(((byte)(21)))));
+            this.guna2Button1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.guna2Button1.ForeColor = System.Drawing.Color.White;
+            this.guna2Button1.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(90)))), ((int)(((byte)(40)))));
+            this.guna2Button1.Location = new System.Drawing.Point(1520, 20);
+            this.guna2Button1.Margin = new System.Windows.Forms.Padding(20);
+            this.guna2Button1.Name = "guna2Button1";
+            this.guna2Button1.Size = new System.Drawing.Size(260, 90);
+            this.guna2Button1.TabIndex = 5;
+            this.guna2Button1.Text = "PERFORMANCE";
+            // 
             // panelNotification
             // 
             this.panelNotification.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelNotification.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(53)))), ((int)(((byte)(70)))));
             this.panelNotification.Controls.Add(this.lblNotification);
-            this.panelNotification.Location = new System.Drawing.Point(40, 270);
+            this.panelNotification.Location = new System.Drawing.Point(40, 284);
             this.panelNotification.Name = "panelNotification";
             this.panelNotification.Size = new System.Drawing.Size(1842, 45);
             this.panelNotification.TabIndex = 3;
@@ -316,7 +342,7 @@ namespace SansuPayrollSystemManagement
             this.flowKpiRow.Controls.Add(this.shadowPresent);
             this.flowKpiRow.Controls.Add(this.shadowPaid);
             this.flowKpiRow.Controls.Add(this.shadowTotal);
-            this.flowKpiRow.Location = new System.Drawing.Point(40, 120);
+            this.flowKpiRow.Location = new System.Drawing.Point(40, 134);
             this.flowKpiRow.Name = "flowKpiRow";
             this.flowKpiRow.Size = new System.Drawing.Size(1842, 140);
             this.flowKpiRow.TabIndex = 2;
@@ -354,9 +380,9 @@ namespace SansuPayrollSystemManagement
             this.lblCardEmployeesTitle.ForeColor = System.Drawing.Color.White;
             this.lblCardEmployeesTitle.Location = new System.Drawing.Point(22, 18);
             this.lblCardEmployeesTitle.Name = "lblCardEmployeesTitle";
-            this.lblCardEmployeesTitle.Size = new System.Drawing.Size(132, 23);
+            this.lblCardEmployeesTitle.Size = new System.Drawing.Size(160, 23);
             this.lblCardEmployeesTitle.TabIndex = 0;
-            this.lblCardEmployeesTitle.Text = "Total Employees";
+            this.lblCardEmployeesTitle.Text = "👥 Total Employees";
             // 
             // shadowPresent
             // 
@@ -390,9 +416,9 @@ namespace SansuPayrollSystemManagement
             this.lblCardPresentTitle.ForeColor = System.Drawing.Color.White;
             this.lblCardPresentTitle.Location = new System.Drawing.Point(22, 18);
             this.lblCardPresentTitle.Name = "lblCardPresentTitle";
-            this.lblCardPresentTitle.Size = new System.Drawing.Size(116, 23);
+            this.lblCardPresentTitle.Size = new System.Drawing.Size(144, 23);
             this.lblCardPresentTitle.TabIndex = 0;
-            this.lblCardPresentTitle.Text = "Present Today";
+            this.lblCardPresentTitle.Text = "📅 Present Today";
             // 
             // shadowPaid
             // 
@@ -426,13 +452,14 @@ namespace SansuPayrollSystemManagement
             this.lblCardPaidTitle.ForeColor = System.Drawing.Color.White;
             this.lblCardPaidTitle.Location = new System.Drawing.Point(22, 18);
             this.lblCardPaidTitle.Name = "lblCardPaidTitle";
-            this.lblCardPaidTitle.Size = new System.Drawing.Size(158, 23);
+            this.lblCardPaidTitle.Size = new System.Drawing.Size(186, 23);
             this.lblCardPaidTitle.TabIndex = 0;
-            this.lblCardPaidTitle.Text = "Paid This Month (₱)";
+            this.lblCardPaidTitle.Text = "💸 Paid This Month (₱)";
             // 
             // shadowTotal
             // 
             this.shadowTotal.BackColor = System.Drawing.Color.Transparent;
+            this.shadowTotal.Controls.Add(this.guna2ShadowPanel1);
             this.shadowTotal.Controls.Add(this.lblKpiTotalPayrollCost);
             this.shadowTotal.Controls.Add(this.lblCardTotalTitle);
             this.shadowTotal.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(67)))), ((int)(((byte)(21)))));
@@ -462,15 +489,23 @@ namespace SansuPayrollSystemManagement
             this.lblCardTotalTitle.ForeColor = System.Drawing.Color.White;
             this.lblCardTotalTitle.Location = new System.Drawing.Point(22, 18);
             this.lblCardTotalTitle.Name = "lblCardTotalTitle";
-            this.lblCardTotalTitle.Size = new System.Drawing.Size(165, 23);
+            this.lblCardTotalTitle.Size = new System.Drawing.Size(193, 23);
             this.lblCardTotalTitle.TabIndex = 0;
-            this.lblCardTotalTitle.Text = "Total Payroll Cost (₱)";
+            this.lblCardTotalTitle.Text = "🧾 Total Payroll Cost (₱)";
+            // 
+            // panelHeaderUnderline
+            // 
+            this.panelHeaderUnderline.BackColor = System.Drawing.Color.Gainsboro;
+            this.panelHeaderUnderline.Location = new System.Drawing.Point(40, 88);
+            this.panelHeaderUnderline.Name = "panelHeaderUnderline";
+            this.panelHeaderUnderline.Size = new System.Drawing.Size(520, 2);
+            this.panelHeaderUnderline.TabIndex = 6;
             // 
             // lblSubTitle
             // 
             this.lblSubTitle.AutoSize = true;
             this.lblSubTitle.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblSubTitle.Location = new System.Drawing.Point(44, 80);
+            this.lblSubTitle.Location = new System.Drawing.Point(39, 97);
             this.lblSubTitle.Name = "lblSubTitle";
             this.lblSubTitle.Size = new System.Drawing.Size(399, 23);
             this.lblSubTitle.TabIndex = 1;
@@ -485,6 +520,57 @@ namespace SansuPayrollSystemManagement
             this.lblTitle.Size = new System.Drawing.Size(471, 51);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Dashboard Overview";
+            // 
+            // guna2ShadowPanel1
+            // 
+            this.guna2ShadowPanel1.BackColor = System.Drawing.Color.Transparent;
+            this.guna2ShadowPanel1.Controls.Add(this.label1);
+            this.guna2ShadowPanel1.Controls.Add(this.label2);
+            this.guna2ShadowPanel1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(67)))), ((int)(((byte)(21)))));
+            this.guna2ShadowPanel1.Location = new System.Drawing.Point(1307, 3);
+            this.guna2ShadowPanel1.Name = "guna2ShadowPanel1";
+            this.guna2ShadowPanel1.Radius = 6;
+            this.guna2ShadowPanel1.ShadowColor = System.Drawing.Color.Gray;
+            this.guna2ShadowPanel1.ShadowDepth = 20;
+            this.guna2ShadowPanel1.Size = new System.Drawing.Size(320, 120);
+            this.guna2ShadowPanel1.TabIndex = 4;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold);
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(20, 50);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(140, 54);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "₱ 0.00";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(22, 18);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(193, 23);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "🧾 Total Payroll Cost (₱)";
+            // 
+            // btnLogout
+            // 
+            this.btnLogout.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnLogout.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnLogout.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnLogout.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnLogout.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnLogout.ForeColor = System.Drawing.Color.White;
+            this.btnLogout.Location = new System.Drawing.Point(1670, 73);
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.Size = new System.Drawing.Size(180, 45);
+            this.btnLogout.TabIndex = 7;
+            this.btnLogout.Text = "Logout";
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
             // DashboardForm
             // 
@@ -512,6 +598,8 @@ namespace SansuPayrollSystemManagement
             this.shadowPaid.PerformLayout();
             this.shadowTotal.ResumeLayout(false);
             this.shadowTotal.PerformLayout();
+            this.guna2ShadowPanel1.ResumeLayout(false);
+            this.guna2ShadowPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -554,5 +642,12 @@ namespace SansuPayrollSystemManagement
         private DataGridViewTextBoxColumn Date;
         private DataGridViewTextBoxColumn user;
         private DataGridViewTextBoxColumn Action;
+
+        private System.Windows.Forms.Panel panelHeaderUnderline;
+        private Guna.UI2.WinForms.Guna2Button guna2Button1;
+        private Guna.UI2.WinForms.Guna2Button btnLogout;
+        private Guna.UI2.WinForms.Guna2ShadowPanel guna2ShadowPanel1;
+        private Label label1;
+        private Label label2;
     }
 }

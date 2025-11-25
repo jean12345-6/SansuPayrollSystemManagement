@@ -81,7 +81,7 @@ namespace SansuPayrollSystemManagement
                 }
 
                 SaveRememberMe(username);
-                LoadDashboard();
+                //LoadDashboard();
             }
             catch (Exception ex)
             {
@@ -128,15 +128,15 @@ namespace SansuPayrollSystemManagement
         // ============================================================
         // LOAD DASHBOARD
         // ============================================================
-        private void LoadDashboard()
-        {
-            Form parent = this.FindForm();
-            DashboardForm dashboard = new DashboardForm();
+        //private void LoadDashboard()
+        //{
+        //    Form parent = this.FindForm();
+        //    DashboardForm dashboard = new DashboardForm();
 
-            dashboard.FormClosed += (s, e) => parent.Close();
+        //    dashboard.FormClosed += (s, e) => parent.Close();
 
-            parent.Hide();
-            dashboard.Show();
-        }
+        //    parent.Hide();
+        //    dashboard.Show();
+        //}
     }
 }

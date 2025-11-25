@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using SansuPayrollSystemManagement.Services;
+using System;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
-using SansuPayrollSystemManagement.Services;
 
 namespace SansuPayrollSystemManagement.Forms
 {
@@ -20,7 +20,6 @@ namespace SansuPayrollSystemManagement.Forms
             InitializeComponent();
             _payrollId = payrollId;
 
-            // Attach print event
             payslipDocument.PrintPage += PayslipDocument_PrintPage;
         }
 
@@ -30,7 +29,7 @@ namespace SansuPayrollSystemManagement.Forms
         }
 
         // =========================================================
-        //  LOAD PAYROLL DETAILS
+        //  LOAD PAYROLL DETAILS (FROM Payroll TABLE ONLY)
         // =========================================================
         private void LoadPayrollDetails()
         {
@@ -62,39 +61,58 @@ namespace SansuPayrollSystemManagement.Forms
                 lblEmployeeName.Text = row["FullName"].ToString();
                 lblPosition.Text = row["Position"].ToString();
 
-                DateTime start = Convert.ToDateTime(row["PayPeriodStart"]);
-                DateTime end = Convert.ToDateTime(row["PayPeriodEnd"]);
-                lblPeriod.Text = $"{start:MMM dd} - {end:MMM dd, yyyy}";
+                DateTime periodStart = Convert.ToDateTime(row["PayPeriodStart"]);
+                DateTime periodEnd = Convert.ToDateTime(row["PayPeriodEnd"]);
+                lblPeriod.Text = $"{periodStart:MMM dd} - {periodEnd:MMM dd, yyyy}";
 
                 // ===== EARNINGS =====
-                lblDaysWorkedValue.Text = FormatNumber(row["DaysWorked"]);
-                lblOvertimeHoursValue.Text = FormatNumber(row["OvertimeHours"]);
-                lblBasicSalaryValue.Text = FormatPeso(row["BasicSalary"]);
-                lblGrossPayValue.Text = FormatPeso(row["GrossPay"]);
+                int daysWorked = row.Table.Columns.Contains("DaysWorked") && row["DaysWorked"] != DBNull.Value
+                    ? Convert.ToInt32(row["DaysWorked"])
+                    : 0;
+
+                decimal regularHours = row["RegularHours"] != DBNull.Value
+                    ? Convert.ToDecimal(row["RegularHours"])
+                    : 0m;
+
+                decimal overtimeHours = row["OvertimeHours"] != DBNull.Value
+                    ? Convert.ToDecimal(row["OvertimeHours"])
+                    : 0m;
+
+                decimal basicSalary = SafeDecimal(row["BasicSalary"]);
+                decimal overtimePay = SafeDecimal(row["OvertimePay"]);
+                decimal grossPay = SafeDecimal(row["GrossPay"]);
+
+                // Fallback if GrossPay not stored
+                if (grossPay == 0 && (basicSalary > 0 || overtimePay > 0))
+                    grossPay = basicSalary + overtimePay;
+
+                lblDaysWorkedValue.Text = daysWorked.ToString();
+                lblOvertimeHoursValue.Text = overtimeHours.ToString("0.##");
+                lblBasicSalaryValue.Text = FormatPeso(basicSalary);
+                lblGrossPayValue.Text = FormatPeso(grossPay);
 
                 // ===== DEDUCTIONS =====
                 decimal sss = SafeDecimal(row["SSS"]);
                 decimal philHealth = SafeDecimal(row["PhilHealth"]);
                 decimal pagIbig = SafeDecimal(row["PagIbig"]);
-                decimal late = SafeDecimal(row["LateDeduction"]);
-                decimal absence = SafeDecimal(row["AbsenceDeduction"]);
-                decimal dbTotal = SafeDecimal(row["TotalDeductions"]);
+                decimal lateDeduction = SafeDecimal(row["LateDeduction"]);
+                decimal absenceDeduction = SafeDecimal(row["AbsenceDeduction"]);
+
+                decimal totalDeductions = SafeDecimal(row["TotalDeductions"]);
+                if (totalDeductions == 0)
+                    totalDeductions = sss + philHealth + pagIbig + lateDeduction + absenceDeduction;
 
                 lblSSSValue.Text = FormatPeso(sss);
                 lblPhilHealthValue.Text = FormatPeso(philHealth);
                 lblPagIbigValue.Text = FormatPeso(pagIbig);
-                lblLateDeductionValue.Text = FormatPeso(late);
-                lblAbsenceDeductionValue.Text = FormatPeso(absence);
-
-                decimal computedTotal = sss + philHealth + pagIbig + late + absence;
-                decimal finalTotal = dbTotal > 0 ? dbTotal : computedTotal;
-
-                lblTotalDeductionsValue.Text = FormatPeso(finalTotal);
+                lblLateDeductionValue.Text = FormatPeso(lateDeduction);
+                lblAbsenceDeductionValue.Text = FormatPeso(absenceDeduction);
+                lblTotalDeductionsValue.Text = FormatPeso(totalDeductions);
 
                 // ===== NET PAY =====
                 decimal netPay = SafeDecimal(row["NetPay"]);
-                if (netPay <= 0 && SafeDecimal(row["GrossPay"]) > 0)
-                    netPay = SafeDecimal(row["GrossPay"]) - finalTotal;
+                if (netPay == 0 && grossPay > 0)
+                    netPay = grossPay - totalDeductions;
 
                 lblNetPayValue.Text = FormatPeso(netPay);
             }
@@ -110,10 +128,12 @@ namespace SansuPayrollSystemManagement.Forms
         // =========================================================
         private void btnPrintPayslip_Click(object sender, EventArgs e)
         {
-            PrintPreviewDialog preview = new PrintPreviewDialog();
-            preview.Document = payslipDocument;
-            preview.Width = 1200;
-            preview.Height = 900;
+            PrintPreviewDialog preview = new PrintPreviewDialog
+            {
+                Document = payslipDocument,
+                Width = 1200,
+                Height = 900
+            };
             preview.ShowDialog();
         }
 
@@ -131,13 +151,10 @@ namespace SansuPayrollSystemManagement.Forms
             int top = 40;
             int gap = 25;
 
-            // Header
             e.Graphics.DrawString("Sansu Restaurant – PAYSLIP", headerFont, Brushes.Black, left, top);
             top += 45;
 
-            // ======================================
-            // EMPLOYEE SECTION
-            // ======================================
+            // EMPLOYEE
             e.Graphics.DrawString("EMPLOYEE", subHeaderFont, Brushes.Black, left, top);
             top += 30;
 
@@ -150,9 +167,7 @@ namespace SansuPayrollSystemManagement.Forms
             e.Graphics.DrawString($"Pay Period: {lblPeriod.Text}", labelFont, Brushes.Black, left, top);
             top += gap * 2;
 
-            // ======================================
             // EARNINGS
-            // ======================================
             e.Graphics.DrawString("EARNINGS", subHeaderFont, Brushes.Black, left, top);
             top += 30;
 
@@ -168,9 +183,7 @@ namespace SansuPayrollSystemManagement.Forms
             e.Graphics.DrawString($"Gross Pay: {lblGrossPayValue.Text}", textFont, Brushes.Black, left, top);
             top += gap * 2;
 
-            // ======================================
             // DEDUCTIONS
-            // ======================================
             e.Graphics.DrawString("DEDUCTIONS", subHeaderFont, Brushes.Black, left, top);
             top += 30;
 
@@ -192,9 +205,7 @@ namespace SansuPayrollSystemManagement.Forms
             e.Graphics.DrawString($"Total Deductions: {lblTotalDeductionsValue.Text}", labelFont, Brushes.Black, left, top);
             top += gap * 2;
 
-            // ======================================
             // NET PAY BOX
-            // ======================================
             Rectangle netBox = new Rectangle(left, top, 700, 40);
 
             e.Graphics.FillRectangle(Brushes.WhiteSmoke, netBox);
@@ -218,7 +229,6 @@ namespace SansuPayrollSystemManagement.Forms
         // =========================================================
         //  HELPERS
         // =========================================================
-
         private decimal SafeDecimal(object value)
         {
             if (value == null || value == DBNull.Value)
@@ -226,12 +236,6 @@ namespace SansuPayrollSystemManagement.Forms
 
             decimal v;
             return decimal.TryParse(value.ToString(), out v) ? v : 0;
-        }
-
-        private string FormatNumber(object value)
-        {
-            decimal v = SafeDecimal(value);
-            return v.ToString("0.##");
         }
 
         private string FormatPeso(object value)
@@ -242,7 +246,10 @@ namespace SansuPayrollSystemManagement.Forms
 
         private void headerPanel_Paint(object sender, PaintEventArgs e)
         {
+        }
 
+        private void headerPanel_Paint_1(object sender, PaintEventArgs e)
+        {
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Windows.Forms;
 using System.Drawing;
 
-
 namespace SansuPayrollSystemManagement
 {
     partial class LoginForm
@@ -13,7 +12,6 @@ namespace SansuPayrollSystemManagement
         private Guna.UI2.WinForms.Guna2Panel panelLeft;
         private Guna.UI2.WinForms.Guna2Panel panelRight;
 
-        private PictureBox imgIllustration;
         private Label lblHeroTitle1;
         private Label lblHeroTitle2;
         private Label lblHeroTitle3;
@@ -27,29 +25,26 @@ namespace SansuPayrollSystemManagement
 
         private Guna.UI2.WinForms.Guna2TextBox txtUsername;
         private Guna.UI2.WinForms.Guna2TextBox txtPassword;
+
         private CheckBox chkRemember;
         private LinkLabel lnkForgotPassword;
         private Guna.UI2.WinForms.Guna2Button btnLogin;
 
-        private Label lblOrLoginWith;
-        private LinkLabel lnkGoogle;
-        private LinkLabel lnkFacebook;
+        private Label lblSignup;
         private LinkLabel lnkSignup;
 
         private Guna.UI2.WinForms.Guna2ControlBox btnClose;
         private Guna.UI2.WinForms.Guna2ControlBox btnMinimize;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
+
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && components != null)
                 components.Dispose();
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+        #region Designer Code
 
         private void InitializeComponent()
         {
@@ -66,23 +61,19 @@ namespace SansuPayrollSystemManagement
             this.chkRemember = new System.Windows.Forms.CheckBox();
             this.lnkForgotPassword = new System.Windows.Forms.LinkLabel();
             this.btnLogin = new Guna.UI2.WinForms.Guna2Button();
-            this.lblOrLoginWith = new System.Windows.Forms.Label();
-            this.lnkGoogle = new System.Windows.Forms.LinkLabel();
-            this.lnkFacebook = new System.Windows.Forms.LinkLabel();
+            this.lblSignup = new System.Windows.Forms.Label();
             this.lnkSignup = new System.Windows.Forms.LinkLabel();
             this.panelLeft = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblHeroSubtitle = new System.Windows.Forms.Label();
-            this.lblHeroTitle3 = new System.Windows.Forms.Label();
-            this.lblHeroTitle2 = new System.Windows.Forms.Label();
             this.lblHeroTitle1 = new System.Windows.Forms.Label();
+            this.lblHeroTitle2 = new System.Windows.Forms.Label();
+            this.lblHeroTitle3 = new System.Windows.Forms.Label();
+            this.lblHeroSubtitle = new System.Windows.Forms.Label();
             this.btnClose = new Guna.UI2.WinForms.Guna2ControlBox();
             this.btnMinimize = new Guna.UI2.WinForms.Guna2ControlBox();
-            this.imgIllustration = new System.Windows.Forms.PictureBox();
             this.panelBackground.SuspendLayout();
             this.card.SuspendLayout();
             this.panelRight.SuspendLayout();
             this.panelLeft.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.imgIllustration)).BeginInit();
             this.SuspendLayout();
             // 
             // panelBackground
@@ -92,8 +83,9 @@ namespace SansuPayrollSystemManagement
             this.panelBackground.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.panelBackground.Location = new System.Drawing.Point(0, 0);
             this.panelBackground.Name = "panelBackground";
-            this.panelBackground.Size = new System.Drawing.Size(1942, 1102);
+            this.panelBackground.Size = new System.Drawing.Size(1942, 1100);
             this.panelBackground.TabIndex = 2;
+            this.panelBackground.Paint += new System.Windows.Forms.PaintEventHandler(this.panelBackground_Paint);
             // 
             // card
             // 
@@ -101,13 +93,13 @@ namespace SansuPayrollSystemManagement
             this.card.Controls.Add(this.panelRight);
             this.card.Controls.Add(this.panelLeft);
             this.card.FillColor = System.Drawing.Color.White;
-            this.card.Location = new System.Drawing.Point(350, 200);
+            this.card.Location = new System.Drawing.Point(0, 0);
             this.card.Name = "card";
-            this.card.Radius = 30;
-            this.card.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.card.ShadowDepth = 20;
-            this.card.ShadowShift = 4;
-            this.card.Size = new System.Drawing.Size(1200, 650);
+            this.card.Radius = 40;
+            this.card.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.card.ShadowDepth = 30;
+            this.card.ShadowShift = 8;
+            this.card.Size = new System.Drawing.Size(1400, 750);
             this.card.TabIndex = 0;
             // 
             // panelRight
@@ -122,24 +114,20 @@ namespace SansuPayrollSystemManagement
             this.panelRight.Controls.Add(this.chkRemember);
             this.panelRight.Controls.Add(this.lnkForgotPassword);
             this.panelRight.Controls.Add(this.btnLogin);
-            this.panelRight.Controls.Add(this.lblOrLoginWith);
-            this.panelRight.Controls.Add(this.lnkGoogle);
-            this.panelRight.Controls.Add(this.lnkFacebook);
+            this.panelRight.Controls.Add(this.lblSignup);
             this.panelRight.Controls.Add(this.lnkSignup);
             this.panelRight.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelRight.FillColor = System.Drawing.Color.White;
             this.panelRight.Location = new System.Drawing.Point(520, 0);
             this.panelRight.Name = "panelRight";
             this.panelRight.Padding = new System.Windows.Forms.Padding(60, 60, 60, 40);
-            this.panelRight.ShadowDecoration.BorderRadius = 20;
-            this.panelRight.Size = new System.Drawing.Size(680, 650);
+            this.panelRight.Size = new System.Drawing.Size(880, 750);
             this.panelRight.TabIndex = 0;
             // 
             // lblBrand
             // 
             this.lblBrand.AutoSize = true;
             this.lblBrand.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblBrand.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
             this.lblBrand.Location = new System.Drawing.Point(0, 0);
             this.lblBrand.Name = "lblBrand";
             this.lblBrand.Size = new System.Drawing.Size(196, 23);
@@ -150,7 +138,6 @@ namespace SansuPayrollSystemManagement
             // 
             this.lblWelcomeTitle.AutoSize = true;
             this.lblWelcomeTitle.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
-            this.lblWelcomeTitle.ForeColor = System.Drawing.Color.Black;
             this.lblWelcomeTitle.Location = new System.Drawing.Point(0, 40);
             this.lblWelcomeTitle.Name = "lblWelcomeTitle";
             this.lblWelcomeTitle.Size = new System.Drawing.Size(277, 50);
@@ -172,7 +159,6 @@ namespace SansuPayrollSystemManagement
             // 
             this.lblUsername.AutoSize = true;
             this.lblUsername.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblUsername.ForeColor = System.Drawing.Color.Black;
             this.lblUsername.Location = new System.Drawing.Point(0, 135);
             this.lblUsername.Name = "lblUsername";
             this.lblUsername.Size = new System.Drawing.Size(75, 20);
@@ -190,14 +176,13 @@ namespace SansuPayrollSystemManagement
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.PlaceholderText = "Enter username";
             this.txtUsername.SelectedText = "";
-            this.txtUsername.Size = new System.Drawing.Size(430, 40);
+            this.txtUsername.Size = new System.Drawing.Size(420, 40);
             this.txtUsername.TabIndex = 4;
             // 
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
             this.lblPassword.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblPassword.ForeColor = System.Drawing.Color.Black;
             this.lblPassword.Location = new System.Drawing.Point(0, 210);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(70, 20);
@@ -215,7 +200,7 @@ namespace SansuPayrollSystemManagement
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PlaceholderText = "Enter password";
             this.txtPassword.SelectedText = "";
-            this.txtPassword.Size = new System.Drawing.Size(430, 40);
+            this.txtPassword.Size = new System.Drawing.Size(420, 40);
             this.txtPassword.TabIndex = 6;
             this.txtPassword.UseSystemPasswordChar = true;
             // 
@@ -232,11 +217,10 @@ namespace SansuPayrollSystemManagement
             // lnkForgotPassword
             // 
             this.lnkForgotPassword.AutoSize = true;
-            this.lnkForgotPassword.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lnkForgotPassword.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
             this.lnkForgotPassword.Location = new System.Drawing.Point(320, 283);
             this.lnkForgotPassword.Name = "lnkForgotPassword";
-            this.lnkForgotPassword.Size = new System.Drawing.Size(125, 20);
+            this.lnkForgotPassword.Size = new System.Drawing.Size(116, 16);
             this.lnkForgotPassword.TabIndex = 8;
             this.lnkForgotPassword.TabStop = true;
             this.lnkForgotPassword.Text = "Forgot Password?";
@@ -247,88 +231,71 @@ namespace SansuPayrollSystemManagement
             this.btnLogin.BorderRadius = 8;
             this.btnLogin.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.btnLogin.ForeColor = System.Drawing.Color.White;
-            this.btnLogin.Location = new System.Drawing.Point(0, 315);
+            this.btnLogin.Location = new System.Drawing.Point(0, 320);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(430, 45);
+            this.btnLogin.Size = new System.Drawing.Size(420, 45);
             this.btnLogin.TabIndex = 9;
             this.btnLogin.Text = "Login";
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
-            // lblOrLoginWith
+            // lblSignup
             // 
-            this.lblOrLoginWith.AutoSize = true;
-            this.lblOrLoginWith.Font = new System.Drawing.Font("Segoe UI", 8.5F);
-            this.lblOrLoginWith.ForeColor = System.Drawing.Color.Gray;
-            this.lblOrLoginWith.Location = new System.Drawing.Point(0, 370);
-            this.lblOrLoginWith.Name = "lblOrLoginWith";
-            this.lblOrLoginWith.Size = new System.Drawing.Size(93, 20);
-            this.lblOrLoginWith.TabIndex = 10;
-            this.lblOrLoginWith.Text = "or login with";
-            // 
-            // lnkGoogle
-            // 
-            this.lnkGoogle.AutoSize = true;
-            this.lnkGoogle.Font = new System.Drawing.Font("Segoe UI", 8.5F);
-            this.lnkGoogle.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(133)))), ((int)(((byte)(244)))));
-            this.lnkGoogle.Location = new System.Drawing.Point(75, 370);
-            this.lnkGoogle.Name = "lnkGoogle";
-            this.lnkGoogle.Size = new System.Drawing.Size(58, 20);
-            this.lnkGoogle.TabIndex = 11;
-            this.lnkGoogle.TabStop = true;
-            this.lnkGoogle.Text = "Google";
-            // 
-            // lnkFacebook
-            // 
-            this.lnkFacebook.AutoSize = true;
-            this.lnkFacebook.Font = new System.Drawing.Font("Segoe UI", 8.5F);
-            this.lnkFacebook.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(89)))), ((int)(((byte)(152)))));
-            this.lnkFacebook.Location = new System.Drawing.Point(135, 370);
-            this.lnkFacebook.Name = "lnkFacebook";
-            this.lnkFacebook.Size = new System.Drawing.Size(72, 20);
-            this.lnkFacebook.TabIndex = 12;
-            this.lnkFacebook.TabStop = true;
-            this.lnkFacebook.Text = "Facebook";
+            this.lblSignup.AutoSize = true;
+            this.lblSignup.Font = new System.Drawing.Font("Segoe UI", 8.5F);
+            this.lblSignup.Location = new System.Drawing.Point(0, 385);
+            this.lblSignup.Name = "lblSignup";
+            this.lblSignup.Size = new System.Drawing.Size(163, 20);
+            this.lblSignup.TabIndex = 10;
+            this.lblSignup.Text = "Don\'t have an account?";
             // 
             // lnkSignup
             // 
-            this.lnkSignup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lnkSignup.AutoSize = true;
             this.lnkSignup.Font = new System.Drawing.Font("Segoe UI", 8.5F);
             this.lnkSignup.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
-            this.lnkSignup.Location = new System.Drawing.Point(0, 960);
+            this.lnkSignup.Location = new System.Drawing.Point(150, 385);
             this.lnkSignup.Name = "lnkSignup";
-            this.lnkSignup.Size = new System.Drawing.Size(217, 20);
-            this.lnkSignup.TabIndex = 13;
+            this.lnkSignup.Size = new System.Drawing.Size(55, 20);
+            this.lnkSignup.TabIndex = 11;
             this.lnkSignup.TabStop = true;
-            this.lnkSignup.Text = "Don’t have an account?  Signup";
+            this.lnkSignup.Text = "Signup";
+            this.lnkSignup.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkSignup_LinkClicked);
             // 
             // panelLeft
             // 
-            this.panelLeft.Controls.Add(this.imgIllustration);
-            this.panelLeft.Controls.Add(this.lblHeroSubtitle);
-            this.panelLeft.Controls.Add(this.lblHeroTitle3);
-            this.panelLeft.Controls.Add(this.lblHeroTitle2);
             this.panelLeft.Controls.Add(this.lblHeroTitle1);
+            this.panelLeft.Controls.Add(this.lblHeroTitle2);
+            this.panelLeft.Controls.Add(this.lblHeroTitle3);
+            this.panelLeft.Controls.Add(this.lblHeroSubtitle);
             this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelLeft.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(137)))), ((int)(((byte)(0)))));
             this.panelLeft.Location = new System.Drawing.Point(0, 0);
             this.panelLeft.Name = "panelLeft";
             this.panelLeft.Padding = new System.Windows.Forms.Padding(40);
-            this.panelLeft.Size = new System.Drawing.Size(520, 650);
+            this.panelLeft.Size = new System.Drawing.Size(520, 750);
             this.panelLeft.TabIndex = 1;
             // 
-            // lblHeroSubtitle
+            // lblHeroTitle1
             // 
-            this.lblHeroSubtitle.AutoSize = true;
-            this.lblHeroSubtitle.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblHeroSubtitle.ForeColor = System.Drawing.Color.White;
-            this.lblHeroSubtitle.Location = new System.Drawing.Point(0, 190);
-            this.lblHeroSubtitle.MaximumSize = new System.Drawing.Size(400, 0);
-            this.lblHeroSubtitle.Name = "lblHeroSubtitle";
-            this.lblHeroSubtitle.Size = new System.Drawing.Size(395, 46);
-            this.lblHeroSubtitle.TabIndex = 1;
-            this.lblHeroSubtitle.Text = "Manage Sansu Restaurant\'s HR and payroll in one place with our user-friendly admi" +
-    "n dashboard.";
+            this.lblHeroTitle1.AutoSize = true;
+            this.lblHeroTitle1.Font = new System.Drawing.Font("Segoe UI", 26F, System.Drawing.FontStyle.Bold);
+            this.lblHeroTitle1.ForeColor = System.Drawing.Color.White;
+            this.lblHeroTitle1.Location = new System.Drawing.Point(0, 10);
+            this.lblHeroTitle1.Name = "lblHeroTitle1";
+            this.lblHeroTitle1.Size = new System.Drawing.Size(198, 60);
+            this.lblHeroTitle1.TabIndex = 0;
+            this.lblHeroTitle1.Text = "Simplify";
+            // 
+            // lblHeroTitle2
+            // 
+            this.lblHeroTitle2.AutoSize = true;
+            this.lblHeroTitle2.Font = new System.Drawing.Font("Segoe UI", 26F, System.Drawing.FontStyle.Bold);
+            this.lblHeroTitle2.ForeColor = System.Drawing.Color.White;
+            this.lblHeroTitle2.Location = new System.Drawing.Point(0, 65);
+            this.lblHeroTitle2.Name = "lblHeroTitle2";
+            this.lblHeroTitle2.Size = new System.Drawing.Size(402, 60);
+            this.lblHeroTitle2.TabIndex = 1;
+            this.lblHeroTitle2.Text = "management with";
             // 
             // lblHeroTitle3
             // 
@@ -341,37 +308,28 @@ namespace SansuPayrollSystemManagement
             this.lblHeroTitle3.TabIndex = 2;
             this.lblHeroTitle3.Text = "our dashboard.";
             // 
-            // lblHeroTitle2
+            // lblHeroSubtitle
             // 
-            this.lblHeroTitle2.AutoSize = true;
-            this.lblHeroTitle2.Font = new System.Drawing.Font("Segoe UI", 26F, System.Drawing.FontStyle.Bold);
-            this.lblHeroTitle2.ForeColor = System.Drawing.Color.White;
-            this.lblHeroTitle2.Location = new System.Drawing.Point(0, 65);
-            this.lblHeroTitle2.Name = "lblHeroTitle2";
-            this.lblHeroTitle2.Size = new System.Drawing.Size(402, 60);
-            this.lblHeroTitle2.TabIndex = 3;
-            this.lblHeroTitle2.Text = "management with";
-            // 
-            // lblHeroTitle1
-            // 
-            this.lblHeroTitle1.AutoSize = true;
-            this.lblHeroTitle1.Font = new System.Drawing.Font("Segoe UI", 26F, System.Drawing.FontStyle.Bold);
-            this.lblHeroTitle1.ForeColor = System.Drawing.Color.White;
-            this.lblHeroTitle1.Location = new System.Drawing.Point(0, 10);
-            this.lblHeroTitle1.Name = "lblHeroTitle1";
-            this.lblHeroTitle1.Size = new System.Drawing.Size(198, 60);
-            this.lblHeroTitle1.TabIndex = 4;
-            this.lblHeroTitle1.Text = "Simplify";
+            this.lblHeroSubtitle.AutoSize = true;
+            this.lblHeroSubtitle.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblHeroSubtitle.ForeColor = System.Drawing.Color.White;
+            this.lblHeroSubtitle.Location = new System.Drawing.Point(0, 190);
+            this.lblHeroSubtitle.MaximumSize = new System.Drawing.Size(400, 0);
+            this.lblHeroSubtitle.Name = "lblHeroSubtitle";
+            this.lblHeroSubtitle.Size = new System.Drawing.Size(395, 46);
+            this.lblHeroSubtitle.TabIndex = 3;
+            this.lblHeroSubtitle.Text = "Manage Sansu Restaurant\'s HR and payroll in one place with our user-friendly admi" +
+    "n dashboard.";
             // 
             // btnClose
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(139)))), ((int)(((byte)(152)))), ((int)(((byte)(166)))));
             this.btnClose.IconColor = System.Drawing.Color.White;
-            this.btnClose.Location = new System.Drawing.Point(0, 0);
+            this.btnClose.Location = new System.Drawing.Point(1900, 15);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(40, 30);
-            this.btnClose.TabIndex = 1;
+            this.btnClose.TabIndex = 0;
             // 
             // btnMinimize
             // 
@@ -379,31 +337,16 @@ namespace SansuPayrollSystemManagement
             this.btnMinimize.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
             this.btnMinimize.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(139)))), ((int)(((byte)(152)))), ((int)(((byte)(166)))));
             this.btnMinimize.IconColor = System.Drawing.Color.White;
-            this.btnMinimize.Location = new System.Drawing.Point(0, 0);
+            this.btnMinimize.Location = new System.Drawing.Point(1850, 15);
             this.btnMinimize.Name = "btnMinimize";
             this.btnMinimize.Size = new System.Drawing.Size(40, 30);
-            this.btnMinimize.TabIndex = 0;
-            // 
-            // imgIllustration
-            // 
-            this.imgIllustration.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.imgIllustration.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.imgIllustration.Image = global::SansuPayrollSystemManagement.Properties.Resources._9879e9d9_10ba_42a9_8679_5765275cf8ed;
-            this.imgIllustration.Location = new System.Drawing.Point(0, 810);
-            this.imgIllustration.Name = "imgIllustration";
-            this.imgIllustration.Size = new System.Drawing.Size(440, 280);
-            this.imgIllustration.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.imgIllustration.TabIndex = 0;
-            this.imgIllustration.TabStop = false;
+            this.btnMinimize.TabIndex = 1;
             // 
             // LoginForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1942, 1102);
-            this.Controls.Add(this.btnMinimize);
+            this.ClientSize = new System.Drawing.Size(1942, 1100);
             this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.btnMinimize);
             this.Controls.Add(this.panelBackground);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "LoginForm";
@@ -415,7 +358,6 @@ namespace SansuPayrollSystemManagement
             this.panelRight.PerformLayout();
             this.panelLeft.ResumeLayout(false);
             this.panelLeft.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.imgIllustration)).EndInit();
             this.ResumeLayout(false);
 
         }

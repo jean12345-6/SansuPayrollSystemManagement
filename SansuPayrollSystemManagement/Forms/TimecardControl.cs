@@ -22,7 +22,7 @@ namespace SansuPayrollSystemManagement
         private int _periodLengthDays = 7;
 
         private readonly string _connectionString =
-            "server=localhost;database=sansu_payroll_db;uid=root;pwd=;";
+            "server=localhost;database=sansu_payroll_db;uid=root;pwd=root;";
 
         public TimecardControl()
         {

@@ -17,6 +17,7 @@ namespace SansuPayrollSystemManagement.Forms
         private Label lblEmployeeName;
         private Label lblPosition;
         private Label lblPeriod;
+        private Panel panelHeaderUnderline;
 
         private TableLayoutPanel mainLayout;
         private Guna2Panel panelEarnings;
@@ -69,6 +70,7 @@ namespace SansuPayrollSystemManagement.Forms
         private void InitializeComponent()
         {
             this.headerPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.panelHeaderUnderline = new System.Windows.Forms.Panel();
             this.picEmployee = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.lblHeaderTitle = new System.Windows.Forms.Label();
             this.lblCaptionName = new System.Windows.Forms.Label();
@@ -117,6 +119,8 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             // headerPanel
             // 
+            this.headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.headerPanel.Controls.Add(this.panelHeaderUnderline);
             this.headerPanel.Controls.Add(this.picEmployee);
             this.headerPanel.Controls.Add(this.lblHeaderTitle);
             this.headerPanel.Controls.Add(this.lblCaptionName);
@@ -130,7 +134,17 @@ namespace SansuPayrollSystemManagement.Forms
             this.headerPanel.Name = "headerPanel";
             this.headerPanel.Size = new System.Drawing.Size(1942, 140);
             this.headerPanel.TabIndex = 0;
-            this.headerPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.headerPanel_Paint_1);
+            this.headerPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.headerPanel_Paint);
+            // 
+            // panelHeaderUnderline
+            // 
+            this.panelHeaderUnderline.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
+            this.panelHeaderUnderline.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelHeaderUnderline.Location = new System.Drawing.Point(0, 130);
+            this.panelHeaderUnderline.Margin = new System.Windows.Forms.Padding(0);
+            this.panelHeaderUnderline.Name = "panelHeaderUnderline";
+            this.panelHeaderUnderline.Size = new System.Drawing.Size(1942, 10);
+            this.panelHeaderUnderline.TabIndex = 8;
             // 
             // picEmployee
             // 
@@ -147,6 +161,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblHeaderTitle.AutoSize = true;
             this.lblHeaderTitle.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Bold);
+            this.lblHeaderTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblHeaderTitle.Location = new System.Drawing.Point(140, 18);
             this.lblHeaderTitle.Name = "lblHeaderTitle";
             this.lblHeaderTitle.Size = new System.Drawing.Size(349, 37);
@@ -157,6 +172,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblCaptionName.AutoSize = true;
             this.lblCaptionName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblCaptionName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.lblCaptionName.Location = new System.Drawing.Point(140, 58);
             this.lblCaptionName.Name = "lblCaptionName";
             this.lblCaptionName.Size = new System.Drawing.Size(93, 23);
@@ -167,6 +183,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblCaptionPosition.AutoSize = true;
             this.lblCaptionPosition.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblCaptionPosition.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.lblCaptionPosition.Location = new System.Drawing.Point(140, 86);
             this.lblCaptionPosition.Name = "lblCaptionPosition";
             this.lblCaptionPosition.Size = new System.Drawing.Size(78, 23);
@@ -177,6 +194,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblCaptionPeriod.AutoSize = true;
             this.lblCaptionPeriod.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblCaptionPeriod.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.lblCaptionPeriod.Location = new System.Drawing.Point(470, 58);
             this.lblCaptionPeriod.Name = "lblCaptionPeriod";
             this.lblCaptionPeriod.Size = new System.Drawing.Size(66, 23);
@@ -187,6 +205,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblEmployeeName.AutoSize = true;
             this.lblEmployeeName.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblEmployeeName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblEmployeeName.Location = new System.Drawing.Point(240, 58);
             this.lblEmployeeName.Name = "lblEmployeeName";
             this.lblEmployeeName.Size = new System.Drawing.Size(140, 23);
@@ -197,6 +216,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblPosition.AutoSize = true;
             this.lblPosition.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblPosition.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblPosition.Location = new System.Drawing.Point(240, 86);
             this.lblPosition.Name = "lblPosition";
             this.lblPosition.Size = new System.Drawing.Size(80, 23);
@@ -207,6 +227,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblPeriod.AutoSize = true;
             this.lblPeriod.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblPeriod.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblPeriod.Location = new System.Drawing.Point(544, 58);
             this.lblPeriod.Name = "lblPeriod";
             this.lblPeriod.Size = new System.Drawing.Size(68, 23);
@@ -223,6 +244,7 @@ namespace SansuPayrollSystemManagement.Forms
             this.mainLayout.Controls.Add(this.panelDeductions, 1, 0);
             this.mainLayout.Controls.Add(this.panelNetPay, 2, 0);
             this.mainLayout.Controls.Add(this.btnPrintPayslip, 2, 1);
+            this.mainLayout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.mainLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainLayout.Location = new System.Drawing.Point(0, 140);
             this.mainLayout.Name = "mainLayout";
@@ -246,20 +268,21 @@ namespace SansuPayrollSystemManagement.Forms
             this.panelEarnings.Controls.Add(this.lblDaysWorkedCaption);
             this.panelEarnings.Controls.Add(this.lblEarningsTitle);
             this.panelEarnings.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelEarnings.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
+            this.panelEarnings.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
             this.panelEarnings.Location = new System.Drawing.Point(30, 30);
             this.panelEarnings.Margin = new System.Windows.Forms.Padding(30, 30, 15, 15);
             this.panelEarnings.Name = "panelEarnings";
             this.panelEarnings.ShadowDecoration.BorderRadius = 20;
             this.panelEarnings.ShadowDecoration.Depth = 15;
             this.panelEarnings.ShadowDecoration.Enabled = true;
+            this.panelEarnings.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.panelEarnings.Size = new System.Drawing.Size(595, 665);
             this.panelEarnings.TabIndex = 0;
             // 
             // lblGrossPayValue
             // 
             this.lblGrossPayValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblGrossPayValue.ForeColor = System.Drawing.Color.White;
+            this.lblGrossPayValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblGrossPayValue.Location = new System.Drawing.Point(220, 230);
             this.lblGrossPayValue.Name = "lblGrossPayValue";
             this.lblGrossPayValue.Size = new System.Drawing.Size(260, 23);
@@ -269,7 +292,7 @@ namespace SansuPayrollSystemManagement.Forms
             // lblBasicSalaryValue
             // 
             this.lblBasicSalaryValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblBasicSalaryValue.ForeColor = System.Drawing.Color.White;
+            this.lblBasicSalaryValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblBasicSalaryValue.Location = new System.Drawing.Point(220, 180);
             this.lblBasicSalaryValue.Name = "lblBasicSalaryValue";
             this.lblBasicSalaryValue.Size = new System.Drawing.Size(260, 23);
@@ -279,7 +302,7 @@ namespace SansuPayrollSystemManagement.Forms
             // lblOvertimeHoursValue
             // 
             this.lblOvertimeHoursValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblOvertimeHoursValue.ForeColor = System.Drawing.Color.White;
+            this.lblOvertimeHoursValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblOvertimeHoursValue.Location = new System.Drawing.Point(220, 130);
             this.lblOvertimeHoursValue.Name = "lblOvertimeHoursValue";
             this.lblOvertimeHoursValue.Size = new System.Drawing.Size(260, 23);
@@ -289,7 +312,7 @@ namespace SansuPayrollSystemManagement.Forms
             // lblDaysWorkedValue
             // 
             this.lblDaysWorkedValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblDaysWorkedValue.ForeColor = System.Drawing.Color.White;
+            this.lblDaysWorkedValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblDaysWorkedValue.Location = new System.Drawing.Point(220, 80);
             this.lblDaysWorkedValue.Name = "lblDaysWorkedValue";
             this.lblDaysWorkedValue.Size = new System.Drawing.Size(260, 23);
@@ -300,7 +323,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblGrossPayCaption.AutoSize = true;
             this.lblGrossPayCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblGrossPayCaption.ForeColor = System.Drawing.Color.White;
+            this.lblGrossPayCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.lblGrossPayCaption.Location = new System.Drawing.Point(40, 230);
             this.lblGrossPayCaption.Name = "lblGrossPayCaption";
             this.lblGrossPayCaption.Size = new System.Drawing.Size(88, 23);
@@ -311,7 +334,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblBasicSalaryCaption.AutoSize = true;
             this.lblBasicSalaryCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblBasicSalaryCaption.ForeColor = System.Drawing.Color.White;
+            this.lblBasicSalaryCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.lblBasicSalaryCaption.Location = new System.Drawing.Point(40, 180);
             this.lblBasicSalaryCaption.Name = "lblBasicSalaryCaption";
             this.lblBasicSalaryCaption.Size = new System.Drawing.Size(100, 23);
@@ -322,7 +345,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblOvertimeHoursCaption.AutoSize = true;
             this.lblOvertimeHoursCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblOvertimeHoursCaption.ForeColor = System.Drawing.Color.White;
+            this.lblOvertimeHoursCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.lblOvertimeHoursCaption.Location = new System.Drawing.Point(40, 130);
             this.lblOvertimeHoursCaption.Name = "lblOvertimeHoursCaption";
             this.lblOvertimeHoursCaption.Size = new System.Drawing.Size(132, 23);
@@ -333,7 +356,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblDaysWorkedCaption.AutoSize = true;
             this.lblDaysWorkedCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblDaysWorkedCaption.ForeColor = System.Drawing.Color.White;
+            this.lblDaysWorkedCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.lblDaysWorkedCaption.Location = new System.Drawing.Point(40, 80);
             this.lblDaysWorkedCaption.Name = "lblDaysWorkedCaption";
             this.lblDaysWorkedCaption.Size = new System.Drawing.Size(110, 23);
@@ -344,7 +367,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblEarningsTitle.AutoSize = true;
             this.lblEarningsTitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblEarningsTitle.ForeColor = System.Drawing.Color.White;
+            this.lblEarningsTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblEarningsTitle.Location = new System.Drawing.Point(24, 24);
             this.lblEarningsTitle.Name = "lblEarningsTitle";
             this.lblEarningsTitle.Size = new System.Drawing.Size(89, 25);
@@ -369,20 +392,21 @@ namespace SansuPayrollSystemManagement.Forms
             this.panelDeductions.Controls.Add(this.lblSSSCaption);
             this.panelDeductions.Controls.Add(this.lblDeductionsTitle);
             this.panelDeductions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDeductions.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(87)))), ((int)(((byte)(46)))));
+            this.panelDeductions.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
             this.panelDeductions.Location = new System.Drawing.Point(655, 30);
             this.panelDeductions.Margin = new System.Windows.Forms.Padding(15, 30, 15, 15);
             this.panelDeductions.Name = "panelDeductions";
             this.panelDeductions.ShadowDecoration.BorderRadius = 20;
             this.panelDeductions.ShadowDecoration.Depth = 15;
             this.panelDeductions.ShadowDecoration.Enabled = true;
+            this.panelDeductions.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.panelDeductions.Size = new System.Drawing.Size(610, 665);
             this.panelDeductions.TabIndex = 1;
             // 
             // lblTotalDeductionsValue
             // 
             this.lblTotalDeductionsValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblTotalDeductionsValue.ForeColor = System.Drawing.Color.White;
+            this.lblTotalDeductionsValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblTotalDeductionsValue.Location = new System.Drawing.Point(230, 285);
             this.lblTotalDeductionsValue.Name = "lblTotalDeductionsValue";
             this.lblTotalDeductionsValue.Size = new System.Drawing.Size(250, 23);
@@ -392,7 +416,7 @@ namespace SansuPayrollSystemManagement.Forms
             // lblAbsenceDeductionValue
             // 
             this.lblAbsenceDeductionValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblAbsenceDeductionValue.ForeColor = System.Drawing.Color.White;
+            this.lblAbsenceDeductionValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblAbsenceDeductionValue.Location = new System.Drawing.Point(230, 240);
             this.lblAbsenceDeductionValue.Name = "lblAbsenceDeductionValue";
             this.lblAbsenceDeductionValue.Size = new System.Drawing.Size(250, 23);
@@ -402,7 +426,7 @@ namespace SansuPayrollSystemManagement.Forms
             // lblLateDeductionValue
             // 
             this.lblLateDeductionValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblLateDeductionValue.ForeColor = System.Drawing.Color.White;
+            this.lblLateDeductionValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblLateDeductionValue.Location = new System.Drawing.Point(230, 200);
             this.lblLateDeductionValue.Name = "lblLateDeductionValue";
             this.lblLateDeductionValue.Size = new System.Drawing.Size(250, 23);
@@ -412,7 +436,7 @@ namespace SansuPayrollSystemManagement.Forms
             // lblPagIbigValue
             // 
             this.lblPagIbigValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblPagIbigValue.ForeColor = System.Drawing.Color.White;
+            this.lblPagIbigValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblPagIbigValue.Location = new System.Drawing.Point(230, 160);
             this.lblPagIbigValue.Name = "lblPagIbigValue";
             this.lblPagIbigValue.Size = new System.Drawing.Size(250, 23);
@@ -422,7 +446,7 @@ namespace SansuPayrollSystemManagement.Forms
             // lblPhilHealthValue
             // 
             this.lblPhilHealthValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblPhilHealthValue.ForeColor = System.Drawing.Color.White;
+            this.lblPhilHealthValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblPhilHealthValue.Location = new System.Drawing.Point(230, 120);
             this.lblPhilHealthValue.Name = "lblPhilHealthValue";
             this.lblPhilHealthValue.Size = new System.Drawing.Size(250, 23);
@@ -432,7 +456,7 @@ namespace SansuPayrollSystemManagement.Forms
             // lblSSSValue
             // 
             this.lblSSSValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblSSSValue.ForeColor = System.Drawing.Color.White;
+            this.lblSSSValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblSSSValue.Location = new System.Drawing.Point(230, 80);
             this.lblSSSValue.Name = "lblSSSValue";
             this.lblSSSValue.Size = new System.Drawing.Size(250, 23);
@@ -443,7 +467,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblTotalDeductionsCaption.AutoSize = true;
             this.lblTotalDeductionsCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblTotalDeductionsCaption.ForeColor = System.Drawing.Color.White;
+            this.lblTotalDeductionsCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.lblTotalDeductionsCaption.Location = new System.Drawing.Point(40, 285);
             this.lblTotalDeductionsCaption.Name = "lblTotalDeductionsCaption";
             this.lblTotalDeductionsCaption.Size = new System.Drawing.Size(139, 23);
@@ -454,7 +478,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblAbsenceDeductionCaption.AutoSize = true;
             this.lblAbsenceDeductionCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblAbsenceDeductionCaption.ForeColor = System.Drawing.Color.White;
+            this.lblAbsenceDeductionCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.lblAbsenceDeductionCaption.Location = new System.Drawing.Point(40, 240);
             this.lblAbsenceDeductionCaption.Name = "lblAbsenceDeductionCaption";
             this.lblAbsenceDeductionCaption.Size = new System.Drawing.Size(160, 23);
@@ -465,7 +489,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblLateDeductionCaption.AutoSize = true;
             this.lblLateDeductionCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblLateDeductionCaption.ForeColor = System.Drawing.Color.White;
+            this.lblLateDeductionCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.lblLateDeductionCaption.Location = new System.Drawing.Point(40, 200);
             this.lblLateDeductionCaption.Name = "lblLateDeductionCaption";
             this.lblLateDeductionCaption.Size = new System.Drawing.Size(128, 23);
@@ -476,7 +500,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblPagIbigCaption.AutoSize = true;
             this.lblPagIbigCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblPagIbigCaption.ForeColor = System.Drawing.Color.White;
+            this.lblPagIbigCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.lblPagIbigCaption.Location = new System.Drawing.Point(40, 160);
             this.lblPagIbigCaption.Name = "lblPagIbigCaption";
             this.lblPagIbigCaption.Size = new System.Drawing.Size(81, 23);
@@ -487,7 +511,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblPhilHealthCaption.AutoSize = true;
             this.lblPhilHealthCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblPhilHealthCaption.ForeColor = System.Drawing.Color.White;
+            this.lblPhilHealthCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.lblPhilHealthCaption.Location = new System.Drawing.Point(40, 120);
             this.lblPhilHealthCaption.Name = "lblPhilHealthCaption";
             this.lblPhilHealthCaption.Size = new System.Drawing.Size(92, 23);
@@ -498,7 +522,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblSSSCaption.AutoSize = true;
             this.lblSSSCaption.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblSSSCaption.ForeColor = System.Drawing.Color.White;
+            this.lblSSSCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.lblSSSCaption.Location = new System.Drawing.Point(40, 80);
             this.lblSSSCaption.Name = "lblSSSCaption";
             this.lblSSSCaption.Size = new System.Drawing.Size(41, 23);
@@ -509,7 +533,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblDeductionsTitle.AutoSize = true;
             this.lblDeductionsTitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblDeductionsTitle.ForeColor = System.Drawing.Color.White;
+            this.lblDeductionsTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblDeductionsTitle.Location = new System.Drawing.Point(24, 24);
             this.lblDeductionsTitle.Name = "lblDeductionsTitle";
             this.lblDeductionsTitle.Size = new System.Drawing.Size(113, 25);
@@ -524,20 +548,21 @@ namespace SansuPayrollSystemManagement.Forms
             this.panelNetPay.Controls.Add(this.lblNetPayCaption);
             this.panelNetPay.Controls.Add(this.lblNetPayTitle);
             this.panelNetPay.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelNetPay.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(58)))), ((int)(((byte)(72)))));
+            this.panelNetPay.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
             this.panelNetPay.Location = new System.Drawing.Point(1295, 30);
             this.panelNetPay.Margin = new System.Windows.Forms.Padding(15, 30, 30, 15);
             this.panelNetPay.Name = "panelNetPay";
             this.panelNetPay.ShadowDecoration.BorderRadius = 20;
             this.panelNetPay.ShadowDecoration.Depth = 15;
             this.panelNetPay.ShadowDecoration.Enabled = true;
+            this.panelNetPay.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.panelNetPay.Size = new System.Drawing.Size(617, 665);
             this.panelNetPay.TabIndex = 2;
             // 
             // lblNetPayValue
             // 
             this.lblNetPayValue.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
-            this.lblNetPayValue.ForeColor = System.Drawing.Color.White;
+            this.lblNetPayValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblNetPayValue.Location = new System.Drawing.Point(26, 100);
             this.lblNetPayValue.Name = "lblNetPayValue";
             this.lblNetPayValue.Size = new System.Drawing.Size(360, 48);
@@ -549,7 +574,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblNetPayCaption.AutoSize = true;
             this.lblNetPayCaption.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblNetPayCaption.ForeColor = System.Drawing.Color.White;
+            this.lblNetPayCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
             this.lblNetPayCaption.Location = new System.Drawing.Point(26, 70);
             this.lblNetPayCaption.Name = "lblNetPayCaption";
             this.lblNetPayCaption.Size = new System.Drawing.Size(177, 20);
@@ -560,7 +585,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.lblNetPayTitle.AutoSize = true;
             this.lblNetPayTitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblNetPayTitle.ForeColor = System.Drawing.Color.White;
+            this.lblNetPayTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.lblNetPayTitle.Location = new System.Drawing.Point(24, 24);
             this.lblNetPayTitle.Name = "lblNetPayTitle";
             this.lblNetPayTitle.Size = new System.Drawing.Size(81, 25);
@@ -571,9 +596,10 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.btnPrintPayslip.BorderRadius = 18;
             this.btnPrintPayslip.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnPrintPayslip.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
+            this.btnPrintPayslip.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(165)))), ((int)(((byte)(32)))));
             this.btnPrintPayslip.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnPrintPayslip.ForeColor = System.Drawing.Color.White;
+            this.btnPrintPayslip.ForeColor = System.Drawing.Color.Black;
+            this.btnPrintPayslip.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(215)))), ((int)(((byte)(0)))));
             this.btnPrintPayslip.Location = new System.Drawing.Point(1732, 720);
             this.btnPrintPayslip.Margin = new System.Windows.Forms.Padding(15, 10, 30, 10);
             this.btnPrintPayslip.Name = "btnPrintPayslip";
@@ -586,7 +612,7 @@ namespace SansuPayrollSystemManagement.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.Controls.Add(this.mainLayout);
             this.Controls.Add(this.headerPanel);
             this.Name = "PayrollDetailsControl";

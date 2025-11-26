@@ -85,39 +85,66 @@ namespace SansuPayrollSystemManagement
         // DASHBOARD KPIs
         // ===========================================
         private void LoadDashboardStats()
-        {
-            try
-            {
-                object empObj = db.ExecuteScalar("SELECT COUNT(*) FROM Employees");
-                int totalEmployees = Convert.ToInt32(empObj);
+{
+    try
+    {
+        // ===========================================
+        // 1. TOTAL EMPLOYEES
+        // ===========================================
+        string sqlEmployees = "SELECT COUNT(*) FROM Employees;";
+        int totalEmployees = Convert.ToInt32(db.ExecuteScalar(sqlEmployees));
 
-                string sqlPresent = @"
-                    SELECT COUNT(DISTINCT EmployeeID)
-                    FROM Attendance
-                    WHERE Date = CURDATE() AND TimeIn IS NOT NULL;";
-                int presentToday = Convert.ToInt32(db.ExecuteScalar(sqlPresent));
 
-                string sqlPaid = @"
-                    SELECT IFNULL(SUM(NetPay),0)
-                    FROM Payroll
-                    WHERE MONTH(PayPeriodEnd) = MONTH(CURDATE())
-                    AND YEAR(PayPeriodEnd) = YEAR(CURDATE());";
-                decimal paidThisMonth = Convert.ToDecimal(db.ExecuteScalar(sqlPaid));
+        // ===========================================
+        // 2. PRESENT TODAY (distinct employees who time-in)
+        // ===========================================
+        string sqlPresentToday = @"
+            SELECT COUNT(DISTINCT EmployeeID)
+            FROM Attendance
+            WHERE Date = CURDATE()
+              AND TimeIn IS NOT NULL;";
+        int presentToday = Convert.ToInt32(db.ExecuteScalar(sqlPresentToday));
 
-                string sqlTotalCost = "SELECT IFNULL(SUM(TotalPay),0) FROM Payroll;";
-                decimal totalCost = Convert.ToDecimal(db.ExecuteScalar(sqlTotalCost));
 
-                lblKpiEmployees.Text = totalEmployees.ToString();
-                lblKpiPresentToday.Text = presentToday.ToString();
-                lblKpiPaidThisMonth.Text = FormatPeso(paidThisMonth);
-                lblKpiTotalPayrollCost.Text = FormatPeso(totalCost);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading dashboard stats: " + ex.Message,
-                    "Dashboard", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        // ===========================================
+        // 3. PAID THIS MONTH  
+        // Sum of NetPay for payrolls where PayPeriodEnd is in THIS month
+        // ===========================================
+        string sqlPaidThisMonth = @"
+            SELECT IFNULL(SUM(NetPay),0)
+            FROM Payroll
+            WHERE MONTH(PayPeriodEnd) = MONTH(CURDATE())
+              AND YEAR(PayPeriodEnd) = YEAR(CURDATE());";
+
+        decimal paidThisMonth = Convert.ToDecimal(db.ExecuteScalar(sqlPaidThisMonth));
+
+
+        // ===========================================
+        // 4. TOTAL PAYROLL COST (LIFETIME)
+        // Sum of ALL NetPay values
+        // ===========================================
+        string sqlTotalCost = @"
+            SELECT IFNULL(SUM(NetPay),0)
+            FROM Payroll;";
+
+        decimal totalPayrollCost = Convert.ToDecimal(db.ExecuteScalar(sqlTotalCost));
+
+
+        // ===========================================
+        // UPDATE LABELS
+        // ===========================================
+        lblKpiEmployees.Text = totalEmployees.ToString();
+        lblKpiPresentToday.Text = presentToday.ToString();
+        lblKpiPaidThisMonth.Text = FormatPeso(paidThisMonth);
+        lblKpiTotalPayrollCost.Text = FormatPeso(totalPayrollCost);
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show("Error loading dashboard stats:\n" + ex.Message,
+            "Dashboard", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+}
+
 
         private string FormatPeso(decimal value)
         {
@@ -179,13 +206,6 @@ namespace SansuPayrollSystemManagement
             }
         }
 
-        // Empty handlers
-        private void guna2ShadowPanelEmployees_Paint(object sender, PaintEventArgs e) { }
-        private void dataGridView3_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
-        private void dgvRecentActivity_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
-        private void flowKpiRow_Paint(object sender, PaintEventArgs e) { }
-        private void panelDashboard_Paint(object sender, PaintEventArgs e) { }
-
         private void btnLogout_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show(
@@ -203,5 +223,17 @@ namespace SansuPayrollSystemManagement
                 this.Close();
             }
         }
+
+        private void guna2Button1_Click_1(object sender, EventArgs e) => OpenDashboard();
+        private void btnPrevPage_Click(object sender, EventArgs e) { }
+        private void btnNextPage_Click(object sender, EventArgs e) { }
+
+        // Empty handlers
+        private void guna2ShadowPanelEmployees_Paint(object sender, PaintEventArgs e) { }
+        private void dataGridView3_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
+        private void dgvRecentActivity_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
+        private void flowKpiRow_Paint(object sender, PaintEventArgs e) { }
+        private void panelDashboard_Paint(object sender, PaintEventArgs e) { }
+        private void shadowPresent_Paint(object sender, PaintEventArgs e) { }
     }
 }

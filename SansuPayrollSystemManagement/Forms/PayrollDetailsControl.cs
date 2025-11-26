@@ -38,16 +38,13 @@ namespace SansuPayrollSystemManagement.Forms
                 string sql = @"
                     SELECT 
                         p.*,
-                        e.EmployeeID,
                         e.FullName,
-                        e.Position,
-                        e.Salary AS MonthlySalary,
-                        e.DailyRate
+                        e.Position
                     FROM Payroll p
                     JOIN Employees e ON p.EmployeeID = e.EmployeeID
                     WHERE p.PayrollID = @id";
 
-                var dt = db.GetData(sql, new MySqlParameter[]
+                DataTable dt = db.GetData(sql, new MySqlParameter[]
                 {
                     new MySqlParameter("@id", _payrollId)
                 });
@@ -57,7 +54,7 @@ namespace SansuPayrollSystemManagement.Forms
 
                 DataRow row = dt.Rows[0];
 
-                // ===== HEADER INFO =====
+                // Header info
                 lblEmployeeName.Text = row["FullName"].ToString();
                 lblPosition.Text = row["Position"].ToString();
 
@@ -65,42 +62,25 @@ namespace SansuPayrollSystemManagement.Forms
                 DateTime periodEnd = Convert.ToDateTime(row["PayPeriodEnd"]);
                 lblPeriod.Text = $"{periodStart:MMM dd} - {periodEnd:MMM dd, yyyy}";
 
-                // ===== EARNINGS =====
-                int daysWorked = row.Table.Columns.Contains("DaysWorked") && row["DaysWorked"] != DBNull.Value
-                    ? Convert.ToInt32(row["DaysWorked"])
-                    : 0;
-
-                decimal regularHours = row["RegularHours"] != DBNull.Value
-                    ? Convert.ToDecimal(row["RegularHours"])
-                    : 0m;
-
-                decimal overtimeHours = row["OvertimeHours"] != DBNull.Value
-                    ? Convert.ToDecimal(row["OvertimeHours"])
-                    : 0m;
-
-                decimal basicSalary = SafeDecimal(row["BasicSalary"]);
-                decimal overtimePay = SafeDecimal(row["OvertimePay"]);
-                decimal grossPay = SafeDecimal(row["GrossPay"]);
-
-                // Fallback if GrossPay not stored
-                if (grossPay == 0 && (basicSalary > 0 || overtimePay > 0))
-                    grossPay = basicSalary + overtimePay;
+                // Earnings
+                int daysWorked = row["DaysWorked"] != DBNull.Value ? Convert.ToInt32(row["DaysWorked"]) : 0;
+                decimal overtimeHours = row["OvertimeHours"] != DBNull.Value ? Convert.ToDecimal(row["OvertimeHours"]) : 0m;
+                decimal basicSalary = row["BasicSalary"] != DBNull.Value ? Convert.ToDecimal(row["BasicSalary"]) : 0m;
+                decimal grossPay = row["GrossPay"] != DBNull.Value ? Convert.ToDecimal(row["GrossPay"]) : 0m;
 
                 lblDaysWorkedValue.Text = daysWorked.ToString();
                 lblOvertimeHoursValue.Text = overtimeHours.ToString("0.##");
                 lblBasicSalaryValue.Text = FormatPeso(basicSalary);
                 lblGrossPayValue.Text = FormatPeso(grossPay);
 
-                // ===== DEDUCTIONS =====
-                decimal sss = SafeDecimal(row["SSS"]);
-                decimal philHealth = SafeDecimal(row["PhilHealth"]);
-                decimal pagIbig = SafeDecimal(row["PagIbig"]);
-                decimal lateDeduction = SafeDecimal(row["LateDeduction"]);
-                decimal absenceDeduction = SafeDecimal(row["AbsenceDeduction"]);
-
-                decimal totalDeductions = SafeDecimal(row["TotalDeductions"]);
-                if (totalDeductions == 0)
-                    totalDeductions = sss + philHealth + pagIbig + lateDeduction + absenceDeduction;
+                // Deductions
+                decimal sss = row["SSS"] != DBNull.Value ? Convert.ToDecimal(row["SSS"]) : 0m;
+                decimal philHealth = row["PhilHealth"] != DBNull.Value ? Convert.ToDecimal(row["PhilHealth"]) : 0m;
+                decimal pagIbig = row["PagIbig"] != DBNull.Value ? Convert.ToDecimal(row["PagIbig"]) : 0m;
+                decimal lateDeduction = row["LateDeduction"] != DBNull.Value ? Convert.ToDecimal(row["LateDeduction"]) : 0m;
+                decimal absenceDeduction = row["AbsenceDeduction"] != DBNull.Value ? Convert.ToDecimal(row["AbsenceDeduction"]) : 0m;
+                decimal totalDeductions = row["TotalDeductions"] != DBNull.Value ? Convert.ToDecimal(row["TotalDeductions"]) : 0m;
+                decimal netPay = row["NetPay"] != DBNull.Value ? Convert.ToDecimal(row["NetPay"]) : 0m;
 
                 lblSSSValue.Text = FormatPeso(sss);
                 lblPhilHealthValue.Text = FormatPeso(philHealth);
@@ -108,12 +88,6 @@ namespace SansuPayrollSystemManagement.Forms
                 lblLateDeductionValue.Text = FormatPeso(lateDeduction);
                 lblAbsenceDeductionValue.Text = FormatPeso(absenceDeduction);
                 lblTotalDeductionsValue.Text = FormatPeso(totalDeductions);
-
-                // ===== NET PAY =====
-                decimal netPay = SafeDecimal(row["NetPay"]);
-                if (netPay == 0 && grossPay > 0)
-                    netPay = grossPay - totalDeductions;
-
                 lblNetPayValue.Text = FormatPeso(netPay);
             }
             catch (Exception ex)
@@ -138,7 +112,7 @@ namespace SansuPayrollSystemManagement.Forms
         }
 
         // =========================================================
-        //  ACTUAL PAYSLIP PRINT LAYOUT
+        //  PAYSLIP PRINT LAYOUT
         // =========================================================
         private void PayslipDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
@@ -151,6 +125,7 @@ namespace SansuPayrollSystemManagement.Forms
             int top = 40;
             int gap = 25;
 
+            // Header
             e.Graphics.DrawString("Sansu Restaurant – PAYSLIP", headerFont, Brushes.Black, left, top);
             top += 45;
 
@@ -207,7 +182,6 @@ namespace SansuPayrollSystemManagement.Forms
 
             // NET PAY BOX
             Rectangle netBox = new Rectangle(left, top, 700, 40);
-
             e.Graphics.FillRectangle(Brushes.WhiteSmoke, netBox);
             e.Graphics.DrawRectangle(Pens.Black, netBox);
 
@@ -221,7 +195,7 @@ namespace SansuPayrollSystemManagement.Forms
 
             top += 60;
 
-            // Signature Lines
+            // Signatures
             e.Graphics.DrawString("Prepared by: _________________________", textFont, Brushes.Black, left, top);
             e.Graphics.DrawString("Approved by: _________________________", textFont, Brushes.Black, left + 350, top);
         }
@@ -244,12 +218,8 @@ namespace SansuPayrollSystemManagement.Forms
             return "₱ " + v.ToString("N2");
         }
 
-        private void headerPanel_Paint(object sender, PaintEventArgs e)
-        {
-        }
+        private void headerPanel_Paint(object sender, PaintEventArgs e) { }
 
-        private void headerPanel_Paint_1(object sender, PaintEventArgs e)
-        {
-        }
+        private void headerPanel_Paint_1(object sender, PaintEventArgs e) { }
     }
 }

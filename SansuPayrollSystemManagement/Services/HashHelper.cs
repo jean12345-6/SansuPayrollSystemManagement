@@ -1,27 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SansuPayrollSystemManagement.Services
 {
-    internal class HashHelper
+    public static class HashHelper
     {
+        private const int SaltSize = 16;
+        private const int KeySize = 32;
+        private const int Iterations = 10000;
+
         public static string HashPassword(string password)
         {
             using (var rng = new RNGCryptoServiceProvider())
             {
-                byte[] salt = new byte[16];
+                byte[] salt = new byte[SaltSize];
                 rng.GetBytes(salt);
-                var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
-                byte[] hash = pbkdf2.GetBytes(32); // 256-bit
-                byte[] hashBytes = new byte[49]; // 16 salt + 32 hash + 1 version
-                Buffer.BlockCopy(salt, 0, hashBytes, 1, 16);
-                Buffer.BlockCopy(hash, 0, hashBytes, 17, 32);
-                hashBytes[0] = 0; // version
-                return Convert.ToBase64String(hashBytes);
+
+                using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations))
+                {
+                    byte[] key = pbkdf2.GetBytes(KeySize);
+                    return $"{Iterations}${Convert.ToBase64String(salt)}${Convert.ToBase64String(key)}";
+                }
             }
         }
 
@@ -29,22 +29,35 @@ namespace SansuPayrollSystemManagement.Services
         {
             try
             {
-                byte[] hashBytes = Convert.FromBase64String(storedHash);
-                if (hashBytes[0] != 0) return false;
-                byte[] salt = new byte[16];
-                Buffer.BlockCopy(hashBytes, 1, salt, 0, 16);
-                var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
-                byte[] hash = pbkdf2.GetBytes(32);
-                for (int i = 0; i < 32; i++)
+                var parts = storedHash.Split('$');
+                if (parts.Length != 3) return false;
+
+                int iterations = int.Parse(parts[0]);
+                byte[] salt = Convert.FromBase64String(parts[1]);
+                byte[] storedKey = Convert.FromBase64String(parts[2]);
+
+                using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations))
                 {
-                    if (hashBytes[i + 17] != hash[i]) return false;
+                    byte[] key = pbkdf2.GetBytes(storedKey.Length);
+                    return SlowEquals(key, storedKey);
                 }
-                return true;
             }
             catch
             {
                 return false;
             }
+        }
+
+        private static bool SlowEquals(byte[] a, byte[] b)
+        {
+            uint diff = (uint)a.Length ^ (uint)b.Length;
+
+            for (int i = 0; i < a.Length && i < b.Length; i++)
+            {
+                diff |= (uint)(a[i] ^ b[i]);
+            }
+
+            return diff == 0;
         }
     }
 }

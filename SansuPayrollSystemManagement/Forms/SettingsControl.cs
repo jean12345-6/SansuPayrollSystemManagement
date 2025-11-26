@@ -89,5 +89,23 @@ namespace SansuPayrollSystemManagement.Forms
         {
 
         }
+
+        // ===============================
+        // BACK BUTTON
+        // ===============================
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            // Navigate back to dashboard
+            var parentForm = this.FindForm() as DashboardForm;
+            if (parentForm != null)
+            {
+                parentForm.OpenDashboard();
+            }
+            else
+            {
+                // Fallback: remove from parent
+                this.Parent?.Controls.Remove(this);
+            }
+        }
     }
 }

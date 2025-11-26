@@ -119,5 +119,9 @@ namespace SansuPayrollSystemManagement.Forms
                 parentForm.Close();
         }
 
+        private void headerPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

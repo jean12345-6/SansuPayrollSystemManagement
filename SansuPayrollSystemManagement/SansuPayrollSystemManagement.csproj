@@ -107,29 +107,11 @@
     <Compile Include="Forms\AddEmployeeForm.Designer.cs">
       <DependentUpon>AddEmployeeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DashboardControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\DashboardControl.Designer.cs">
-      <DependentUpon>DashboardControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\DashboardForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\DashboardForm.Designer.cs">
       <DependentUpon>DashboardForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\LoginControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\LoginControl.Designer.cs">
-      <DependentUpon>LoginControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\LoginForm.cs">
       <SubType>Form</SubType>
@@ -150,12 +132,6 @@
     <Compile Include="Forms\PayrollDetailsControl.Designer.cs">
       <DependentUpon>PayrollDetailsControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\PayrollForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\PayrollForm.Designer.cs">
-      <DependentUpon>PayrollForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\PerformanceControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -167,12 +143,6 @@
     </Compile>
     <Compile Include="Forms\PerformanceDetailsControl.Designer.cs">
       <DependentUpon>PerformanceDetailsControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\PerformanceForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\PerformanceForm.Designer.cs">
-      <DependentUpon>PerformanceForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SettingsControl.cs">
       <SubType>UserControl</SubType>
@@ -198,12 +168,6 @@
     <Compile Include="Models\Performance.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Forms\SettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\SettingsForm.Designer.cs">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -214,42 +178,43 @@
     <Compile Include="Services\HashHelper.cs" />
     <EmbeddedResource Include="AttendanceControl.resx">
       <DependentUpon>AttendanceControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="EmployeeControl.resx">
       <DependentUpon>EmployeeControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AddEmployeeForm.resx">
       <DependentUpon>AddEmployeeForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DashboardControl.resx">
-      <DependentUpon>DashboardControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DashboardForm.resx">
       <DependentUpon>DashboardForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\LoginControl.resx">
-      <DependentUpon>LoginControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PayrollControl.resx">
       <DependentUpon>PayrollControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PayrollDetailsControl.resx">
       <DependentUpon>PayrollDetailsControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PayrollForm.resx">
-      <DependentUpon>PayrollForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PerformanceControl.resx">
       <DependentUpon>PerformanceControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PerformanceDetailsControl.resx">
       <DependentUpon>PerformanceDetailsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SettingsControl.resx">
       <DependentUpon>SettingsControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SignupForm.resx">
       <DependentUpon>SignupForm.cs</DependentUpon>

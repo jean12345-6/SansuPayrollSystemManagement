@@ -181,12 +181,13 @@ namespace SansuPayrollSystemManagement
 
         private void ViewEmployee(int id)
         {
-            new AddEmployeeForm(id).ShowDialog();
+            new AddEmployeeForm(id, "View").ShowDialog();
         }
 
         private void EditEmployee(int id)
         {
-            if (new AddEmployeeForm(id).ShowDialog() == DialogResult.OK)
+            AddEmployeeForm f = new AddEmployeeForm(id, "Edit");
+            if (f.ShowDialog() == DialogResult.OK)
                 LoadEmployees();
         }
 
@@ -238,15 +239,71 @@ namespace SansuPayrollSystemManagement
                 LoadEmployees();
         }
 
-        private void btnBackDashboard_Click(object sender, EventArgs e)
+        private void btnLogout_Click(object sender, EventArgs e)
         {
-            if (this.FindForm() is DashboardForm d)
-                d.OpenDashboard();
+            if (MessageBox.Show("Are you sure you want to logout?", "Confirm Logout", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                if (this.FindForm() is DashboardForm form)
+                {
+                    form.Close();
+                }
+            }
         }
+
+        private void guna2Button1_Click(object sender, EventArgs e)
+        {
+            if (this.FindForm() is DashboardForm form)
+            {
+                form.OpenDashboard();
+            }
+        }
+
+        private void btnIconAttendance_Click(object sender, EventArgs e)
+        {
+            if (this.FindForm() is DashboardForm form)
+            {
+                form.LoadPage(new AttendanceControl(userRole));
+            }
+        }
+
+        private void btnIconPayroll_Click(object sender, EventArgs e)
+        {
+            if (this.FindForm() is DashboardForm form)
+            {
+                form.LoadPage(new PayrollControl(userRole));
+            }
+        }
+
+        private void btnIconPerformance_Click(object sender, EventArgs e)
+        {
+            if (this.FindForm() is DashboardForm form)
+            {
+                form.LoadPage(new PerformanceControl(userRole));
+            }
+        }
+
+        private void btnIconSettings_Click(object sender, EventArgs e)
+        {
+            if (this.FindForm() is DashboardForm form)
+            {
+                form.LoadPage(new SettingsControl(userRole));
+            }
+        }
+
+        private void btnIconEmployees_Click(object sender, EventArgs e)
+        {
+            // Already on Employees page, so do nothing or refresh
+        }
+
 
         private void CustomizeGridAppearance()
         {
-            dgvEmployees.BackgroundColor = Color.White;
+            dgvEmployees.BackgroundColor = Color.FromArgb(40, 40, 40);
+        }
+
+        private void panelContent_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

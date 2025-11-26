@@ -299,5 +299,29 @@ namespace SansuPayrollSystemManagement.Forms
             }
             catch { }
         }
+
+        // =============================================================
+        // BACK BUTTON
+        // =============================================================
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            // Navigate back to dashboard
+            var parentForm = this.FindForm() as DashboardForm;
+            if (parentForm != null)
+            {
+                parentForm.OpenDashboard();
+            }
+            else
+            {
+                // Fallback: remove from parent
+                this.Parent?.Controls.Remove(this);
+            }
+        }
+
+        private void guna2Button1_Click(object sender, EventArgs e)
+        {
+            // This method is not used - remove if unnecessary
+            // DashboardForm requires fullName and role parameters
+        }
     }
 }

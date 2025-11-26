@@ -1,10 +1,10 @@
 ﻿using ExcelDataReader;
 using MySql.Data.MySqlClient;
+using SansuPayrollSystemManagement.Forms;
 using SansuPayrollSystemManagement.Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,47 +16,56 @@ namespace SansuPayrollSystemManagement
     {
         private readonly DBHelper db = new DBHelper();
         private string userRole = "employee";
+        private const string ConnectionString = "server=localhost;database=sansu_payroll_db;uid=root;pwd=;";
 
+        // ==========================================
+        // CONSTRUCTORS
+        // ==========================================
         public AttendanceControl()
         {
             InitializeComponent();
-            CustomizeGridAppearance();
-            LoadAttendanceData();
-
-            // Handle Timecard button clicks
-            dgvAttendance.CellClick += dgvAttendance_CellClick;
+            InitializeControl();
         }
+
         public AttendanceControl(string role)
         {
-            InitializeComponent();
             userRole = role?.ToLower() ?? "employee";
+            InitializeComponent();
+            InitializeControl();
+        }
 
+        private void InitializeControl()
+        {
             CustomizeGridAppearance();
             LoadAttendanceData();
-
-            // important! same as default constructor
-            dgvAttendance.CellClick += dgvAttendance_CellClick;
-
-            // load data, restrictions, etc.
+            ApplyRoleRestrictions();
         }
+
+        private bool IsPowerUser()
+        {
+            return userRole == "admin" ||
+                   userRole == "administrator" ||
+                   userRole == "hr" ||
+                   userRole == "hr manager";
+        }
+
         // ==========================================
-        // SAFE HELPERS
+        // HELPERS
         // ==========================================
         private string GetString(object value)
         {
-            if (value == null || value == DBNull.Value) return "";
+            if (value == null || value == DBNull.Value) return string.Empty;
             return value.ToString().Trim();
         }
 
         // ==========================================
-        // LOAD DAILY ATTENDANCE FROM DB
+        // LOAD ATTENDANCE FROM DB
         // ==========================================
         private void LoadAttendanceData(string search = "")
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(
-                    "server=localhost;database=sansu_payroll_db;uid=root;pwd=;"))
+                using (MySqlConnection conn = new MySqlConnection(ConnectionString))
                 {
                     conn.Open();
 
@@ -78,7 +87,7 @@ namespace SansuPayrollSystemManagement
                         JOIN Employees e ON a.EmployeeID = e.EmployeeID
                     ";
 
-                    if (!string.IsNullOrEmpty(search))
+                    if (!string.IsNullOrWhiteSpace(search))
                     {
                         sql += @"
                             WHERE e.FullName LIKE @search
@@ -90,7 +99,7 @@ namespace SansuPayrollSystemManagement
 
                     using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                     {
-                        if (!string.IsNullOrEmpty(search))
+                        if (!string.IsNullOrWhiteSpace(search))
                         {
                             cmd.Parameters.AddWithValue("@search", "%" + search + "%");
                         }
@@ -99,15 +108,12 @@ namespace SansuPayrollSystemManagement
                         {
                             DataTable dt = new DataTable();
                             da.Fill(dt);
+
                             dgvAttendance.DataSource = dt;
 
-                            // hide internal EmployeeID column
+                            // Hide internal columns from the user
                             if (dgvAttendance.Columns["EmployeeID"] != null)
-                            {
                                 dgvAttendance.Columns["EmployeeID"].Visible = false;
-                            }
-
-                            AddTimecardButtonColumn();
                         }
                     }
                 }
@@ -120,43 +126,35 @@ namespace SansuPayrollSystemManagement
         }
 
         // ==========================================
-        // GRID DESIGN
+        // GRID BEHAVIOR
         // ==========================================
         private void CustomizeGridAppearance()
         {
-            dgvAttendance.RowTemplate.Height = 40;
-            dgvAttendance.ColumnHeadersHeight = 40;
-
-            dgvAttendance.ThemeStyle.RowsStyle.Font = new Font("Century Gothic", 12F);
-            dgvAttendance.ThemeStyle.HeaderStyle.Font = new Font("Century Gothic", 13F, FontStyle.Bold);
-
+            // Behaviour settings only (no colors/sizes)
             dgvAttendance.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvAttendance.MultiSelect = false;
+            dgvAttendance.ReadOnly = true;
+            dgvAttendance.AutoGenerateColumns = true;
         }
 
         // ==========================================
-        // ADD "TIMECARD" BUTTON COLUMN
+        // ROLE RESTRICTIONS
         // ==========================================
-        private void AddTimecardButtonColumn()
+        private void ApplyRoleRestrictions()
         {
-            // avoid duplicate column
-            if (dgvAttendance.Columns["ViewTimecard"] != null)
-                return;
-
-            DataGridViewButtonColumn btn = new DataGridViewButtonColumn
+            // Only Admin / HR can import attendance
+            if (!IsPowerUser())
             {
-                Name = "ViewTimecard",
-                HeaderText = "",
-                Text = "Timecard",
-                UseColumnTextForButtonValue = true,
-                Width = 95
-            };
+                if (btnImportAttendance != null)
+                    btnImportAttendance.Visible = false;
 
-            dgvAttendance.Columns.Add(btn);
+                if (btnUnimportAttendance != null)
+                    btnUnimportAttendance.Visible = false;
+            }
         }
 
         // ==========================================
-        // SEARCH BOX
+        // SEARCH
         // ==========================================
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
@@ -164,10 +162,17 @@ namespace SansuPayrollSystemManagement
         }
 
         // ==========================================
-        // IMPORT FROM BIOMETRIC XLS
+        // IMPORT FROM EXCEL (BIOMETRIC)
         // ==========================================
         private void btnImportAttendance_Click(object sender, EventArgs e)
         {
+            if (!IsPowerUser())
+            {
+                MessageBox.Show("You do not have permission to import attendance.",
+                    "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             try
             {
                 OpenFileDialog ofd = new OpenFileDialog
@@ -197,22 +202,18 @@ namespace SansuPayrollSystemManagement
                         return;
                     }
 
-                    // 2) Time Card sheet (skip Shift Setting, usually last other sheet)
+                    // 2) Time Card sheet (skip Shift Setting sheet)
                     DataTable timeSheet = null;
-
                     foreach (DataTable t in result.Tables)
                     {
                         if (t == statSheet) continue;
                         if (t.TableName.Contains("Shift")) continue;
                         timeSheet = t;
                     }
-
                     if (timeSheet == null)
-                    {
                         timeSheet = result.Tables[result.Tables.Count - 1];
-                    }
 
-                    // 3) Period from statistic sheet (e.g. "Date:2025-11-01~2025-11-12")
+                    // 3) Period from statistic sheet: "Date:2025-11-01~2025-11-12"
                     DateTime periodStart = DateTime.Today;
                     DateTime periodEnd = DateTime.Today;
 
@@ -228,7 +229,7 @@ namespace SansuPayrollSystemManagement
                         }
                     }
 
-                    // 4) Collect User IDs
+                    // 4) Find row where first cell is "User ID"
                     List<int> userIds = new List<int>();
                     int userHeaderRow = -1;
 
@@ -249,8 +250,8 @@ namespace SansuPayrollSystemManagement
                         return;
                     }
 
+                    // 5) Collect User IDs
                     int dataStartRowStat = userHeaderRow + 2;
-
                     for (int r = dataStartRowStat; r < statSheet.Rows.Count; r++)
                     {
                         object idCell = statSheet.Rows[r][0];
@@ -277,20 +278,23 @@ namespace SansuPayrollSystemManagement
                         int userId = userIds[u];
                         int blockStart = u * 15;
 
-                        // Map UserID to EmployeeID (here they match)
+                        // Map UserID to EmployeeID (here we assume they match)
                         object empObj = db.ExecuteScalar(
                             "SELECT EmployeeID FROM Employees WHERE EmployeeID = @id",
-                            new MySqlParameter[] { new MySqlParameter("@id", userId) });
+                            new MySqlParameter[]
+                            {
+                                new MySqlParameter("@id", userId)
+                            });
 
                         if (empObj == null || empObj == DBNull.Value)
                         {
-                            // not in system, skip
+                            // user not in Employees table
                             continue;
                         }
 
                         int employeeId = Convert.ToInt32(empObj);
 
-                        // in sample, time rows start around row index 12
+                        // In sample, time rows start around row index 12
                         int dataStartRowTime = 12;
 
                         for (int r = dataStartRowTime; r < timeSheet.Rows.Count; r++)
@@ -304,7 +308,7 @@ namespace SansuPayrollSystemManagement
                             if (dateCell == null || dateCell == DBNull.Value)
                                 continue;
 
-                            string dayText = GetString(dateCell); // "14 Fr" etc.
+                            string dayText = GetString(dateCell); // "14 Fr", etc.
                             if (string.IsNullOrEmpty(dayText))
                                 continue;
 
@@ -322,7 +326,7 @@ namespace SansuPayrollSystemManagement
                                 continue;
                             }
 
-                            // times
+                            // Time cells
                             DateTime? in1 = GetTimeFromCell(row, blockStart + 1, workDate);
                             DateTime? out1 = GetTimeFromCell(row, blockStart + 3, workDate);
                             DateTime? in2 = GetTimeFromCell(row, blockStart + 6, workDate);
@@ -346,6 +350,7 @@ namespace SansuPayrollSystemManagement
                             DateTime? timeIn = ins.Count > 0 ? (DateTime?)ins.Min() : null;
                             DateTime? timeOut = outs.Count > 0 ? (DateTime?)outs.Max() : null;
 
+                            // Status (Present / Late)
                             string status = "Present";
                             if (timeIn.HasValue)
                             {
@@ -356,7 +361,7 @@ namespace SansuPayrollSystemManagement
                                 }
                             }
 
-                            // avoid duplicates
+                            // Avoid duplicate records for same Employee + Date
                             object existing = db.ExecuteScalar(
                                 "SELECT AttendanceID FROM Attendance WHERE EmployeeID = @eid AND Date = @d",
                                 new MySqlParameter[]
@@ -371,6 +376,7 @@ namespace SansuPayrollSystemManagement
                             string insertSql = @"
                                 INSERT INTO Attendance (EmployeeID, Date, TimeIn, TimeOut, Status)
                                 VALUES (@eid, @date, @in, @out, @status)";
+
 
                             db.ExecuteNonQuery(insertSql,
                                 new MySqlParameter[]
@@ -391,10 +397,10 @@ namespace SansuPayrollSystemManagement
                         "Import Attendance",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
-                }
 
-                // reload grid
-                LoadAttendanceData();
+                    // Reload grid after import
+                    LoadAttendanceData();
+                }
             }
             catch (Exception ex)
             {
@@ -404,7 +410,7 @@ namespace SansuPayrollSystemManagement
         }
 
         // ==========================================
-        // HELPER: TIME CELL PARSE
+        // PARSE TIME CELL
         // ==========================================
         private DateTime? GetTimeFromCell(DataRow row, int colIndex, DateTime baseDate)
         {
@@ -442,69 +448,128 @@ namespace SansuPayrollSystemManagement
         }
 
         // ==========================================
-        // BACK TO DASHBOARD
+        // NAVIGATION BUTTONS (BOTTOM MENU)
         // ==========================================
-        private void GoBackToDashboard()
+        private void btnLogout_Click(object sender, EventArgs e)
         {
-            Form parent = this.FindForm();
-
-            if (parent is DashboardForm dashboard)
+            if (MessageBox.Show("Are you sure you want to logout?",
+                    "Confirm Logout", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                dashboard.OpenDashboard();
+                if (this.FindForm() is DashboardForm form)
+                {
+                    form.Close();
+                }
             }
         }
 
-        private void btnBackToDashboard_Click(object sender, EventArgs e)
+        private void guna2Button1_Click(object sender, EventArgs e)
         {
-            GoBackToDashboard();
+            if (this.FindForm() is DashboardForm form)
+            {
+                form.OpenDashboard();
+            }
         }
 
-        // ==========================================
-        // OPEN TIMECARD INSIDE DASHBOARD (NO OVERLAY)
-        // ==========================================
-        private void dgvAttendance_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void btnIconEmployees_Click(object sender, EventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0)
-                return;
-
-            if (dgvAttendance.Columns[e.ColumnIndex].Name != "ViewTimecard")
-                return;
-
-            DataGridViewRow row = dgvAttendance.Rows[e.RowIndex];
-
-            if (row.Cells["EmployeeID"].Value == null || row.Cells["Date"].Value == null)
-                return;
-
-            int employeeId = Convert.ToInt32(row.Cells["EmployeeID"].Value);
-            DateTime day = Convert.ToDateTime(row.Cells["Date"].Value);
-
-            // show whole month of that date
-            DateTime periodStart = new DateTime(day.Year, day.Month, 1);
-            DateTime periodEnd =
-                new DateTime(day.Year, day.Month, DateTime.DaysInMonth(day.Year, day.Month));
-
-            OpenTimecardForm(employeeId, periodStart, periodEnd);
+            if (this.FindForm() is DashboardForm form)
+            {
+                form.LoadPage(new EmployeeControl(userRole));
+            }
         }
 
-        private void OpenTimecardForm(int employeeId, DateTime start, DateTime end)
+        private void btnIconPayroll_Click(object sender, EventArgs e)
         {
-            var dash = this.FindForm() as DashboardForm;
-            if (dash == null) return;
+            if (this.FindForm() is DashboardForm form)
+            {
+                form.LoadPage(new PayrollControl(userRole));
+            }
+        }
 
-            var tc = new TimecardControl();
-            tc.InitializeTimecard(employeeId, start, end, null);
+        private void btnIconPerformance_Click(object sender, EventArgs e)
+        {
+            if (this.FindForm() is DashboardForm form)
+            {
+                form.LoadPage(new PerformanceControl(userRole));
+            }
+        }
 
-            // Show the timecard as a full page in Dashboard
-            dash.LoadPage(tc);
+        private void btnIconSettings_Click(object sender, EventArgs e)
+        {
+            if (this.FindForm() is DashboardForm form)
+            {
+                form.LoadPage(new SettingsControl(userRole));
+            }
+        }
+
+        private void btnIconAttendance_Click(object sender, EventArgs e)
+        {
+            // Already on Attendance page – keep as no-op or refresh if you want
         }
 
         // ==========================================
         // LOAD EVENT
         // ==========================================
-        private void AttendanceControl_Load_1(object sender, EventArgs e)
+        private void AttendanceControl_Load(object sender, EventArgs e)
         {
-            // optional: constructor already loads once
-            // LoadAttendanceData();
+            // Constructor already calls InitializeControl() which loads data
+        }
+
+        private void panelContent_Paint(object sender, PaintEventArgs e)
+        {
+            // Optional custom drawing
+        }
+
+        // ==========================================
+        // GRID CELL CLICK HANDLER
+        // ==========================================
+        private void dgvAttendance_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Timecard feature removed – intentionally left empty
+            // This handler is kept for compatibility with designer wiring
+        }
+
+        // ==========================================
+        // UNIMPORT ATTENDANCE
+        // ==========================================
+        private void btnUnimportAttendance_Click(object sender, EventArgs e)
+        {
+            if (!IsPowerUser())
+            {
+                MessageBox.Show("You do not have permission to delete attendance records.",
+                    "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (MessageBox.Show(
+                "This will delete ALL attendance logs.\n\nAre you sure you want to continue?",
+                "Unimport Attendance",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning) != DialogResult.Yes)
+            {
+                return;
+            }
+
+            try
+            {
+                db.ExecuteNonQuery("DELETE FROM Attendance");
+
+                LoadAttendanceData(); // refresh grid
+
+                MessageBox.Show(
+                    "Attendance has been cleared successfully.",
+                    "Unimport Attendance",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error clearing attendance: " + ex.Message,
+                    "Unimport Attendance",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
     }
 }
